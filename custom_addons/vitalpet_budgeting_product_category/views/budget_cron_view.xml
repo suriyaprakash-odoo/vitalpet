@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="view_budget_cron_tree" model="ir.ui.view">
+            <field name="name">budget.cron.tree</field>
+            <field name="model">budget.cron</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sch_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_budget_cron_from" model="ir.ui.view">
+            <field name="name">budget.cron.form</field>
+            <field name="model">budget.cron</field>
+            <field name="arch" type="xml">
+                <form string="Daily Budget Status" version="7.0">
+                	<header>
+                		<button string='Update Budget' name='cron_budget_calc' type='object' class='oe_highlight'/>
+               		</header>
+                    <sheet>
+                        <group>
+                            <group>
+                                 <field name="sch_date"/>
+                                 <field name='schedule_for'/>
+                            </group>
+                            <group>
+                                <field name="type"/>
+                       <field name='company_ids' widget='many2many_tags' attrs="{'invisible':[('schedule_for','=','all')]}"/>
+                            </group>
+                        </group>
+                        <field name="child_ids"  attrs="{'readonly':[('type','!=','manual')]}">
+                            <tree editable="bottom">
+                                <field name="year"/>
+                                <field name="month"/>
+                                <field name="status"/>
+                            </tree>
+                    </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_budget_status_cron">
+            <field name="name">Budget</field>
+            <field name="res_model">budget.cron</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="view_budget_cron_tree"/>
+        </record>
+
+
+      	<record forcecreate="True" id="ir_cron_budget_daily" model="ir.cron">
+	        <field name="name">Budget Daily Update</field>
+	        <field eval="True" name="active" />
+	        <!-- <field name="user_id" ref="base.user_root" /> -->
+	        <field name="interval_number">2</field>
+	        <field name="interval_type">hours</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'budget.cron'" name="model" />
+	        <field eval="'cron_budget_calc'" name="function" />
+	        <field eval="'(1,)'" name="args" />
+      	</record>
+
+
+        <menuitem name="Budget Status" action="act_budget_status_cron" id="menu_view_budget_status" parent="budget_category_main_menu" sequence="4" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+
+	</data>
+</odoo>

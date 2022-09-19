@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+        <template id="assets_backend" name="team_scheduler assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/vitalpet_team_scheduler/static/css/style.css"/>                
+            </xpath>
+        </template>
+        
+        <record id="staff_planning_tree" model="ir.ui.view">
+            <field name="name">staff.planning.tree</field>
+            <field name="model">staff.planning</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="budget"/>
+                    <field name="total_forecast"/>
+                    <field name="net_rev" invisible="1" />
+                    <field name="biweek_net_rev"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="staff_planning_form" model="ir.ui.view">
+            <field name="name">staff.planning.form</field>
+            <field name="model">staff.planning</field>
+            <field name="arch" type="xml">
+                <form>
+                <header>
+                        <button name="schduler_send" states="draft" string="Approve" type="object" class="oe_highlight" groups="vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer" />
+                        <button name="schduler_resubmit" states="approval" string="Modify and Resubmit" type="object" class="oe_highlight" groups="vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer"/>
+                        <button name="schduler_validate" states="approval" string="Validate" type="object" class="oe_highlight" groups="vitalpet_team_scheduler.group_my_practice_manager_approval"/>
+                        <!-- <button string="Send Mail" type="object" name="employee_work_send_mail" class="oe_highlight" /> -->
+                        <!-- <button name="compute_wage" string="Compute" type="object" class="oe_highlight" /> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approval,validated"/>
+                 </header>
+                    
+                    <sheet>
+                        
+                        <group>
+                            <group class="emp_hours">
+                                <field name="name" attrs="{'readonly':[('state','!=','draft')]}" />
+                                <field name="company_id" readonly="1"  />
+                                <field name="from_date" class="form_from_date" readonly="1" />
+                                <field name="to_date" class="form_to_date" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="budget" readonly="1"  />
+                                <field name="total_forecast" readonly="1"  />
+			                    <field name="net_rev" invisible="1" />
+			                    <field name="biweek_net_rev" readonly="1" />
+                            </group>
+                        </group>
+                        <button name="schduler_refresh" string="Refresh" type="object" class="oe_highlight" style="position: relative;margin-left: 6px;"/>
+                        
+                        <!-- border: none;background: none;color: #21b799;font-size: 15px;font-weight: bold; -->
+                        <field name="custom_plan" widget="custom_app"/>
+                    </sheet>
+				
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+				
+                </form>
+            </field>
+        </record>
+
+        <record id="action_staff_planning" model="ir.actions.act_window">
+            <field name="name">Create a Schedule</field>
+            <field name="res_model">staff.planning</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+
+        <record id="add_employee_wizard" model="ir.ui.view">
+            <field name="name">add.employee.form.view</field>
+            <field name="model">add.employee</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Employee Addition">
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="job_id"/>
+                        <field name="staff_plan_id" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button string="Add" type="object" name="add_employee"  class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="oe_cancel"/>
+                    </footer>
+                    </form>
+            </field>
+        </record>
+
+        <record id="action_add_employee" model="ir.actions.act_window">
+            <field name="name">Add Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">add.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="add_employee_wizard"/>
+        </record>
+
+
+        <record id="staff_display_planning_tree" model="ir.ui.view">
+            <field name="name">staff.planning.display.tree</field>
+            <field name="model">staff.planning.display</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="staff_planning_display_form" model="ir.ui.view">
+            <field name="name">staff.planning.display.form</field>
+            <field name="model">staff.planning.display</field>
+            <field name="arch" type="xml">
+                <form create="false">
+                 <header>
+                    <button string="Add Employee" type="action" name="%(action_add_employee)d" context="{'staff_plan_id': active_id}" class="oe_highlight" attrs="{'invisible':[('state','!=','draft')]}"/>                    
+                    <field name="state" invisible="1"/>
+                 </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="from_date" readonly="1"/>
+                                <field name="to_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="planning_id" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <field name="week_hours" invisible="1">
+                        	<tree editable="bottom">
+                        		<field name="employee_id" />
+                        		<field name="job_id" />
+                        		<field name="day1" />
+                        		<field name="day2" />
+                        		<field name="day3" />
+                        		<field name="day4" />
+                        		<field name="day5" />
+                        		<field name="day6" />
+                        		<field name="day7" />
+                        		<field name="ot_total" />
+                        		<field name="hours_total" />
+                        	</tree>
+                        </field>
+                        
+                        <field name="custom_hours" widget="custom_hours_app"/>                      
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_staff_planning_display" model="ir.actions.act_window">
+            <field name="name">Team Scheduler</field>
+            <field name="res_model">staff.planning.display</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+
+        <record id="staff_display_hours_tree" model="ir.ui.view">
+            <field name="name">staff.planning.hours.tree</field>
+            <field name="model">staff.planning.hours</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="planning_id"/>
+                    <field name="employee"/>
+                    <field name="job_position"/>
+                    <field name="date"/>
+                    <field name="hours"/>
+                    <field name="pto_hours"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="staff_planning_hours_form" model="ir.ui.view">
+            <field name="name">staff.hours.display.form</field>
+            <field name="model">staff.planning.hours</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="planning_id"/>
+                                <field name="employee"/>
+                                <field name="job_position"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="hours"/>
+                                <field name="pto_hours"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_staff_hours_display" model="ir.actions.act_window">
+            <field name="name">Team Scheduler Hours</field>
+            <field name="res_model">staff.planning.hours</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+
+        <record id="timesheet_job_tree" model="ir.ui.view">
+            <field name="name">timesheet.config.tree</field>
+            <field name="model">timesheet.config</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="timesheet_job_form" model="ir.ui.view">
+            <field name="name">timesheet.config.form</field>
+            <field name="model">timesheet.config</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                        <field name="hr_job_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="sequence"/>
+                                <field name="public_holidays" />
+                                <field name="salary_applicable" />
+                                <field name="daily_rate" />
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_timesheet_job_display" model="ir.actions.act_window">
+            <field name="name">Team Scheduler Config</field>
+            <field name="res_model">timesheet.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+        
+        <record id="timesheet_emp_list_tree" model="ir.ui.view">
+            <field name="name">timesheet.emp.list.tree</field>
+            <field name="model">timesheet.emp.list</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="period_id"/>
+                    <field name="company_id"/>
+                    <field name="week"/>
+                    <field name="job_id"/>
+                    <field name="hours"/>
+                    <field name="leaves"/>
+                    <field name="attendance"/>
+                    <field name="work_hours"/>
+                    <field name="difference"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_timesheet_emp_list" model="ir.actions.act_window">
+            <field name="name">Team Scheduler</field>
+            <field name="res_model">timesheet.emp.list</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+
+<!--  
+ 	 	<menuitem name="Staff" id="menu_staff"  sequence="75" action="action_staff_planning"/>
+		<menuitem name="Staff Planning" id="menu_staff_planning"  sequence="1" action="action_staff_planning" parent="menu_staff" />
+		<menuitem name="Staff Display" id="menu_staff_planning_display"  sequence="1" action="action_staff_planning_display" parent="menu_staff" />
+		<menuitem name="Staff Hours" id="menu_staff_planning_hours"  sequence="1" action="action_staff_hours_display" parent="menu_staff" />
+		<menuitem name="Timesheet Config" id="menu_timesheet_job"  sequence="1" action="action_timesheet_job_display" parent="menu_staff" />
+		
+		 -->
+		<menuitem name="Team Scheduler" id="team_menu_staff_planning"  sequence="5" action="action_staff_planning" parent="vitalpet_mypractice.menu_mypractice_team" />
+		<menuitem name="Create a Scheduler" id="team_menu_staff_planning_create"  sequence="1" action="action_staff_planning" parent="team_menu_staff_planning" />
+<!-- 	<menuitem name="Schedule" id="team_menu_action_timesheet_emp_list"  sequence="2" action="action_timesheet_emp_list" parent="team_menu_staff_planning" /> -->
+		<menuitem name="Team Scheduler Config" id="team_menu_timesheet_job"  sequence="50" action="action_timesheet_job_display" parent="vitalpet_mypractice.menu_mypractice_config" />
+		
+		
+
+    </data>
+</odoo>

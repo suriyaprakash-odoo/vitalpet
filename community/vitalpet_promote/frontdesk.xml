@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		
+		<!-- Logged Calls Views, Action and menu -->
+
+		<record model="ir.ui.view" id="case_inbound_phone_tree_2">
+        	<field name="inherit_id" ref="crm_voip.crm_phonecall_tree_view"/>
+			<field name="name">CallerInsight pulled Calls</field>
+			<field name="model">crm.phonecall</field>
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="attributes">
+                 <attribute name="create">false</attribute>
+            </xpath>
+				<field name="date" position="replace">
+					<field name="date_of_call" string="Date of Call"/>
+					<field name="report_date" string="Report Date" required="1"/>
+					<field name="date" string="Listen Date" invisible="1"/>
+					<field name="company_id" required="1" readonly="0" string="Company"/>
+		        	<field name="TrackingNumber" string="Tracking Number"/>
+		        	<field name="CallDuration" string="Call Duration"/>
+					<field name="agent" string="Employee" required="0"/>
+					<field name="client_status" required="1"/>
+					<field name="call_summary" required="1" widget="selection"/>
+             	</field>
+             	
+             	<field name="name" position="replace">
+             		<field name="name" required="False" string="Notes"/>
+		            <field name="RecordingLink" widget="audio" readonly="1"/> 
+             	</field>
+
+							<button name="action_button_to_opportunity" position="replace">
+             		<button name="open_scorecard" string="Listen and Rank" type="object" icon="fa-hand-pointer-o" help="Open Scorecard"/>
+					<field name="total_score"/>
+             			</button>
+             	
+				<!--button name="action_make_meeting" position="replace"/-->
+				<field name="partner_id" position="replace"/>	
+				<field name="description" position="replace"/>	
+				<field name="partner_phone" position="replace"/>	
+				<field name="partner_mobile" position="replace"/>
+				<field name="user_id" position="replace"/>
+             		
+				<field name="state" position="replace"/>	
+				<field name="duration" position="replace"/>	
+				<field name="opportunity_id" position="replace"/>	
+				
+             </field>
+		</record> 
+		
+    	<record id="view_crm_case_phonecalls_filter_inherit" model="ir.ui.view">
+	        <field name="name">CRM - Phone Calls Search</field>
+	        <field name="model">crm.phonecall</field>
+	        <field name="inherit_id" ref="crm_voip.view_crm_case_phonecalls_filter"/>
+	        <field name="arch" type="xml">
+						<xpath expr='/search/filter[1]' position="replace">
+                <filter string="Scored" name="scored_call" domain="[('listen_rank','!=',False)]"/>
+						 </xpath>
+						 <xpath expr='/search/filter[2]' position="replace">
+						 		<filter string="Not Scored" name="unscored_call" domain="[('listen_rank','=',False)]"/>
+ 						 </xpath>
+						 <xpath expr='/search/filter[3]' position="replace">
+							 <filter string="No Employee" domain="[('agent','=',False)]"/>
+ 						 </xpath>
+
+	           <xpath expr='/search/group[@expand="0"]' position="replace">
+								<group expand="0" string="Group By">
+									<filter string="Company" domain="[]" context="{'group_by':'company_id'}" help="Calls by company"/>
+									<filter string="Team Member" domain="[]" context="{'group_by':'agent'}" help="Group By Agent"/>
+									<filter string="Call Year" domain="[]" context="{'group_by':'date_of_call:year'}" help="Recording month"/>
+								 	<filter string="Call Month" domain="[]" context="{'group_by':'date_of_call'}" help="Recording month"/>
+								</group>
+		         </xpath>
+	        </field>
+    	</record> 
+		
+		<record model="ir.actions.act_window" id="crm_case_categ_phone1">
+        	<field name="name">Phone Calls</field>
+	        <field name="res_model">crm.phonecall</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form,calendar</field>
+	        <field name="view_id" ref="case_inbound_phone_tree_2"/>
+	        <!-- field name="context">{"search_default_user_id":uid}</field> -->
+	        <field name="search_view_id" ref="view_crm_case_phonecalls_filter_inherit"/>
+    	</record>
+		
+           <menuitem id="logged_calls_menu" name="Logged Calls" parent="frontdesk_promote" action='crm_case_categ_phone1' sequence="4"/>
+        
+        
+        <!-- Leaderboard Views, Action and menu -->
+        
+        	<record id="agents_ranking_view" model="ir.ui.view">
+            <field name="name">res.employees.leaderboard</field>
+            <field name="model">crm.phonecall</field>
+			<field name="arch" type="xml">
+				<tree string="Agents Ranking" create='false'>	
+					<!-- field name="name" string='Employee'/>
+					<field name="clinic_rank" string='Clinic Rank' invisible='True'/>
+					<field name="company_rank" string='Practice/Company Rank'/>  -->
+					<field name="total_score_float" string='Score (%)'/>
+		            <field name="RecordingLink" widget="audio" readonly='1'/> 
+					<field name="prospect_calls_sum" string='Prospect Calls'/>
+					<field name="cost_prospect_calls" string='Cost of Prospect Calls ($)'/>
+					<field name="appointments_sum" string='Appointments Set'/>
+					<field name="appointments_perc" string='Appts (%)'/>
+					<field name="duration" string='Avg Call Duration' widget="float_time" style="vertical-align:baseline"/>
+             	</tree>
+             </field>
+		</record>  
+		
+		<record id="agents_ranking_search" model="ir.ui.view">
+            <field name="name">agents.ranking.search</field>
+            <field name="model">crm.phonecall</field>
+            <field name="arch" type="xml">
+                <search string="Agents Ranking Search view">
+                    <field name="name" string="Team Member" filter_domain="[('name','ilike',self)]"/>
+                    <filter string="Prospect Calls" domain="[('prospect_calls_sum', '=', 1)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Company" name='group_clinic' domain="[]" context="{'group_by':'company_id'}"/>
+                        <filter string="Team Member" name='group_employee' domain="[]" context="{'group_by':'agent'}"/>
+												<filter string="Call Year" name="group_report_year" domain="[]" context="{'group_by':'date_of_call:year'}"/>
+												<filter string="Call Month" name="group_report_month" domain="[]" context="{'group_by':'date_of_call'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>  
+        
+        
+		<record id="agents_ranking_action" model="ir.actions.act_window">
+            <field name="name">Agent's Ranking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="agents_ranking_view"/>
+            <field name="search_view_id" ref="agents_ranking_search"/>
+            <field name="domain">[('total_score_float','!=',0.0)]</field>
+            <field name="context">{'search_default_group_clinic':1,'search_default_group_employee':1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="Leaderboard_menu" name="Leaderboard" parent="frontdesk_promote" action='agents_ranking_action' sequence="1"/>
+        
+        
+        <!--  Leaderboard Details views, action and menu -->
+        
+        <record id="current_result_bycategory_graph" model="ir.ui.view">
+            <field name="name">score.category.graph</field>
+            <field name="model">score.category</field>
+            <field name="type">graph</field>
+			<field name="arch" type="xml">
+        	<graph string="Category Analysis Bars" type="bar">
+                    <field name="type" type="row"/>
+					<field name="score_per_category" type="measure" />
+            </graph>
+            </field>
+        </record>
+        
+        <record id="action_current_results_bycategory" model="ir.actions.act_window">
+            <field name="name">Current Results By Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">score.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="current_result_bycategory_graph"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+        
+        <record id="location_score_trend_graph" model="ir.ui.view">
+            <field name="name">crm.phonecall.graph</field>
+            <field name="model">crm.phonecall</field>
+             <field name="type">graph</field>
+			<field name="arch" type="xml">
+        	<graph string="Location Score Trend" type="bar">
+                    <!-- <field name="agent" type="col"/>
+                    <field name="call_month" type="row"/>-->
+                    <field name="date_of_call" interval="month" type="row"/>
+					<field name="total_score_float" group_operator="avg" type="measure" />
+            </graph>
+            </field>
+        </record>
+        
+        <record id="action_location_score_trend" model="ir.actions.act_window">
+            <field name="name">Location Score Trend</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="domain">[('call_month','>=', ((context_today()-datetime.timedelta(days=337)).strftime('%Y-%m')))]</field>
+            <field name="view_id" ref="location_score_trend_graph"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+                
+        
+        <record id="leaderboard_details_view" model="ir.ui.view">
+            <field name="name">board.leaderboard.details</field>
+            <field name="model">board.board</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Dashboard" version="7.0">
+                    <board style="1-1">					
+                        <column>
+                            <action name="%(action_current_results_bycategory)d" string="Current Results By Category"/>
+                        </column>
+                        <column>
+                            <action name="%(action_location_score_trend)d" string="Location Score Trend"/>
+                        </column>	 					
+                    </board>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="leaderboard_details_action" model="ir.actions.act_window">
+            <field name="name">Leaderboard details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">board.board</field> 
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="leaderboard_details_view"/>
+            <field name="help" type="html">
+                <div class="oe_empty_custom_dashboard">
+              <p>
+                <b>This dashboard is empty.</b>
+              </p><p>
+                To add the first report into this dashboard, go to any
+                menu, switch to list or graph view, and click <i>'Add to
+                Dashboard'</i> in the extended search options.
+              </p><p>
+                You can filter and group data before inserting into the
+                dashboard using the search options.
+              </p>
+          </div>
+            </field>
+        </record>
+        
+        <menuitem id="Leaderboard_details_menu" name="Leaderboard Details" parent="frontdesk_promote" action='leaderboard_details_action' sequence="2"/>
+        
+        
+</odoo>

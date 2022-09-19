@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_account_payable_receivable_form" model="ir.ui.view">
+			<field name="name">account.move.line.form</field>
+			<field name="model">account.move.line</field>
+			<field name="arch" type="xml">
+				<form create="false" edit="false">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+								<field name="ref" />
+								<field name="partner_id" domain="['|', ('parent_id', '=', False), ('is_company', '=', True)]" />
+							</group>
+							<group>
+								<field name="journal_id" />
+								<field name="date" />
+								<field name="company_id" required="1" groups="base.group_multi_company" />
+							</group>
+						</group>
+						<notebook colspan="4">
+							<page string="Information">
+								<group>
+									<group string="Amount">
+										<field name="account_id" domain="[('company_id', '=', company_id)]" />
+										<field name="debit" />
+										<field name="credit" />
+										<field name="quantity" />
+									</group>
+									<group string="Accounting Documents">
+										<field name="move_id" required="False" />
+										<field name="statement_id" readonly="True" />
+									</group>
+									<group string="Dates">
+										<field name="date_maturity" />
+									</group>
+									<group string="Taxes">
+										<field name="tax_line_id" readonly="1" />
+										<field name="tax_ids" widget="many2many_tags" readonly="1" />
+									</group>
+									<group string="Matching">
+										<label for="full_reconcile_id" />
+										<div>
+											<field name="full_reconcile_id" />
+											<field name="reconciled" invisible="1" />
+											<field name="matched_debit_ids" invisible="1" />
+											<field name="matched_credit_ids" invisible="1" />
+											<button name="open_reconcile_view" class="oe_link" type="object" string="-&gt; View partially reconciled entries" attrs="{'invisible': ['|', ('full_reconcile_id', '=', True), '&amp;', ('matched_debit_ids', '=', []),('matched_credit_ids', '=', [])]}">
+											</button>
+										</div>
+									</group>
+									<group string="Currency" groups="base.group_multi_currency">
+										<field name="currency_id" invisible="1" />
+										<field name="amount_currency" />
+									</group>
+									<group string="States">
+										<field name="blocked" />
+									</group>
+									<group groups="analytic.group_analytic_accounting" string="Analytic">
+										<field name="analytic_account_id" />
+										<field name="analytic_tag_ids" widget="many2many_tags" />
+									</group>
+								</group>
+								<field name="narration" colspan="4" nolabel="1" placeholder="Add an internal note..." />
+							</page>
+							<page string="Analytic Lines" groups="analytic.group_analytic_accounting">
+								<field name="analytic_line_ids" context="{'default_general_account_id':account_id, 'default_name': name, 'default_date':date, 'amount': (debit or 0.0)-(credit or 0.0)}" />
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="view_account_payable_receivable_tree" model="ir.ui.view">
+			<field name="name">account.move.line.tree</field>
+			<field name="model">account.move.line</field>
+			<field name="arch" type="xml">
+				<tree create="false">
+					<field name="date_maturity" />
+					<field name="partner_id" />
+					<field name="company_id" />
+					<field name="credit" string="Amount" sum="Total Amount"/>
+					<field name="account_id" />
+					<field name="invoice_number"/>
+					<field name="name" />
+					<field name="journal_id" />
+					<field name="create_uid" string="User" />
+					<field name="analytic_account_id" />
+					<field name="date" />
+					<field name="day_since" />
+
+					<!-- <field name="menu" /> -->
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="view_account_receivable_tree" model="ir.ui.view">
+			<field name="name">account.move.line.tree</field>
+			<field name="model">account.move.line</field>
+			<field name="arch" type="xml">
+				<tree create="false">
+					<field name="date_maturity" />
+					<field name="partner_id" />
+					<field name="company_id" />
+					<field name="debit" string="Amount" sum="Total Amount" />
+					<field name="account_id" />
+					<field name="invoice_number"/>
+					<field name="name" />
+					<field name="journal_id" />
+					<field name="create_uid" string="User" />
+					<field name="analytic_account_id" />
+					<field name="date" />
+					<field name="day_since" />
+
+					<!-- <field name="menu" /> -->
+				</tree>
+			</field>
+		</record>
+
+		<record id="acc_payable_receivable_filter_search" model="ir.ui.view">
+			<field name="name">account.move.line.search</field>
+			<field name="model">account.move.line</field>
+			<field name="inherit_id" ref="account.view_account_move_line_filter" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//search" position="inside">
+					<field name="company_id" string="Company" domain="[('company_id','ilike', self)]" />
+					<field name="analytic_account_id" string="Analytic Account" domain="[('analytic_account_id','ilike', self)]" />
+					<field name="credit" string="Amount" domain="[('credit','ilike', self)]" />
+				</xpath>
+				
+				<filter name="receivable" position="after">
+					<separator />
+					<filter string="BillPayIntercompany" name="billpayintercompany" domain="[('account_id.tag_ids.name', '=', 'BillPayIntercompany')]" />
+					<filter string="Bill pay Payables" domain="[('account_id.tag_ids.name', '=', 'Billpay Payable')]" help="Payables" name="payables" />
+					<filter string="Bill pay Receivables" domain="[('account_id.tag_ids.name', '=', 'Billpay Receivable')]" help="Receivables" name="receivables" />
+				</filter>
+				<xpath expr="//search//group//filter[1]" position="replace">
+					<filter string="Due Date" icon="terp-personal" domain="[]" context="{'group_by' : 'date_maturity' }" name="due_date" />
+					<filter string="Partner" context="{'group_by': 'partner_id'}" name="partner" />
+					<filter string="Company" context="{'group_by': 'company_id'}" />
+					<filter string="Analytic Account" context="{'group_by': 'analytic_account_id'}" />
+				</xpath> 
+			</field>
+		</record>
+
+		<record id="action_account_payable_receivable" model="ir.actions.server">
+			<field name="name">Create Bill</field>
+			<field name="model_id" ref="model_account_move_line" />
+			<field name="state">code</field>
+			<field name="code">
+                if records:
+                action = records.create_bills()
+            </field>
+		</record>
+
+		<record id="ir_action_account_payable_receivable" model="ir.values">
+			<field eval="'client_action_multi'" name="key2" />
+			<field eval="'account.move.line'" name="model" />
+			<field name="name">Create Bill</field>
+			<field eval="'ir.actions.server,%d'%action_account_payable_receivable" name="value" />
+		</record>
+
+		<!-- <act_window id="action_account_payable_receivables"
+            name="Create Bill"
+            src_model="account.move.line"
+            res_model="account.move.line"
+			groups="group_billpay_approver"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+			
+            />
+  -->
+
+
+		<record id="action1_account_payable_receivable" model="ir.actions.server">
+			<field name="name">Create Vendor Credit</field>
+			<field name="model_id" ref="model_account_move_line" />
+			<field name="state">code</field>
+			<field name="code">
+                if records:
+                action = records.create_vendor_credit()
+            </field>
+		</record>
+
+		<record id="ir_action1_account_payable_receivable" model="ir.values">
+			<field eval="'client_action_multi'" name="key2" />
+			<field eval="'account.move.line'" name="model" />
+			<field name="name">Create Vendor Credit</field>
+			<field eval="'ir.actions.server,%d'%action1_account_payable_receivable" name="value" />
+		</record>
+
+		<record id="action_account_payable" model="ir.actions.act_window">
+			<field name="name">Account Payables</field>
+			<field name="res_model">account.move.line</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,search</field>
+			<field name="context">{'search_default_due_date': 1,
+								    'search_default_partner':1,
+									'search_default_posted':1
+									}</field>
+			<field name="view_id" ref="view_account_payable_receivable_tree">
+			</field>
+
+		</record>
+
+		<record id="action_account_payable_tree" model="ir.actions.act_window.view">
+			<field name="sequence">1</field>
+			<field name="view_mode">tree</field>
+			<field name="context">{}</field>
+			<field name="view_id" ref="view_account_payable_receivable_tree" />
+			<field name="act_window_id" ref="action_account_payable" />
+		</record>
+
+		<record id="action_account_payable_from" model="ir.actions.act_window.view">
+			<field name="sequence">2</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_account_payable_receivable_form" />
+			<field name="act_window_id" ref="action_account_payable" />
+		</record>
+		<record id="action_account_receivable" model="ir.actions.act_window">
+			<field name="name">Account Receivables</field>
+			<field name="res_model">account.move.line</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,search</field>
+			<field name="context">{
+									'search_default_due_date': 1,
+								    'search_default_partner':1,
+									'search_default_posted':1}</field>
+			<field name="view_id" ref="view_account_receivable_tree">
+			</field>
+		</record>
+		<record id="action_account_receivable_form" model="ir.actions.act_window.view">
+			<field name="sequence">1</field>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_account_receivable_tree" />
+			<field name="act_window_id" ref="action_account_receivable" />
+		</record>
+
+		<record id="action_account_receivable_tree" model="ir.actions.act_window.view">
+			<field name="sequence">2</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_account_payable_receivable_form" />
+			<field name="act_window_id" ref="action_account_receivable" />
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>        
+        
+         <record id="hr_payroll_inputs_view_form" model="ir.ui.view">
+            <field name="name">hr.payroll.inputs.form</field>
+            <field name="model">hr.payroll.inputs</field>
+            <field name="arch" type="xml">
+            <form edit="false">
+        		<header>
+                	<field name="state" widget="statusbar" statusbar_visible="open,done"/>
+                </header>
+                <sheet>
+                <group>
+                    <field name="payroll_period"/>
+                    <field name="company_id"/>
+                    <field name="task_id"/>
+                    <field name="date"/>
+                </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+    	
+    	 <record model="ir.ui.view" id="hr_payroll_inputs_view_tree">
+            <field name="name">Hr Payroll Inputs Tree</field>
+            <field name="model">hr.payroll.inputs</field>
+            <field name="arch" type="xml">
+                <tree string="Payroll Status" edit="false">
+                    <field name="payroll_period"/>
+                    <field name="company_id"/>
+                    <field name="stage"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+    	  <record id="view_hr_payroll_inputs_search" model="ir.ui.view">
+            <field name="name">hr.payroll.inputs.search</field>
+            <field name="model">hr.payroll.inputs</field>
+            <field name="arch" type="xml">
+                <search string="Search payroll status">
+                 	<filter string="Open" name="open" domain="[('state', '=', 'open')]" icon="terp-dialog-open"/>
+                    <filter string="Closed" name="done" domain="[('state', '=', 'done')]" icon="terp-dialog-close"/>
+                   	<filter string="Validate" name="pending" domain="[('state','=','open'),('stage', '=', 'validate')]" />
+                   	<filter string="Today" name="today" domain="[('state','=','open'),('date', '=', datetime.datetime.now())]" />
+                   	<filter string="Overdue" name="overdue_pending" domain="[('state','=','open'),('date', '>', datetime.datetime.now())]" />
+                </search>
+            </field>
+        </record>
+    	
+		
+		<record id="hr_payroll_inputs_action_menu" model="ir.actions.act_window">
+			<field name="name">Payroll Status</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.payroll.inputs</field>
+			<field name="view_id" ref="hr_payroll_inputs_view_tree" />
+			<field name="context">{'search_default_open':1}</field>
+	        <field name="search_view_id" ref="vitalpet_payroll_inputs.view_hr_payroll_inputs_search"/>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+      <menuitem id="hr_payroll_inputs_menu" action="hr_payroll_inputs_action_menu" string="Payroll Status" parent="payroll_inputs_menu_heading" sequence="2"/>
+
+
+        </data>
+        </odoo>

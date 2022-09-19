@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+		<record id="view_partner_property_bill_form" model="ir.ui.view">
+			<field name="name">res.partner.property.form.inherit</field>
+			<field name="model">res.partner</field>
+			<field name="priority">2</field>
+			<field name="inherit_id" ref="account.view_partner_property_form" />
+			<field name="arch" type="xml">
+
+				<group name="fiscal_information" position="after">
+						<field name="vendor_payment_mode" invisible="1"/>
+				</group>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="res_partner_billpay_search">
+            <field name="name">res.partner.billpay.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                    <filter name="supplier" position="after">
+                    	<separator />
+<!--                    <filter string="Manual Check" name="manual_check" domain="[('supplier','=',True), ('vendor_payment_mode', '=', 'Manual Check')]" help="Vendor payment type is manual check" /> -->
+                        <filter string="ACH" name="ach" domain="[('supplier','=',True), ('vendor_payment_mode', '=', 'ACH')]" />
+                        <filter string="Manual Payment" name="manual_payment" domain="[('supplier','=',True), ('vendor_payment_mode', '=', 'Manual Payment')]" />
+                        <filter string="eCheck" name="echeck" domain="[('supplier','=',True), ('vendor_payment_mode', '=', 'eCheck')]" />
+                       	<separator />
+                    </filter>
+            </field>
+        </record>
+
+
+        <!-- <record id="view_partner_bank_form" model="ir.ui.view">
+			<field name="name">res.partner.bank.form.inherit</field>
+			<field name="model">res.partner.bank</field>
+			<field name="priority">2</field>
+			<field name="inherit_id" ref="base.view_partner_bank_form" />
+			<field name="arch" type="xml">
+				<field name="partner_id" position="after">
+						<field name="bank_routing" required='True'/>
+				</field>
+			</field>
+		</record> -->
+
+	</data>
+</odoo>

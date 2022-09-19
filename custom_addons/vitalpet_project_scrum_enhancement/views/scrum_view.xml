@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="view_project_task_inherit">
+			<field name="name">project.task.form</field>
+			<field name="model">project.task</field>
+			<field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited" />
+			<field name="arch" type="xml">
+				 <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="after">
+					<field name="contact_id"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="view_project_issue_inherit_form">
+			<field name="name">project.issue.form</field>
+			<field name="model">project.issue</field>
+			<field name="inherit_id" ref="project_issue_sheet.project_issue_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="after">
+					<field name="contact_id"/>
+				</xpath>
+				<xpath expr="//field[@name='task_id']" position="replace">
+					<field name="task_id" context="{'default_project_id':project_id}"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="view_project_issue_incident">
+			<field name="name">project.task.form</field>
+			<field name="model">project.task</field>
+			<field name="inherit_id" ref="project_scrum_agile.view_task_form2" />
+			<field name="arch" type="xml">
+				 <xpath expr="//field[@name='incidents']" position="attributes">
+					<attribute name="context">{'default_project_id':project_id, 'default_task_id': id}</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		
+		<!--Profit and Loss (HQ) -->
+
+		<record id="account_financial_report_pl_hq_0" model="account.financial.html.report">
+			<field name="name">Profit and Loss (HQ) </field>
+			<field name="debit_credit" eval="False" />
+			<field name="report_type">date_range_analytic</field>
+			<field name='parent_id'
+				ref='account_reports.account_reports_legal_statements_menu' />
+		</record>
+
+		<record id="account_financial_report_pl_hq_net_income_0"
+			model="account.financial.html.report.line">
+			<field name="name">NET INCOME</field>
+			<field name="code">NTCME1</field>
+ 			<field name="formulas">balance = (EBITDA1.balance) - (ONRIE1.balance + IE1.balance + DA1.balance + FMT1.balance + FCT1.balance + NCI1.balance)</field>
+ 			<field name="financial_report_id" ref='account_financial_report_pl_hq_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="0" />
+		</record>
+
+		<record id="account_financial_report_pl_hq_gross_revenue_0"
+			model="account.financial.html.report.line">
+			<field name="name">Gross Revenue</field>
+			<field name="code">GR1</field>
+			<field name="formulas">balance = -(sum.balance)</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain" eval="[('account_id.user_type_id', '=','Income'),('account_id.tag_ids', '!=', 'Revenue Adjustments')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="1" />
+			<field name="level" eval="1" />
+		</record>
+
+		<record
+			id="account_financial_report_pl_hq_discount_adjustment_0"
+			model="account.financial.html.report.line">
+			<field name="name">Discounts and Adjustments</field>
+			<field name="code">DJ1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Income'),('account_id.tag_ids', '=', 'Revenue Adjustments')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="2" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_net_revenue_0"
+			model="account.financial.html.report.line">
+			<field name="name">Net Revenue</field>
+			<field name="code">NR1</field>
+			<field name="formulas">balance = GR1.balance - DJ1.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="3" />
+			<field name="level" eval="2" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_cost_goods_0"
+			model="account.financial.html.report.line">
+			<field name="name">Cost of Goods Sold</field>
+			<field name="code">COGS1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Cost of Revenue')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="4" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_cogs_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(% Net Revenue)</field>
+			<field name="code">COGS_AVG1</field>
+			<field name="formulas">balance = ((COGS1.balance) / (NR1.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="5" />
+			<field name="level" eval="6" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_gross_profit_0"
+			model="account.financial.html.report.line">
+			<field name="name">Gross Profit</field>
+			<field name="code">GP1</field>
+			<field name="formulas">balance = NR1.balance - COGS1.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="6" />
+			<field name="figure_type">float</field>
+			<field name="level" eval="2" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_gross_margin_0"
+			model="account.financial.html.report.line">
+			<field name="name">(Gross Margin)</field>
+			<field name="code">AVG1</field>
+			<field name="formulas">balance = (GP1.balance) / (NR1.balance)</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="7" />
+			<field name="level" eval="6" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_hsoe_0"
+			model="account.financial.html.report.line">
+			<field name="name">Hospital Operating Expenses</field>
+			<field name="code">HSOE1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Expenses'),('account_id.tag_ids', '!=','Overhead Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="8" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_hsoe_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(% of Revenue)</field>
+			<field name="code">HSOE_AVG1</field>
+			<field name="formulas">balance = ((HSOE1.balance) / (NR1.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="9" />
+			<field name="level" eval="6" />
+		</record>
+		<record
+			id="account_financial_report_pl_hq_hospital_contribution_0"
+			model="account.financial.html.report.line">
+			<field name="name">Hospital Contribution</field>
+			<field name="code">HC1</field>
+			<field name="formulas">balance = GP1.balance - HSOE1.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="10" />
+			<field name="level" eval="2" />
+		</record>
+		<record
+			id="account_financial_report_pl_hq_hc_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(Hospital EBTDA Margin) </field>
+			<field name="code">HC_AVG1</field>
+			<field name="formulas">balance = ((HC1.balance) / (NR1.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="11" />
+			<field name="level" eval="6" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_hoe_0"
+			model="account.financial.html.report.line">
+			<field name="name">Headquarters Operating Expenses</field>
+			<field name="code">HOE1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.tag_ids', '=','Overhead Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="12" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_hqoe_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(% Net Revenue)</field>
+			<field name="code">HQOE_AVG1</field>
+			<field name="formulas">balance = ((HOE1.balance) / (NR1.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="13" />
+			<field name="level" eval="6" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_ebitda_0"
+			model="account.financial.html.report.line">
+			<field name="name">EBITDA</field>
+			<field name="code">EBITDA1</field>
+			<field name="formulas">balance = HC1.balance - HOE1.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="14" />
+			<field name="level" eval="2" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_ebitda_margin_0"
+			model="account.financial.html.report.line">
+			<field name="name">(EBITDA Margin)</field>
+			<field name="code">EBITDA_AVG1</field>
+			<field name="formulas">balance = ((EBITDA1.balance) / (NR1.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="15" />
+			<field name="level" eval="6" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_onrie_0"
+			model="account.financial.html.report.line">
+			<field name="name">Other / Non-Recurring (Income) Expense*</field>
+			<field name="code">ONRIE1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),'|',('account_id.tag_ids', '=','Other Income'),('account_id.tag_ids', '=','Non Recurring Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="16" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_interest_expense_0"
+			model="account.financial.html.report.line">
+			<field name="name">Interest Expense</field>
+			<field name="code">IE1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Interest Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="17" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_interest_expenses_0"
+			model="account.financial.html.report.line">
+			<field name="name">Depreciation and Amortization </field>
+			<field name="code">DA1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Depreciation'),'|',('account_id.tag_ids', '=','Depreciation Expense'),('account_id.tag_ids', '=','Amortization Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="18" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_hq_fmt_0"
+			model="account.financial.html.report.line">
+			<field name="name">	Franchise and Margin Taxes</field>
+			<field name="code">FMT1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','State Tax Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="19" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_FCT_0"
+			model="account.financial.html.report.line">
+			<field name="name">Federal Corporate Tax (Benefit) Liability Estimate</field>
+			<field name="code">FCT1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Federal Tax Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="20" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_hq_NCI_0"
+			model="account.financial.html.report.line">
+			<field name="name">	Non-Controlling (Minority) interest</field>
+			<field name="code">NCI1</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_hq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Minority Distributions')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="21" />
+			<field name="level" eval="1" />
+		</record>
+
+
+	</data>
+</odoo>

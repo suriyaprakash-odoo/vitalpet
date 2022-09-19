@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<function name="write" model="ir.model.data">
+		<function name="search" model="ir.model.data">
+			<value eval="[('module', '=', 'hr_expense'), ('name', '=', 'mail_alias_expense')]" />
+		</function>
+		<value eval="{'noupdate': False}" />
+	</function>
+
+	<record id="hr_expense.mail_alias_expense" model="mail.alias">
+         <field name="alias_name">expense</field>
+         <field name="alias_model_id" ref="model_hr_expense_mail_attachment"/>
+         <field name="alias_user_id" ref="base.user_root"/>
+         <field name="alias_contact">employees</field>
+     </record>
+
+
+	<function name="write" model="ir.model.data">
+		<function name="search" model="ir.model.data">
+			<value eval="[('module', '=', 'hr_expense'), ('name', '=', 'mail_alias_expense')]" />
+		</function>
+		<value eval="{'noupdate': True}" />
+	</function>
+
+	<record id="mypractice_tag_data_1" model="project.tags">
+            <field name="name">Expenses</field>
+            <field name='color'>4</field>
+        </record>
+
+</odoo>

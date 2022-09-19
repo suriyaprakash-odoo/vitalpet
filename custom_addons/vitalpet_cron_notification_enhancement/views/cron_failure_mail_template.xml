@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="cron_failed_to_run" model="mail.template">
+            <field name="name">Cron Failed to run</field>
+            <field name="email_from">admin@vitalpet.com</field>
+            <field name="subject">Cron Failed</field>
+            <field name="email_to">nbano@vitalpet.com</field>
+            <field name="email_cc">mani.jayaraman@pptservices.com,suriyaprakash.subramanian@pptservices.com,</field>
+            <field name="model_id" ref="vitalpet_cron_notification_enhancement.model_logs_action" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hi Team,</p>
+                    <p>${object.name} cron failed to run on ${object.exec_date}.</p>
+                    <p>"${object.error_details}"</p>
+
+                    <br/>
+                    <p><b>Best Regards,</b></p>
+                    <p><b>Vitalpet Team</b></p>
+
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

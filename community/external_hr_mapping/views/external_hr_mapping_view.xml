@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Sync Trigger Action and menu -->
+       
+       <record id="external_hr_mapping_tree" model="ir.ui.view">
+            <field name="name">external.hr.mapping.tree</field>
+            <field name="model">external.hr.mapping</field>
+            <field name="arch" type="xml">
+                <tree string="External HR Mapping" >
+                    <field name="job_id"/>
+                    <field name="company_id"/>
+                    <field name="external_job_id"/>
+                    <field name="external_location_id"/>
+                    <field name="external_job_description"/>
+                    <field name="external_location_description"/>
+                    <field name="working_address_id"/>
+                    <field name="seniority_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        
+       <record id="view_external_hr_mapping_form" model="ir.ui.view">
+            <field name="name">external.hr.mapping.form</field>
+            <field name="model">external.hr.mapping</field>
+            <field name="arch" type="xml">
+                <form string="External HR Mapping">
+                    <group col="4">
+	                    <field name="job_id"/>
+	                    <field name="company_id"/>
+	                    <field name="external_job_id"/>
+	                    <field name="external_location_id"/>
+	                    <field name="external_job_description"/>
+	                    <field name="external_location_description"/>
+                    	<field name="working_address_id"/>
+                    	<field name="seniority_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+       
+       <record model="ir.actions.act_window" id="external_hr_mapping_action">
+            <field name="name">External HR Mapping</field>
+            <field name="res_model">external.hr.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="external_hr_mapping_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    External HR Mapping is empty.
+                </p>
+            </field>
+    	</record>	
+
+           <menuitem id="external_hr_mapping_log_mapping" name="External HR Mapping" parent="hr.menu_human_resources_configuration" action='external_hr_mapping_action' sequence="99"/>
+	
+    <record id="view_attendance_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[last()]" position="after">
+                <field name="regular_hours"/>
+                <field name="ot_hours"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

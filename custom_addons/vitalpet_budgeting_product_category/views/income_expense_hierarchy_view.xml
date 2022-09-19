@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_income_expense_hierarchy_tree" model="ir.ui.view">
+			<field name="name">income.expense.hierarchy.tree</field>
+			<field name="model">income.expense.hierarchy</field>
+			<field name="field_parent">child_ids</field>
+			<field name="arch" type="xml">
+				<tree string="Income and Expense Hierarchy">
+					<field name="category_id"/>
+					<field name='type'/>
+					<field name='sequence'/>
+					<field name='view_type'/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_income_expense_hierarchy_form" model="ir.ui.view">
+			<field name="name">income.expense.hierarchy.form</field>
+			<field name="model">income.expense.hierarchy</field>
+			<!-- <field name="field_parent">child_ids</field> -->
+			<field name="arch" type="xml">
+				<form string="Income and Expense Hierarchy">
+					<sheet>
+						<group>
+							<group>
+								<field name='category_id'/>
+								<field name='name'/>
+								<field name='sign'/>
+								<field name='type'/>
+								<!-- <field name='formula'/> -->
+							</group>
+							<group>
+								<field name='sequence'/>
+								<field name='include'/>
+								<field name='tag'/>
+								<field name='view_type'/>
+								<!-- <field name='code'/> -->
+
+							</group>
+						</group>
+						<notebook>
+							<page string='Hierarchy Lines'>
+								<field name='hierarchy_line'>
+									<tree editable='bottom'>
+										<field name='category_id'/>
+										<field name='sign' invisible='1'/>
+										<!-- <field name='code'/> -->
+										<field name='sequence'/>
+										<field name='type'/>
+<!-- 										<field name='view_type'/> -->
+										<field name='include'/>
+										<field name='subtract'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+
+		<record id="view_hierarchy_line_form" model="ir.ui.view">
+            <field name="name">hierarchy.line.form</field>
+            <field name="model">hierarchy.line</field>
+            <field name="arch" type="xml">
+                <form string="Hierarchy Line">
+                    <group>
+                      <group string="Main Info">
+                      		<field name='category_id'/>
+                      		<field name='name'/>
+                      		<field name='parent_id'/>
+							<field name='sequence'/>
+							<!-- <field name='code'/> -->
+							<field name='type'/>
+							<!-- <field name='view_type'/> -->
+							<field name='include'/>
+							<!-- <field name='formula'/> -->
+                        <!-- <field name="name"/>
+                        <field name="code"/>
+                        <field name="sequence"/>
+                        <field name="parent_id"/> -->
+                      </group>
+
+                      <!-- <group string="Children Lines">
+                        <field name="children_ids" nolabel="1"/>
+                      </group> -->
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hierarchy_line_tree" model="ir.ui.view">
+            <field name="name">hierarchy.line.tree</field>
+            <field name="model">hierarchy.line</field>
+            <field name="arch" type="xml">
+                <tree>
+              		<field name='category_id'/>
+					<field name='sequence'/>
+					<!-- <field name='code'/> -->
+					<!-- <field name='type'/>
+					<field name='include'/>         -->
+                </tree>
+            </field>
+        </record>
+
+
+
+
+
+
+		<record id="action_income_expense_hierarchy_view" model="ir.actions.act_window">
+            <field name="name">Income and Expense Hierarchy</field>
+            <field name="res_model">income.expense.hierarchy</field>
+            <field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+            <field name="view_id" ref="view_income_expense_hierarchy_tree"/>
+        </record>
+
+		<menuitem parent="budget_category_main_menu" id="id_income_expense_hierarchy_view" name="Income Expense Hierarchy" action="action_income_expense_hierarchy_view" sequence="10" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+	</data>
+</odoo>

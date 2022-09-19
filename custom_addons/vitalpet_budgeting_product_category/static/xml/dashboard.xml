@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!--
+        This template is the ribbon at the top of the Billpay Inbox that adds
+        some figures to it. We call this rubbon the "Billpay Ibox".
+    -->
+
+    <t t-name="vitalpet_budgeting_product_category.searchView">
+        <div class="o_dropdown o_account_reports_date-filter-multi-company">
+            <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-filter"/> Companies: <span class="caret"/>
+            </a>
+           
+        </div>
+    </t>
+
+
+
+
+
+    <t t-name="vitalpet_budgeting_product_category.HomePage">
+    	<div class="o_dashboards">
+            <div class="container-fluid o_website_dashboard">
+            </div>
+        </div>
+        
+	    
+    	<!-- <div class="coe_kanban_card o_kanban_record">
+           <p>fsdfsdfsdf</p>
+       </div> -->
+    </t>
+
+
+    
+
+
+    <t t-name="vitalpet_budgeting_product_category.dashboard_bills">
+    	<div class="row  o_dashboard_visits">
+    		<div data-report-name="general_ledger" data-context="1" class="container o_account_reports_page o_account_reports_widgets o_account_reports_no_print">
+			        <div class="table-responsive">
+			            
+
+<table width="100%" class="o_account_reports_table ">
+    <thead>
+
+        <tr>
+            <th></th>
+
+            <th style="padding-left: 15px;" class="text-center" width="" summary="">Code</th>
+
+            <th style="padding-left: 15px;" class="text-left" width="" summary="">Name</th>
+
+            <th style="padding-left: 15px;" class="text-left" width="" summary="">Actual</th>
+
+            <th style="padding-left: 15px;" class="text-right" width="1%" summary="">Plan</th>
+
+            <th style="padding-left: 15px;" class="text-right" width="1%" summary="">Variance</th>
+
+            <th style="padding-left: 15px;" class="text-right" width="1%" summary="">Company Currency</th>
+
+            <th style="padding-left: 15px;" class="text-right" width="1%" summary="">Company</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr data-type="line" data-id="910" class="o_account_reports_level2 line  o_account_reports_unfolded">
+
+            <td data-id="910" class="o_account_reports_foldable 910" colspan="4">
+
+                <span class="o_account_reports_foldable 910 o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-down"></i></span>
+
+                <span>
+
+                        100000 Deposit Sweep
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="910"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 56.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 10,790.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ -10,734.00
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr class="initial_balance" data-type="initial_balance" data-id="910">
+            <td colspan="1">
+                <span data-id="910" class="initial_balance o_account_reports_domain_line_1">
+                    Initial Balance</span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 28.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 190.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -162.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="331">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="331" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0026</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="174" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-01
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 250.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -412.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="335">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="335" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0029</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="176" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-01
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 8,000.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -8,412.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="325">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="325" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0023</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="170" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-02
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 1,500.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -9,912.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="321">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="321" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0020</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="168" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-02
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 150.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,062.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="278">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="278" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0006</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="155" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-02
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 28.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,034.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="313">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="313" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0014</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="164" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-03
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 100.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,134.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="306">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="306" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0010</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="161" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-03
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 100.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,234.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="move_line_id" data-type="move_line_id" data-id="317">
+            <td colspan="1">
+
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#">
+                        <span data-id="317" class="move_line_id o_account_reports_domain_line_1">SAJ/2017/0017</span><span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu o_account_reports_domain_dropdown" role="menu" aria-labelledby="dLabel">
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_web_action" data-active-id="166" data-res-model="account.move" data-view-id="false">View Move</a></li>
+
+                        <li role="presentation"><a role="menuitem" tabindex="-1" class="o_account_reports_add-footnote">Annotate</a></li>
+                    </ul>
+                </div>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+                        2017-08-03
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        / - Daily Summary - Manual
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+                        Atascocita Animal Hospital
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 500.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,734.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr class="o_account_reports_domain_total" data-type="o_account_reports_domain_total" data-id="910">
+            <td colspan="1">
+                <span data-id="910" class="o_account_reports_domain_total o_account_reports_domain_line_1">
+                    Total </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 56.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ 10,790.00
+
+                    </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right">
+                <span>
+                        $ -10,734.00
+
+                    </span>
+
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="911" class="o_account_reports_level2 line ">
+
+            <td data-id="911" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="911" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        100010 Deposit Reconciliation
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="911"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 21,865.98
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ 21,865.98
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="912" class="o_account_reports_level2 line ">
+
+            <td data-id="912" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="912" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        100100 Petty Cash
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="912"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 11,946.58
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.02
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ 11,946.56
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="915" class="o_account_reports_level2 line ">
+
+            <td data-id="915" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="915" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        101000 Account Receivable
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="915"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 1,505.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 40,501.38
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ -38,996.38
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="1296" class="o_account_reports_level2 line ">
+
+            <td data-id="1296" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="1296" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        101005 Accounts Receivable
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="1296"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 1.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ 1.00
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="922" class="o_account_reports_level2 line ">
+
+            <td data-id="922" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="922" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        110200 Medical Equipment
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="922"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 1,102.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ -1,102.00
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="931" class="o_account_reports_level2 line ">
+
+            <td data-id="931" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="931" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        200000 Accounts Payable
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="931"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 33,812.56
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ 33,812.56
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="914" class="o_account_reports_level2 line ">
+
+            <td data-id="914" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="914" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        400000 Gross Revenue
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="914"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 17,483.68
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ -17,483.68
+
+                    </span>
+            </td>
+
+        </tr>
+
+        <tr data-type="line" data-id="946" class="o_account_reports_level2 line ">
+
+            <td data-id="946" class="o_account_reports_unfoldable" colspan="4">
+
+                <span data-id="946" class="o_account_reports_unfoldable o_account_reports_caret_icon"><i class="fa fa-fw fa-caret-right"></i></span>
+
+                <span>
+
+                        400900 Discounts
+
+                            <a data-action-name="account.action_move_select" class="o_account_reports_web_action o_account_reports_display_when_unfolded" data-active-id="946"> ⇒ journal entries</a>
+
+                </span>
+
+            </td>
+
+            <td style="white-space: nowrap;" class="text-center" summary="">
+                <span class="annotable">
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 689.96
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-left" summary="">
+                <span class="annotable">
+                        $ 0.00
+
+                    </span>
+            </td>
+
+            <td style="white-space: nowrap;" class="text-right" summary="">
+                <span class="annotable">
+                        $ 689.96
+
+                    </span>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+			        </div>
+			    </div>
+			</div>
+    </t>
+</templates>

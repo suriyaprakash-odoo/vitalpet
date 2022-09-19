@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  
+    
+    <record id="view_calendar_type_tree" model="ir.ui.view">
+        <field name="name">calendar.type.tree</field>
+        <field name="model">calendar.type</field>
+        <field name="arch" type="xml">
+            <tree string="Calendar Types">
+                <field name="name"/>
+                
+            </tree>
+        </field>
+    </record>
+    <record id="view_calendar_type_form" model="ir.ui.view">
+        <field name="name">calendar.type.form</field>
+        <field name="model">calendar.type</field>
+        <field name="arch" type="xml">
+            <form string="Calendar Types">
+            	<group>
+                    <field name="name" />
+                   
+            	</group>
+            </form>
+        </field>
+    </record>
+    
+    
+    
+    
+    <record id="view_account_fiscal_periods_tree" model="ir.ui.view">
+        <field name="name">account.fiscal.periods.tree</field>
+        <field name="model">account.fiscal.periods</field>
+        <field name="arch" type="xml">
+            <tree string="Account Fiscal Periods">
+                <field name="name"/>
+                <field name="calendar_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_account_fiscal_periods_form" model="ir.ui.view">
+        <field name="name">account.fiscal.periods.form</field>
+        <field name="model">account.fiscal.periods</field>
+        <field name="arch" type="xml">
+            <form string="Account Fiscal Periods">
+            	<header>
+                    <button name="generate_weeks" string="Generate Weeks" type="object" class="oe_highlight"/>
+                </header>
+            	<group col="4">
+            		<field name="calendar_type" />
+                    <field name="name"/>
+                    
+            	</group>
+            	<notebook>
+                	<page string="Periods">
+                		<group>
+		                    <field name="account_fiscal_periods_ids" widget="one2many_list" mode="tree" nolabel="1">
+		                    	<tree editable="bottom">
+		                    		<field name="code" />
+			                        <field name="year"/>
+			                        <field name="name"/>
+			                        <field name="quarter" />          
+			                        <field name="date_start"/>
+			                        <field name="date_end"/>
+									<field name="closing_date_range"/>
+			                    </tree>
+		                    </field>
+		                </group>
+                	</page>
+                	
+                	<page string="Weeks">
+                		<group>
+		                    <field name="account_fiscal_period_week_ids" mode="tree" nolabel="1">
+		                    	<tree editable="bottom">
+			                        <field name="name"/>
+			                        <field name="week_no"/>
+			                        <field name="account_fiscal_period_id"/>                        
+			                        <field name="date_start"/>
+			                        <field name="date_end"/>
+			                    </tree>
+		                    </field>
+		                </group>
+                	</page>
+                	
+                </notebook>
+            </form>
+        </field>
+    </record>
+    
+    
+    <!-- <record id="view_account_fiscal_period_line_tree" model="ir.ui.view">
+        <field name="name">account.fiscal.period.lines.tree</field>
+        <field name="model">account.fiscal.period.lines</field>
+        <field name="arch" type="xml">
+            <tree string="Account Fiscal Period Lines">
+				<field name="account_fiscal_period_id"/>
+				<field name="year"/>
+				<field name="name"/>
+				<field name="code" />
+				<field name="quarter" />
+				<field name="date_start"/>
+				<field name="date_end"/>
+            </tree>
+        </field>
+    </record> -->
+
+    
+    
+    <record id="calender_type_action" model="ir.actions.act_window">
+        <field name="name">Calendar Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">calendar.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_calendar_type_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <record id="account_fiscal_periods_action" model="ir.actions.act_window">
+        <field name="name">Account Fiscal Periods</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.fiscal.periods</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_fiscal_periods_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    
+   <!--  <record id="account_fiscal_period_lines_action" model="ir.actions.act_window">
+        <field name="name">Account Fiscal Period Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.fiscal.period.lines</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_fiscal_period_line_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record> -->
+    
+   <menuitem id="menu_account_fiscal_periods" name="Additional Calendar" parent="account.menu_finance_configuration" sequence="6" groups="base.group_erp_manager"/>
+    
+    <menuitem action="calender_type_action" id="menu_calender_type_action" parent="menu_account_fiscal_periods"/>
+     <menuitem action="account_fiscal_periods_action" id="menu_account_fiscal_periods_action" parent="menu_account_fiscal_periods"/>
+     <!--<menuitem action="account_fiscal_period_lines_action" id="menu_account_fiscal_period_lines_action" parent="menu_account_fiscal_periods"/>
+    <menuitem action="account_fiscal_periods_action" id="menu_account_fiscal_periods_action" parent="menu_account_fiscal_periods"/>
+ --><!--     <menuitem action="account_fiscal_periods_quarterly_action" id="menu_account_fiscal_periods_quarterly_action" parent="menu_account_fiscal_periods"/>
+   <menuitem action="account_fiscal_periods_week_action" id="menu_account_fiscal_periods_week_action" parent="menu_account_fiscal_periods"/>
+    <menuitem action="account_fiscal_periods_type_action" id="menu_account_fiscal_periods_type_action" parent="menu_account_fiscal_periods"/> --> 
+</odoo>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	
+    <t t-name="hours_top_dates">
+    
+  
+	   <table style="width:100%;display: inline-table;">
+	       <tbody class="sub_hours_dates">   
+	   		<tr style="background: #eeeeee;" >
+			    	<th class="oe_timesheet_first_col">
+					Employee
+		             </th>
+	                 <th class="oe_timesheet_second_col">Job Position</th>			
+				   		<t t-foreach="dates.dates" t-as="date">
+		                     <th style="width: 90px;">
+		                         <t t-raw="date.d1"  ></t>
+		                     </th>
+		                </t>
+	                 <th class="oe_timesheet_weekly_date_head">OT</th>
+	                 <th class="oe_timesheet_weekly_date_head">Total</th>
+		    </tr>
+		    <t t-foreach="dates.emp_hrs" t-as="emp" >
+				<tr>
+		              <td >
+		                  <t t-raw="emp.name" ></t>
+		              </td>
+		              <td class="" data-id="0">
+		                  <t t-raw="emp.job_position" ></t>
+		              </td>
+					<t t-foreach="emp.work_hours" t-as="hours">
+		               <td data-id="0" >
+		                   <!-- <t t-raw="hours" ></t> -->
+		                   <t t-if="dates.state=='draft'">
+		                   <input class="emp_hours" type="text" t-att-value="hours.hours" t-att-pto-hours="hours.pto_hours"  t-att-data-empid="hours.emp_id" t-att-data-date="hours.date" t-att-jobid="hours.job" 
+		                   			t-att-paid="hours.paid_leaves" 
+		                   			t-att-unpaid="hours.unpaid_leaves" 
+		                   			t-att-work_id="hours.work_hour_id" 
+		                   			t-att-day_id="hours.day" 
+		                   			t-att-break-start="hours.break_start"
+		                   			t-att-break-end="hours.break_end"
+		                   			style="width: 70%;display:inherit;" />
+		                   	</t>
+		                   <t t-if="dates.state!='draft'">
+		                   <input class="emp_hours" type="text" t-att-value="hours.hours" t-att-pto-hours="hours.pto_hours"  t-att-data-empid="hours.emp_id" t-att-data-date="hours.date" t-att-jobid="hours.job" 
+		                   			t-att-paid="hours.paid_leaves" 
+		                   			t-att-unpaid="hours.unpaid_leaves" 
+		                   			t-att-work_id="hours.work_hour_id" 
+		                   			t-att-day_id="hours.day" 
+		                   			t-att-break-start="hours.break_start"
+		                   			t-att-break-end="hours.break_end"
+		                   			style="width: 70%;display:inherit;" readonly="readonly"/>
+		                   	</t>
+		                   <!-- <span  class="emp_hours_new" style="width: 70%;display:inherit;" ><t t-raw="hours.hours" ></t></span> -->
+		                   <a data-toggle="modal" data-target="#myModal"  class="emp_pto_circles"><i class="fa fa-circle" aria-hidden="true" style="color: #885a5a;"></i></a>
+		               </td>
+		          	</t>		      
+		            <td class="oe_timesheet_weekly_entry_total" data-ot-total="1013"><t t-raw="ot_hours" ></t></td>
+		            <td class="oe_timesheet_total" data-account-total="1013"><t t-raw="tot_hours" ></t></td>
+				</tr>
+	    	</t>
+	         </tbody>
+	     </table>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close close_pto_hours" >X</button>
+          <h4 class="modal-title">Details</h4>
+          
+          <button type="button" class="close close_model" data-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          	<table style="width:100%;">
+          		<tr>
+          			<td>Date</td>
+          			<td class="emp_pto_date">02/30/2017</td>
+          			
+          			<td>Unpaid Leave</td>
+          			<td class="emp_unpaid">4.0</td>
+          		</tr>
+          		<tr>
+          			<td>Time In</td>
+          			<td><input class="emp_pto_hours" type="text"  style="display:inherit;width: 80px;" placeholder="00:00" maxlength='5' /></td>          			
+          			<td>Paid Leave</td>
+          			<td class="emp_paid">4.0</td>
+          		</tr>
+          		<tr>
+          			<td>Break Start</td>
+          			<td><input class="emp_break_start" type="text"  style="display:inherit;width: 80px;" placeholder="00:00" maxlength='5' /></td>          			
+          			<td>Break End</td>
+          			<td><input class="emp_break_end" type="text"  style="display:inherit;width: 80px;" placeholder="00:00" maxlength='5' /></td>   
+          		</tr>
+          	</table>
+          	
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default close_pto_hours" >Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+   <script>
+   	$(document).ready(function(){
+	    $("body").on("click",".emp_pto_circles",function(){
+	        $(".emp_pto_date").text($(this).parent().find("input").attr("data-date"));
+
+	        $(".emp_pto_hours").attr("data-date",$(this).parent().find("input").attr("data-date"));
+	        $(".emp_pto_hours").attr("data-empid",$(this).parent().find("input").attr("data-empid"));
+	        $(".emp_pto_hours").attr("jobid",$(this).parent().find("input").attr("jobid"));
+	        $(".emp_pto_hours").attr("day_id",$(this).parent().find("input").attr("day_id"));
+	        $(".emp_pto_hours").attr("work_id",$(this).parent().find("input").attr("work_id"));
+	        $(".emp_pto_hours").attr("paid",$(this).parent().find("input").attr("paid"));
+	        $(".emp_pto_hours").val($(this).parent().find("input").attr("pto-hours"));
+
+	        $(".emp_break_start").attr("data-date",$(this).parent().find("input").attr("data-date"));
+	        $(".emp_break_start").attr("data-empid",$(this).parent().find("input").attr("data-empid"));
+	        $(".emp_break_start").attr("jobid",$(this).parent().find("input").attr("jobid"));
+	        $(".emp_break_start").attr("day_id",$(this).parent().find("input").attr("day_id"));
+	        $(".emp_break_start").attr("work_id",$(this).parent().find("input").attr("work_id"));
+	        $(".emp_break_start").attr("paid",$(this).parent().find("input").attr("paid"));
+	        $(".emp_break_start").val($(this).parent().find("input").attr("break-start"));
+
+	        $(".emp_break_end").attr("data-date",$(this).parent().find("input").attr("data-date"));
+	        $(".emp_break_end").attr("data-empid",$(this).parent().find("input").attr("data-empid"));
+	        $(".emp_break_end").attr("jobid",$(this).parent().find("input").attr("jobid"));
+	        $(".emp_break_end").attr("day_id",$(this).parent().find("input").attr("day_id"));
+	        $(".emp_break_end").attr("work_id",$(this).parent().find("input").attr("work_id"));
+	        $(".emp_break_end").attr("paid",$(this).parent().find("input").attr("paid"));
+	        $(".emp_break_end").val($(this).parent().find("input").attr("break-end"));
+
+	        $(".emp_paid").text($(this).parent().find("input").attr("paid"));
+	        $(".emp_unpaid").text($(this).parent().find("input").attr("unpaid"));
+	    });
+	});
+   </script>   
+    <div style="text-align:center">
+	    <t t-if="dates.week_no==1">
+			<a class="next_btn" style="font-size: 22px;"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+		<div>
+			<a class="btn btn-primary copy_prev_btn_2" style="font-size: 15px;">Copy Previous Week</a>
+		</div>
+		</t>
+		
+		<t t-if="dates.week_no==2">
+			<div>
+				<a class="prev_btn" style="font-size: 22px;"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+			</div>
+			<div>
+				<a class="btn btn-primary copy_prev_btn" style="font-size: 15px;">Copy Previous Week</a>
+			</div>
+		</t>
+	</div>
+		    
+    </t>
+    <t t-name="custom_hours">
+
+		<div class="sub_hours_dates" style="width:100%;">
+	       
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="product_template_form_view_inherit" model="ir.ui.view">
+		<field name="name">product.template.form.inherit</field>
+		<field name="model">product.template</field>
+		<field name="priority">5</field>
+		<field name="inherit_id" ref="product.product_template_form_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//page/group/group[2]/field[@name='supplier_taxes_id']"
+				position="after">
+				<field name="require_analytic" />
+			</xpath>
+		</field>
+	</record>
+
+
+
+	<record id="view_billpay_bills_form_with_image_inherit" model="ir.ui.view">
+		<field name="name">billpay.bills.form</field>
+		<field name="model">billpay.bills</field>
+		<field name="priority">2</field>
+		<field name="inherit_id"
+			ref="vitalpet_bill_pay.view_billpay_bills_form_with_image" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//notebook/page/field[@name='bill_line_ids']/tree/field[@name='product_id']"
+				position="after">
+				<field name="req_analytic" invisible="1" />
+			</xpath>
+			 <xpath expr="//notebook//page//field[@name='account_analytic_id']"
+				position="attributes">
+				<attribute name="attrs">{'required':[('req_analytic','=',
+					True)]}
+				</attribute>
+			</xpath> 
+		</field>
+	</record>
+	
+	
+	<record id="view_billpay_bills_form_inherit" model="ir.ui.view">
+		<field name="name">billpay.bills.form</field>
+		<field name="model">billpay.bills</field>
+		<field name="priority">2</field>
+		<field name="inherit_id"
+			ref="vitalpet_bill_pay.view_billpay_bills_form" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//notebook/page/field[@name='bill_line_ids']/tree/field[@name='product_id']"
+				position="after">
+				<field name="req_analytic" invisible="1" />
+			</xpath>
+			<xpath expr="//notebook//page//field[@name='account_analytic_id']"
+				position="attributes">
+				<attribute name="attrs">{'required':[('req_analytic','=',
+					True)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="hr_expense_form_view_inherit_analytic_account"
+		model="ir.ui.view">
+		<field name="name">hr.expense.form</field>
+		<field name="model">hr.expense</field>
+		<field name="priority">2</field>
+		<field name="inherit_id" ref="hr_expense.hr_expense_form_view" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='employee_id']" position="after">
+				<field name="exp_analytic"  invisible="1" />
+			</xpath>
+
+			<xpath expr="//field[@name='analytic_account_id']" position="attributes">
+				<attribute name="attrs">{'required':[('exp_analytic','!=',False)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record>
+	
+	
+	<record id="expense_bank_statement_import_view_account_mandatory"
+		model="ir.ui.view">
+		<field name="name">expense.bank.statement.import.form</field>
+		<field name="model">expense.bank.statement.import</field>
+		<field name="inherit_id" ref="vitalpet_expense.expense_bank_statement_import_view" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='bank_statement_line_ids']//tree//field[@name='product_id']" position="after">
+				<field name="exp_analytic" invisible="1" />
+			</xpath>
+
+			<xpath expr="//field[@name='bank_statement_line_ids']//tree//field[@name='analytic_account_id']" position="attributes">
+				<attribute name="attrs">{'required':[('exp_analytic','!=',False)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record>
+	<record id="invoice_supplier_form_inherit" model="ir.ui.view">
+		<field name="name">account.invoice.supplier.form</field>
+		<field name="model">account.invoice</field>
+		<field name="priority">2</field>
+		<field name="inherit_id" ref="account.invoice_supplier_form" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='product_id']"
+				position="after">
+				<field name="acc_analytic" invisible="1" />
+			</xpath>
+			<xpath expr="//notebook//page//field[@name='account_analytic_id']"
+				position="attributes">
+				<attribute name="attrs">{'required':[('acc_analytic','=',
+					True)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record>
+	
+	<!-- <record id="view_purchase_receipt_form_inherit" model="ir.ui.view">
+		<field name="name">account.voucher.form</field>
+		<field name="model">account.voucher</field>
+		<field name="priority">2</field>
+		<field name="inherit_id" ref="account_voucher.view_purchase_receipt_form" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//notebook/page/field[@name='line_ids']/tree/field[@name='product_id']"
+				position="after">
+				<field name="acc_voc_analytic" invisible="1" />
+			</xpath>
+			<xpath expr="//notebook//page//field[@name='account_analytic_id']"
+				position="attributes">
+				<attribute name="attrs">{'required':[('acc_voc_analytic','=',
+					True)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record> -->
+	
+	<record id="purchase_order_form_inherit" model="ir.ui.view">
+		<field name="name">purchase.order.form</field>
+		<field name="model">purchase.order</field>
+		<field name="priority">2</field>
+		<field name="inherit_id" ref="purchase.purchase_order_form" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_id']"
+				position="after">
+				<field name="pur_analytic" invisible="1" />
+			</xpath>
+			<xpath expr="//notebook//page//field[@name='account_analytic_id']"
+				position="attributes">
+				<attribute name="attrs">{'required':[('pur_analytic','=',
+					True)]}
+				</attribute>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

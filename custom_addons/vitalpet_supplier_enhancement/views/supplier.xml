@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="account_number_tree" model="ir.ui.view">
+		<field name="name">Account Numbers</field>
+		<field name="model">account.number</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+			<tree string="Account Numbers">
+				<field name="company_id" />
+				<field name="account_number" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_partner_form_inherited" model="ir.ui.view">
+		<field name="name">res.partner.form</field>
+		<field name="model">res.partner</field>
+		<field name="priority" eval="30" />
+		<field name="inherit_id" ref="base.view_partner_form" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//sheet" position="before">
+				<header>
+					<button name='send_w9_signup_link' colspan="2" class="oe_highlight"
+						style="float:left;box-shadow: 1px 4px 2px 0px #c0c0c0;margin-bottom:7px;"
+						string="Send W9" type="object" groups="account.group_account_user" />
+
+					<button name='send_ach_signup_link' colspan="2" class="oe_highlight"
+						style="float:left;box-shadow: 1px 4px 2px 0px #c0c0c0;margin-bottom:7px;"
+						string="Sign Up ACH" type="object" groups="account.group_account_user" />
+				</header>
+			</xpath>
+
+			<xpath expr="//field[@name='state_id']" position="attributes">
+				<attribute name="options">{'no_create':True}}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='email']" position="attributes">
+				<attribute name="required">True</attribute>
+			</xpath>
+
+			<xpath
+				expr="//notebook/page[@name='sales_purchases']/group/group[2]/field[@name='supplier']"
+				position="after">
+				<field name="is_1099" />
+
+			</xpath>
+
+			<xpath expr="//form/sheet/div[@class='oe_button_box']"
+				position="inside">
+
+				<button name="encrpyt_decrypt_values" type="object" class="oe_stat_button"
+					icon="fa-archive">
+					<field name="encrypt_value" widget="boolean_button"
+						options='{"terminology": {"string_true": "Encrypted", "hover_true": "Decrypt", "string_false": "Decrypted", "hover_false": "Encrypt"}}' />
+				</button>
+
+			</xpath>
+
+		</field>
+	</record>
+
+	<record id="view_partner_property_form_inherited" model="ir.ui.view">
+		<field name="name">res.partner.property.form.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="priority">2</field>
+		<field name="inherit_id" ref="account.view_partner_property_form" />
+		<field name="arch" type="xml">
+			<page name="accounting" position="after">
+				<page string="Private" name="private">
+					<group>
+						<field name="vat" />
+						<field name="w9_form" />
+						<field name="bank_name" />
+						<field name="bank_routing" />
+						<field name="bank_account" />
+						<field name="bank_account_type" />
+						<field name="ach_form" />
+						<field name="is_cron" invisible="1" />
+					</group>
+				</page>
+			</page>
+			<page name="private" position="after">
+				<page string="Account Numbers" name="account_number_ids">
+					<group>
+						<field name="account_number_ids" nolabel="1">
+							<tree editable="bottom">
+								<field name="company_id" />
+								<field name="account_number" />
+							</tree>
+						</field>
+					</group>
+				</page>
+			</page>
+		</field>
+	</record>
+
+	<!-- <record model="ir.ui.view" id="partner_view_buttons_inherit"> <field 
+		name="name">partner.view.buttons</field> <field name="model">res.partner</field> 
+		<field name="inherit_id" ref="account.partner_view_buttons" /> <field name="arch" 
+		type="xml"> <xpath expr="//group/group[@name='banks']/div" position="after"> 
+		<div> <button name='send_ach_signup_link' colspan="2" class="oe_highlight" 
+		style="float:left;box-shadow: 1px 4px 2px 0px #c0c0c0;margin-bottom:7px;" 
+		string="Sign Up ACH" type="object" /> </div> </xpath> </field> </record> -->
+	<record id="view_res_bank_form_inherit" model="ir.ui.view">
+		<field name="name">res.bank.form</field>
+		<field name="model">res.bank</field>
+		<field name="inherit_id" ref="base.view_res_bank_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+
+				<!-- <field name="bank_routing" /> -->
+			</xpath>
+		</field>
+	</record>
+
+
+	<record id="view_partner_property_form_inherited_1" model="ir.ui.view">
+		<field name="name">res.partner.property.form.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="priority">2</field>
+		<field name="inherit_id"
+			ref="vitalpet_supplier_enhancement.view_partner_property_form_inherited" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='vat']" position="attributes">
+				<attribute name="password">encrypt_value</attribute>
+
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_res_partner_filter_inherited" model="ir.ui.view">
+		<field name="name">res.partner.select.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_res_partner_filter" />
+		<field name="arch" type="xml">
+			<xpath expr="//search/field[@name='name']" position="replace">
+				<field name="name"
+					filter_domain="['|',('email','ilike', self),('display_name','ilike',self)]" />
+			</xpath>
+			<filter name="supplier" position="after">
+				<separator />
+				<filter string="Is 1099" name="is_1099" domain="[('is_1099','=',True)]" />
+				<separator />
+			</filter>
+		</field>
+	</record>
+
+	<!--Email template -->
+	<record id="example_email_template" model="mail.template">
+		<field name="name">Vendor address : Changed</field>
+		<field name="email_from">${object.company_id and object.company_id.email or
+			''}
+		</field>
+		<field name="subject">Address Changed for ${object.name}</field>
+		<field name="email_to">mani.jayaraman@pptservices.com,rizwan@pptservices.com
+		</field>
+		<field name="email_cc">ganesh.moorthy@pptservices.com</field>
+		<field name="lang">${object.lang}</field>
+		<field name="model_id" ref="base.model_res_partner" />
+		<field name="auto_delete" eval="True" />
+		<field name="body_html">
+            <![CDATA[
+			Updated by ${(object.creating_user_id.name)}<br/>
+			IP Address:${(object.ip_address or '')}<br/>
+				<p>Updated Address:</p></br>
+				${(object.street or '')}<br/>
+				${(object.street2 or '')}<br/>
+				${(object.city or '')}<br/>
+				${(object.state_id.name or '')}<br/>
+				${(object.zip or '')}<br/>
+				${(object.country_id.name or '')}
+	    ]]>
+		</field>
+	</record>
+	
+	.<record id="view_supplier_form_inherited2" model="ir.ui.view">
+		<field name="name">res.partner.form</field>
+		<field name="model">res.partner</field>
+		<field name="priority" eval="30" />
+		<field name="inherit_id" ref="account_payment_partner.view_partner_property_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='supplier_payment_mode_id']" position="attributes">
+				<attribute name="required">True</attribute>
+			</xpath>
+		</field>
+	</record>
+	<record id="view_supplier_property_form" model="ir.ui.view">
+    <field name="name">account_partner_payment.form</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="account.view_partner_property_form" />
+    <field name="arch" type="xml">
+        <field name="property_supplier_payment_term_id" position="attributes">
+            <attribute name="required">True</attribute>
+        </field>
+    </field>
+</record>
+	
+</odoo>

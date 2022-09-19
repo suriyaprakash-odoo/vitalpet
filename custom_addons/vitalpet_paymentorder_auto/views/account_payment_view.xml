@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<delete id="account.action_account_payment_from_invoices" model="ir.actions.act_window"/>
+	
+	<record model="ir.cron" id="account_payment_order_payment_cron">		
+	    <field name="name">Payment Order Processing to Processed</field>		
+	    <field name="interval_number">1</field>		
+	    <field name="interval_type">days</field>		
+	    <field name="numbercall">-1</field>		
+	    <field name='active'>True</field>		
+	    <field name="doall" eval="True"/>		
+	    <field name="model" eval="'account.payment.order'"/>		
+	    <field name="function" eval="'action_payment_order'"/>		
+	    <field name="args" eval="'()'" />		
+	</record>
+	
+	<record model="ir.cron" id="account_payment_order_status_line_cron">		
+	    <field name="name">Account payment order line status Reject/ Partial/Processed </field>		
+	    <field name="interval_number">1</field>		
+	    <field name="interval_type">days</field>		
+	    <field name="numbercall">-1</field>		
+	    <field name='active'>True</field>		
+	    <field name="doall" eval="True"/>		
+	    <field name="model" eval="'account.payment.order'"/>		
+	    <field name="function" eval="'action_account_payment_order_status'"/>		
+	    <field name="args" eval="'()'" />		
+	</record>
+
+    <record id="view_account_config_settings_nacha" model="ir.ui.view">
+      <field name="name">account.config.settings.nacha</field>
+      <field name="model">account.config.settings</field>
+      <field name="inherit_id" ref="account_banking_pain_base.view_account_config_settings"/>
+      <field name="arch" type="xml">
+          <field name='initiating_party_issuer' position='after'>
+              <field name='immediate_origin'/>
+          </field>
+      </field>
+    </record>
+
+    <record id="view_vendor_payment_extend" model="ir.ui.view">
+        <field name="name">view_vendor_payment_extend</field>
+        <field name="model">account.payment.method</field>
+        <field name="inherit_id" ref="account_payment_mode.account_payment_method_form"/>
+        <field name="arch" type="xml">
+            <field name="bank_account_required" position="after">
+                <field name="address_required"/>
+            </field>
+            <field name="active" position="after">
+                <field name="courier_code"/>
+                <field name="special_handling_code"/>
+                <!-- <field name='immediate_origin'/>
+                <field name='originating_dfi'/>
+                <field name='company_identity'/> -->
+            </field>
+        </field>
+    </record>
+	
+    <record id="res_partner_address_inherit" model="ir.ui.view">
+           <field name="name">custom.res.partner.form</field>
+           <field name="model">res.partner</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="base.view_partner_form"/>
+           <field name="arch" type="xml">
+               <xpath expr="//field[@name='category_id']" position="after">
+					<field name="echeck_add" invisible='1'/>
+               </xpath>
+               <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="attrs">{'required': [('echeck_add', '=', True)]}</attribute>
+               </xpath>
+               <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="attrs">{'required': [('echeck_add', '=', True)]}</attribute>
+               </xpath>
+               <xpath expr="//field[@name='state_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('echeck_add', '=', True)]}</attribute>
+               </xpath>
+               <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="attrs">{'required': [('echeck_add', '=', True)]}</attribute>
+               </xpath>
+               <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('echeck_add', '=', True)]}</attribute>
+               </xpath>
+        	</field>
+       </record>
+       
+       <record id="account_payment_order_field_inherit" model="ir.ui.view">
+           <field name="name">custom.account.payment.order.form</field>
+           <field name="model">account.payment.order</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account_payment_order.account_payment_order_form"/>
+           <field name="arch" type="xml">
+               <xpath expr="//field[@name='date_uploaded']" position="after">
+          					<field name="payment_acknowledgement" />
+          					<field name="payment_final_status" />
+          					<field name="Payment_return_message" />
+               </xpath>
+
+               <field name='bank_line_count' position='before'>
+                  <field name='transaction_line_count'/>
+                  <field name='order_seq' invisible='1'/>
+                  <field name='is_manual' invisible='1'/>
+               </field>
+
+               <xpath expr="//button[@name='action_done_cancel']" position="after">
+					<button name="action_reject" type="object" string="Delete rejection"/>
+               </xpath>
+               <xpath expr="//button[@name='draft2open']" position="after">
+					<button name="manual_confrom" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible':['|',('is_manual','=',True), ('state', '!=', 'draft')]}"/>
+					<button name="payment_processed" type="object" string="Processes Payment" class="oe_highlight" attrs="{'invisible':['|',('is_manual','=',True), ('state', '!=', 'generated')]}"/>
+					
+               </xpath>
+			   <xpath expr="//button[@name='draft2open']" position="replace">
+			   		<button name="draft2open" type="object" string="Confirm Payments" class="oe_highlight" attrs="{'invisible':['|',('is_manual','=',False), ('state', '!=', 'draft')]}" />
+			   </xpath>
+               <xpath expr="//button[@name='generated2uploaded']" position="replace">
+			   		<button name="generated2uploaded" type="object" string="File Successfully Uploaded" class="oe_highlight" invisible="1"/>
+			   </xpath><!-- 
+			   <xpath expr="//button[@name='action_cancel']" position="before">
+					<button name="action_generated_state" type="object" string="Move to Processing" class="oe_highlight" states="pre processing"/>
+			   </xpath> -->
+			   <xpath expr="//button[@name='action_cancel']" position="replace">
+					<button name="action_cancel" type="object" attrs="{'invisible':[('state', '=', ('draft','open','generated'))]}" string="Cancel Payments"/>
+			   </xpath>
+          <xpath expr="//notebook//field[@name='move_ids']" position="replace">
+            <field name="move_ids" >
+             <tree string="Journal Entries">
+                <field name="date"/>
+                <field name="account_fiscal_periods_year" string="Fiscal Year"/>
+                <field name="account_fiscal_periods_quarterly" string="Fiscal Quarter"/>
+                <field name="account_fiscal_periods_id" string="Fiscal Month"/>
+                <field name="account_fiscal_period_week_id" string="Fiscal Week"/>
+                <field name="company_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="ref"/>
+                <field name="journal_id"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="state"/>
+                <field name="currency_id" invisible="1"/>
+                <button name="action_journal_delete" type="object" icon="fa fa-trash"/> 
+              </tree>
+            </field>     
+          </xpath>
+        	</field>
+       </record>
+
+       <record id="account_payment_order_tree_inherit" model="ir.ui.view">
+           <field name="name">custom.account.payment.order.tree</field>
+           <field name="model">account.payment.order</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account_payment_order.account_payment_order_tree"/>
+           <field name="arch" type="xml">
+              <field name='journal_id' position='after'>
+                <field name='transaction_line_count'/>
+              </field>
+          </field>
+        </record>
+
+
+        
+       
+       <record id="account_payment_line_field_inherit_tree" model="ir.ui.view">
+           <field name="name">custom.account.payment.line.tree</field>
+           <field name="model">account.payment.line</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account_payment_order.account_payment_line_tree"/>
+           <field name="arch" type="xml">
+            
+               <xpath expr="//field[@name='payment_type']" position="after">
+        					<field name="status_line" />
+        					<field name="return_message" />
+        					<field name="ach_sent" invisible="1" />
+        					<field name="line_reason" string=""/>
+        					<button name="action_line_rejection" string="Retry" type="object" icon="fa-repeat text-success" attrs="{'invisible':[('return_message','!=','Rejected')]}" />
+        					
+               </xpath>
+               <xpath expr="//field[@name='currency_id']" position="attributes" >
+               		<attribute name="readonly">False</attribute>
+               		<attribute name="invisible">True</attribute>
+               </xpath>
+       	       <xpath expr="//field[@name='communication']" position="after" >
+               		<field name="acc_number_id" />
+               		<field name="invoice_number" />
+               </xpath>
+        	</field>
+       </record>
+       
+       <record id="account_payment_line_field_inherit_from" model="ir.ui.view">
+           <field name="name">custom.account.payment.line.form</field>
+           <field name="model">account.payment.line</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account_payment_order.account_payment_line_form"/>
+           <field name="arch" type="xml">
+               <xpath expr="//field[@name='bank_line_id']" position="after">
+					<field name="status_line" />
+					<field name="return_message" />
+					<field name="line_reason" invisible="1"/>
+					<field name="billpay_id" invisible="1"/>
+					<field name="invoice_id" invisible="1"/>
+               </xpath>
+               <xpath expr="//field[@name='currency_id']" position="attributes" >
+               		<attribute name="required">False</attribute>
+               		<attribute name="invisible">True</attribute>
+               </xpath>
+        	</field>
+       </record>
+       
+       <record id="account_invoice_field_inherit_tree" model="ir.ui.view">
+           <field name="name">custom.account.invoice.tree</field>
+           <field name="model">account.invoice</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+           <field name="arch" type="xml">
+               <xpath expr="//field[@name='type']" position="after">
+               		<field name="payment_id" />
+					<field name="status_line" />
+               </xpath>
+               <xpath expr="//field[@name='date_invoice']" position="after">
+					<field name="rejection_reson" />
+               </xpath>
+        	</field>
+       </record>
+       <record id="account_invoice_field_inherit_form" model="ir.ui.view">
+           <field name="name">custom.account.invoice.form</field>
+           <field name="model">account.invoice</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account.invoice_supplier_form"/>
+           <field name="arch" type="xml">
+               <xpath expr="//field[@name='company_currency_id']" position="after">
+					<field name="rejection_reson" />
+					<field name="payment_id" invisible="1" />
+               </xpath>
+               <xpath expr="//button[@name='%(account.action_account_invoice_payment)d']" position="attributes">
+					<attribute name="invisible">True</attribute>
+               </xpath>
+        	</field>
+       </record>
+
+        <record id="account_invoice_cancel_button_inherit_form" model="ir.ui.view">
+           <field name="name">custom.account.invoice.form</field>
+           <field name="model">account.invoice</field>
+           <field eval="1" name="priority"/>
+           <field name="inherit_id" ref="account_cancel.invoice_supplier_cancel_form_inherit"/>
+           <field name="arch" type="xml">
+               <xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
+                  <attribute name="invisible">True</attribute>
+               </xpath>
+          </field>
+       </record>
+</odoo>
+

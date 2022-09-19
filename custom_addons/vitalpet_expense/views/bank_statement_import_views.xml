@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<odoo>
+
+	<record id="expense_bank_statement_import_view" model="ir.ui.view">
+		<field name="name">Import Bank Statements</field>
+		<field name="model">expense.bank.statement.import</field>
+		<field name="arch" type="xml">
+			<form string="Import Bank Statements" create="false" edit="false" class="oe_import">
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="new,validated,done" invisible="1" />
+				</header>
+				<div class="oe_import_box col-sm-12" style="margin-top: 10px;">
+					<div class="col-sm-8">
+						<div class="input-group">
+							<h2>Select a bank statement file to import.</h2>
+							<field name="filename" style="width: 400px !important;height:29.2px !important;" placeholder="No file chosen..." />
+							<field name="data_file" style="height: 29.2px !important;margin-left: 7px !important;" string='Select .OFX File' filename="filename" placeholder="Choose a file to import..." />
+							<button name="create_expense" style="margin-top: -2px !important;margin-left: 7px !important;height:29.2px !important;" states='validated' string="Move To Expense" type="object" class="btn-primary" />
+							<button name="validate_statement" style="height: 29.2px !important;margin-top: -2px !important;margin-left: 7px !important;" states="new" string="Validate" type="object" class="btn-primary" />
+
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<field name="validate_message" readonly="1" />
+					</div>
+				</div>
+				<field name="bank_statement_line_ids" widget="x2many_selectable" style="margin-top: 24px;">
+					<tree string="Bank Statement" editable="bottom" create="false" attrs="{'readonly': [('state', '!=', 'new')]}">
+						<field name="unique_import_id" invisible="1" />
+						<field name="date" readonly="1"/>
+						<field name="name" />
+						<field name="amount" />
+						<field name="product_id" options="{'no_open': True,'create_edit': False}"/>
+						<field name="analytic_account_id" options="{'no_open': True,'create_edit': False}" />
+					</tree>
+				</field>
+				<!--Store binary values in this field-->
+				<field name="file_binary" invisible="1" />
+			</form>
+		</field>
+	</record>
+
+	<record id="action_expense_bank_statement_import" model="ir.actions.act_window">
+		<field name="name">Import</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">expense.bank.statement.import</field>
+		<field name="target">inline</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="expense_bank_statement_import_view" />
+	</record>
+
+	<menuitem id="menu_hr_expenses_bankstatement_import" name="Import Bank Statement" sequence="1" parent="hr_expense.menu_hr_expense_my_expenses" action="action_expense_bank_statement_import" />
+
+</odoo>

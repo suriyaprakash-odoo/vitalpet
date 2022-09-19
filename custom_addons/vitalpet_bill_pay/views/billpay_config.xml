@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="billpay_settings_from" model="ir.ui.view">
+		<field name="name">billpay.config.settings.form</field>
+		<field name="model">billpay.config.settings</field>
+		<field name="arch" type="xml">
+			<form class="oe_form_configuration">
+				<header>
+					<button string="Apply" type="object" name="execute" class="oe_highlight"/>
+					<button string="Cancel" type="object" name="cancel" class="oe_link"/>
+				</header>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Settings</h1>
+					</div>
+				</div>
+				<group>
+					<field name="billpay_processing_company" style="width:600px"/>
+					<field name="allowed_companies" widget="many2many_tags" style="width:600px"/>
+					<field name="billpayment_journal" style="width:600px" domain="[('company_id', '=', billpay_processing_company)]"/>
+					<field name="intercompany_expense_account" style="width:600px" domain="[('company_id', '=', billpay_processing_company)]"/>
+				</group>
+				<div class="row">
+					<div class="col-md-6">
+						<h2>Channels</h2>
+						<table border='1'>
+							<td style="background-color:#f5f5f5;padding-left: 10px;padding-right:5px;">
+								<field name='email_box' class="oe_inline"/>
+							</td>
+							<td style="padding-left: 8px;width: 370px; padding-bottom: 5px;">
+								<h4>Email alias</h4>
+								<img src="/vitalpet_bill_pay/static/img/email1.jpg" style="height: 30px;align:right;float: right;margin-top: -32px;margin-right: 4px;"/>
+
+								<p>Incoming emails create bills.</p>
+								Choose an Email:
+								<field name="alias_prefix" class="oe_inline" attrs="{'readonly': [('email_box','!=', True)]}"/>
+								@
+								<field name="alias_domain" class="oe_inline"/>
+							</td>
+						</table>
+						<br/>
+						<table border='1'>
+							<td style="background-color:#f5f5f5;padding-left: 10px;padding-right:5px;">
+								<field name='fax_box' class="oe_inline"/>
+							</td>
+							<td style="padding-left: 8px;width: 370px;">
+
+								<h4>Fax</h4>
+								<img src="/vitalpet_bill_pay/static/img/email1.jpg" style="height: 30px;align:right;float: right;margin-top: -32px;margin-right: 4px;"/>
+								<p>
+									Enter fax number that will be translating
+									<br/>
+									Faxes to your email
+									channel (for use in
+									<br/>
+									correspondence to suppliers).
+								</p>
+								Enter your fax number:
+								<field name="incoming_fax" class="oe_inline" attrs="{'readonly': [('fax_box','!=', True)]}"/>
+								<p>
+									From Email:
+									<field name="fax_prefix" style="width: 208px !important;" class="oe_inline" attrs="{'readonly': [('fax_box','!=', True)]}"/>
+								</p>
+							</td>
+						</table>
+					</div>
+					<div class="col-md-6">
+						<h2>Workflow</h2>
+						<div>
+							<field name="auto_post_bills" class="oe_inline" style="width:15px"/>
+							Automatically post bills and credits to accounting upon
+							approval
+						</div>
+						<div>
+							<field name="force_create_invoice" class="oe_inline"/>
+							Force creation of all vendor invoices through module
+						</div>
+						<div>
+							<field name="bill_approval_amount" class="oe_inline"/>
+							Bill approval amount (default $500)
+						</div>
+						<div>
+							<field name="po_required_amount" class="oe_inline"/>
+							PO required amount (default $500)
+						</div>
+						<div>
+							<field name="reverse_app_amt" class="oe_inline"/>
+							Reverse Approval amount (default $500)
+						</div>
+						<div>
+							<field name="cancel_app_amt" class="oe_inline"/>
+							Cancel Approval amount (default $500)
+						</div>
+					</div>
+				</div>
+				<group col="1">
+					<group string="Child Companies">
+						<field name="child_intercompany_account" style="width:600px"/>
+						<field name="child_payable_tag" style="width:600px"/>
+						<field name="child_receivable_tag" style="width:600px"/>
+						<field name="intercompany_id_prefix" style="width:600px"/>
+
+					</group>
+					<group string="Electronic Payments">
+						<div>
+							<field name="send_message" nolabel="1"/>
+							<label for="send_message"/>
+						</div>
+					</group>
+					<group>
+						<field name="payment_mode_ids" widget="many2many_tags"/>
+					</group>
+					<group>
+						<field name="ach_template_link_id"/>
+						<field name="w9_template_link_id"/>
+					</group>
+				</group>
+				<group col="1">
+					<group>
+						<field name="payment_signup_message"/>
+					</group>
+				</group>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_billpay_settings" model="ir.actions.act_window">
+		<field name="name">Configure Billpay</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">billpay.config.settings</field>
+		<field name="view_mode">form</field>
+		<field name="target">inline</field>
+	</record>
+
+</odoo>

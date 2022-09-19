@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_asset_asset_user,account.asset.asset,model_account_asset_asset,base.group_user,1,0,0,0
+access_account_asset_asset_manager,account.asset.asset,model_account_asset_asset,vitalpet_custom_asset.group_expense_user,1,1,1,0

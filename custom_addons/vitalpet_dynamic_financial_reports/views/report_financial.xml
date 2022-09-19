@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="vdfs_report_financial_body" inherit_id="account_reports.report_financial_body">
+			<xpath expr="//div[1]" position="replace">
+			    <div t-att-data-report-name="str(report.get_name())" t-att-data-context="str(context.id)" t-att-class="' '.join(['container', 'o_account_reports_page', 'o_account_reports_widgets', mode != 'print' and 'o_account_reports_no_print' or ''])">
+			        <br t-if="mode == 'print'"/>
+			        <div class="row">
+			        	<div class="col-xs-6">
+			        		<h2 t-esc="report.get_title()"/>
+					        <t t-if="context.multi_company">
+								<t t-if="context.get_report_obj().get_name() == 'financial_report'">				        	<t t-if="report.get_parent_name(context.company_ids)"><br/>
+				                    <t t-foreach="report.get_parent_name(context.company_ids)" t-as="c">
+				                        <t t-esc="c.name" /><br/>
+				                    </t>
+				                </t>
+			                </t>
+			            </t>
+			            </div>
+			            <div class="col-xs-3 pull-right">
+	                		<span t-if="context.create_uid.company_id.logo" t-field="context.create_uid.company_id.logo" t-field-options='{"widget": "image", "class": "img-rounded img-responsive pull-right"}'>
+                                    </span>
+                        </div>
+                   	</div>
+	                
+			        <div class="row" t-if="mode == 'print' and not context.env.context.get('public')" style='margin-top: 20px; margin-bottom: 20px;'>
+			            <div class="col-xs-4">
+			                <t t-if="not context.get_report_obj().get_report_type().date_range"><t t-raw="context.get_full_date_names(context.date_to)" /></t>
+			                <t t-if="context.get_report_obj().get_report_type().date_range"><t t-raw="context.get_full_date_names(context.date_to, context.date_from)" /></t>
+			            </div>
+			            <div class="col-xs-4">
+			                <t t-if="context.cash_basis">Cash Basis</t><t t-if="not context.cash_basis">Accrual Basis</t><br/>
+			                <t t-if="context.all_entries">With Draft Entries</t><t t-if="not context.all_entries">Posted Entries Only</t>
+			            </div>
+			            <div class="col-xs-4">
+			                <!-- <t t-if="context.multi_company">
+			                    Companies:
+			                    <t t-foreach="context.company_ids" t-as="c">
+			                        <t t-esc="c.name" /><br/>
+			                    </t>
+			                </t> -->
+			                <t t-if="context.get_report_obj().get_name() == 'general_ledger'">
+			                    Journals:
+			                    <t t-foreach="context.journal_ids" t-as="j">
+			                        <t t-esc="j.code" />
+			                    </t>
+			                </t>
+			            </div>
+			        </div>
+			        <div t-if="mode != 'print' and context.summary == ''" class="o_account_reports_summary">
+			            <div class="addSummary" role="alert">
+			                <span><input type='text' class="o_form_input o_form_field" name='summary' placeholder='Click to add an introductory explanation' /></span>
+			            </div>
+			        </div>
+			        <div t-if="mode != 'print' and context.summary != ''" class="o_account_reports_summary mt32">
+			            <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil"></i>
+			            <div class="o_account_reports_saved_summary" role="alert">
+			                <span><t t-raw="context.summary" /></span>
+			            </div>
+			        </div>
+			        <div t-if="mode == 'print' and context.summary != ''" class="o_account_reports_summary" summary="o_followup_letter_display_none" role="alert">
+			            <span><t t-raw="context.summary" /></span>
+			        </div>
+			        <div t-att-class="mode != 'print' and 'table-responsive' or None">
+			            <table width='100%' t-att-class="' '.join(['o_account_reports_table', report.get_name() in ['aged_receivable', 'aged_payable'] and 'table-striped' or ''])">
+			                <thead>
+			                    <tr t-if="report.get_name() == 'coa' and context.get_special_date_line_names()">
+			                        <th style="border-bottom: none;"></th>
+			                        <th></th>
+			                        <t t-foreach="context.get_special_date_line_names()" t-as="column_name">
+			                            <th class="text-center" t-raw="column_name" colspan='2'/>
+			                        </t>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <th></th>
+			                        <t t-set="column" t-value="0" />
+			                        <t t-foreach="context.get_columns_names()" t-as="column_name">
+			                            <t t-set="column" t-value="column + 1" />
+			                            <th t-att-class="context.get_columns_types()[column - 1] == 'number' and 'text-right' or context.get_columns_types()[column - 1] == 'text' and  'text-left' or 'text-center'" t-raw="column_name" t-att-width="context.get_columns_types()[column - 1] == 'number' and '1%' or ''" style='padding-left: 15px;' t-att-summary="context._get_summary(column)"/>
+			                        </t>
+			                    </tr>
+			                </thead>
+			                <tbody>
+			                    <t t-foreach="lines" t-as="a">
+			                        <t t-call="account_reports.report_financial_line" />
+			                    </t>
+			                </tbody>
+			            </table>
+			        </div>
+			        <t t-if="footnotes">
+			            <t t-foreach="footnotes" t-as="footnote">
+			                <p class="footnote" t-att-id="'footnote' + str(footnote['number'])">
+			                    <span class='text'><t t-raw="str(footnote['number']) + '. ' + footnote['text']"/></span>
+			                    <span class='o_account_reports_footnote_icons'><i class="fa fa-fw fa-pencil-square"></i><i class="fa fa-fw fa-trash-o"></i></span>
+			                </p>
+			            </t>
+			        </t>
+			    </div>
+			</xpath>
+		</template>
+		
+		
+	</data>
+	
+</odoo>

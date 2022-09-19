@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>        
+
+        <record model="ir.ui.view" id="view_hr_period_form_inherited_vitalpet_payroll_accounting">
+            <field name="name">hr.period.inherit.vitalpet.payroll.accounting</field>
+            <field name="model">hr.period</field>
+            <field name="inherit_id" ref="payroll_period.view_hr_period_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="payroll_split"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="job_template_form_view_inherited_vitalpet_payroll_accounting">
+            <field name="name">hr.job.template.inherit.vitalpet.payroll.accounting</field>
+            <field name="model">hr.job.template</field>
+            <field name="inherit_id" ref="vitalpet_custom_hr_recruitment.job_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="job_seniority_id" position="after">
+                    <field name="compensation_tag_ids" widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_salary_rule_form_inherit_vitalpet_payroll_accounting">
+            <field name="name">hr.salary.rule.inherit.vitalpet.payroll.accounting</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="payroll_base.hr_salary_rule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Advanced Accounting">
+                        <group>
+                            <group>
+                                <field name="compensation_tag_id"/>
+                                <field name="acc_product_id" attrs="{'invisible': [('inc_payroll_account', '!=', True)], 'required': [('inc_payroll_account', '=', True)]}"/>
+                                <field name="partner_id" attrs="{'invisible': [('inc_payroll_account', '!=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="inc_payroll_account"/>
+                                <field name="debit_acc_rule" attrs="{'invisible': [('inc_payroll_account', '!=', True)], 'required': [('inc_payroll_account', '=', True)]}"/>
+                                <field name="credit_acc_rule" attrs="{'invisible': [('inc_payroll_account', '!=', True)], 'required': [('inc_payroll_account', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="book_parent_level" attrs="{'invisible': [('inc_payroll_account', '!=', True)]}"/>
+                                <field name="parent_debit_acc_id" attrs="{'invisible': ['|', ('inc_payroll_account', '!=', True), ('book_parent_level', '!=', True)], 'required': [('inc_payroll_account', '=', True), ('book_parent_level', '=', True)]}"/>
+                                <field name="parent_credit_acc_id" attrs="{'invisible': ['|', ('inc_payroll_account', '!=', True), ('book_parent_level', '!=', True)], 'required': [('inc_payroll_account', '=', True), ('book_parent_level', '=', True)]}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="view_hr_payslip_form_inherited_vitalpet_payroll_accounting">
+            <field name="name">hr.payslip.forminherit.vitalpet.payroll.accounting</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="payroll_base.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//header/button[@name='hr_verify_sheet']" position="attributes">
+                    <attribute name="states">verify</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payroll Split">
+                        <group>
+                            <field name="total_hours"/>
+                        </group>
+                        <group>
+                            <field name="move_ids" widget="one2many_list" nolabel="1" readonly="1">
+                                <tree>
+                                    <field name="company_id"/>
+                                    <field name="split_percentage"/>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="amount"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
+        

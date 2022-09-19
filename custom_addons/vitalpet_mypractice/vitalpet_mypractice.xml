@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="vitalpet_mypractice assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/vitalpet_mypractice/static/css/sales_team.css"/>
+                <link rel="stylesheet" href="/vitalpet_mypractice/static/less/sales_team_dashboard.less"/>
+                <script type="text/javascript" src="/vitalpet_mypractice/static/js/vitalpet_mypractice.js"/>
+            </xpath>
+        </template>
+
+        <record id="mypractice_dashboard" model="ir.actions.client">
+            <field name="name">Dashboard</field>
+            <field name="tag">mypractice_dashboard</field>
+        </record>
+
+        
+   </data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="hr_period_search_view_inherit" model="ir.ui.view">
+        <field name="name">hr.period.search</field>
+        <field name="model">hr.period</field>
+        <field name="inherit_id" ref="payroll_period.view_hr_period_search" />
+        <field name="arch" type="xml">
+        <xpath expr="//filter[@name='draft']" position="after">
+                <filter string="Open" name="open" domain="[('state', '=', 'open')]" />
+            </xpath>
+        </field>
+    </record>
+    
+
+	<record id="view_mypractice_config_settings_inherit_2" model="ir.ui.view">
+		<field name="name">mypractice settings</field>
+		<field name="model">mypractice.config.settings</field>
+		<field name="inherit_id" ref="vitalpet_mypractice.view_mypractice_config_settings"/>
+		<field name="arch" type="xml">
+			<div id="main" position="inside">
+				<group>
+					<group string='Payroll'>
+						<label for="id" string="Enabled" style="padding-left: 2em;"/>
+						<div>
+							<field name='payroll'/>
+						</div>
+						<label for="id" string="Payroll Company" style="padding-left: 2em;"/>
+						<div>
+							<field name='payroll_company_id'/>
+						</div>
+						<label for="id" string="Payroll Manager" style="padding-left: 2em;"/>
+						<div>
+							<field name='payroll_manager_id'/>
+						</div>
+						<label for="id" string="Payroll Journal" style="padding-left: 2em;"/>
+						<div>
+							<field name='journal_id'/>
+						</div>
+						<label for="id" string="Payroll Parent Journal" style="padding-left: 2em;"/>
+						<div>
+							<field name='parent_journal_id'/>
+						</div>
+					</group>
+				</group>
+			</div>
+		</field>
+	</record>
+
+</odoo>

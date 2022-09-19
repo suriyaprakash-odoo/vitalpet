@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+		<record id="documents_expiration_cron" model="ir.cron">
+	        <field name="name">HR Employee Document Expiration</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'hr.employee.document'" name="model" />
+	        <field eval="'documents_date_expiration_cron'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+    </data>
+</odoo>

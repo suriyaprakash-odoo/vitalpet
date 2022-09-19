@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="custom_account_asset_assinged" model="ir.ui.view">
+			<field name="name">custom.account.asset.category.form</field>
+			<field name="model">account.asset.category</field>
+			<field eval="1" name="priority" />
+			<field name="inherit_id" ref="account_asset.view_account_asset_category_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="inside">
+					<field name="assinged" />
+				</xpath>
+			</field>
+		</record>
+		<record id="custom_asset_formsk" model="ir.ui.view">
+			<field name="name">custom.asset.form</field>
+			<field name="model">account.asset.asset</field>
+			<field eval="1" name="priority" />
+			<field name="inherit_id" ref="account_asset.view_account_asset_asset_form" />
+			<field name="arch" type="xml">
+				<field name="date" position="after">
+					<field name="journal_date" />
+				</field>
+				<field name="partner_id" position="after">
+					<field name="asset_area" />
+					<field name="part_number" />
+				</field>
+				<field name="company_id" position="after">
+					<field name="bill_id" />
+					<field name="manufacturer" />
+					<field name="model" />
+					<field name="serial_number" />
+				</field>
+				<xpath expr="//form/sheet/notebook/page[2]" position="after">
+					<page string="Service Contract">
+						<group>
+							<field name="item_warranty" />
+							<field name="warranty_lengths" />
+							<field name="service_contract_number" />
+							<field name="support_link" />
+							<field name="suport_phone" />
+						</group>
+					</page>
+					<page string="Computers and Software">
+						<group>
+							<field name="software_key" />
+							<field name="mac_address" />
+							<field name="licenses_count" />
+							<field name="os" />
+							<field name="cpu_speed" />
+							<field name="cpu_cores" />
+							<field name="memory" />
+							<field name="hard_drive_size" />
+							<field name="admin_uname" />
+							<field name="admin_pwd" />
+						</group>
+					</page>
+					<page string="Notes">
+						<field name="note" placeholder="Notes" />
+					</page>
+
+				</xpath>
+				<xpath expr="//form/sheet" position="after">
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</xpath>
+				<xpath expr="//field[@name='depreciation_line_ids']//field[@name='depreciation_date']" position="after">
+					<field name="journal_date" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="custom_account_asset_asset_confirm" model="ir.actions.server">
+	        <field name="name">Confirm</field>
+	        <field name="type">ir.actions.server</field>
+	        <field name="model_id" ref="model_account_asset_asset" />
+	        <field name="state">code</field>
+	        <field name="code">
+	            if records:
+	            	for line in records:
+	            		if line.state == 'draft':
+		            		action = line.validate()
+	        </field>
+    	</record>
+
+	    <record id="ir_custom_action_account_asset_asset" model="ir.values">
+			<field eval="'client_action_multi'" name="key2" />
+			<field eval="'account.asset.asset'" name="model" />
+			<field name="name">Confirm</field>
+			<field eval="'ir.actions.server,%d'%custom_account_asset_asset_confirm" name="value" />
+		</record>
+
+		<!--Manual depreciation processing -->
+		<!-- <record model="ir.ui.view" id="view_asset_depreciation_tree"> <field 
+			name="name">account.asset.depreciation.line.tree</field> <field name="model">account.asset.depreciation.line</field> 
+			<field name="arch" type="xml"> <tree string="Depreciation Exception" colors="blue:(move_check 
+			== False);black:(move_check == True)" create="false" edit="false" delete="false"> 
+			<field name="asset_id"/> <field name="name" string="Depreciation Number"/> 
+			<field name="depreciation_date"/> <field name="depreciated_value"/> <field 
+			name="amount"/> <field name="remaining_value" invisible="1"/> <field name="move_id" 
+			string="Journal ID"/> <field name="move_check" invisible="1"/> <field name="parent_state" 
+			invisible="1"/> <button name="show_journal" string="View Move" attrs="{'invisible':[('move_check','!=',True)]}" 
+			icon="gtk-jump-to" type="object"/> </tree> </field> </record> <record id="view_account_asset_depreciation_processing_form" 
+			model="ir.ui.view"> <field name="name">account.asset.depreciation.line.form</field> 
+			<field name="model">account.asset.depreciation.line</field> <field name="arch" 
+			type="xml"> <form string="Asset Depreciation" create="false" edit="false" 
+			delete="false"> <sheet> <group> <group> <field name="name" string="Depreciation 
+			Number"/> <field name="asset_id"/> <field name="depreciated_value"/> <field 
+			name="amount"/> </group> <group> <field name="depreciation_date"/> <field 
+			name="remaining_value" invisible="1"/> <field name="move_id" /> <field name="move_check" 
+			invisible="1"/> </group> </group> </sheet> </form> </field> </record> <record 
+			id="action_asset_depreciation_view" model="ir.actions.act_window"> <field 
+			name="name">Asset Depreciation</field> <field name="type">ir.actions.act_window</field> 
+			<field name="res_model">account.asset.depreciation.line</field> <field name="view_type">form</field> 
+			<field name="view_mode">tree,form</field> <field name="view_id" ref="view_account_asset_depreciation_processing_form"/> 
+			</record> <menuitem action="action_asset_depreciation_view" id="menu_asset_depreciation_view" 
+			name="Assets Entry" parent="account.menu_finance_entries" sequence="112" 
+			/> <record id="view_asset_depreciation_manual_wizard" model="ir.ui.view"> 
+			<field name="name">asset.depreciation.manual.wizard</field> <field name="model">asset.depreciation.manual.wizard</field> 
+			<field name="arch" type="xml"> <form string="Depreciation Exception"> <group> 
+			<field name="type"/> <field name="company_id" widget="selection"/> </group> 
+			<footer> <button string="Compute" name="asset_compute" type="object" class="oe_highlight"/> 
+			or <button string="Cancel" class="oe_link" special="cancel"/> </footer> </form> 
+			</field> </record> <record id="action_asset_depreciation_manual_wizard" model="ir.actions.act_window"> 
+			<field name="name">Run Depreciation Exception</field> <field name="res_model">asset.depreciation.manual.wizard</field> 
+			<field name="view_type">form</field> <field name="view_mode">tree,form</field> 
+			<field name="view_id" ref="view_asset_depreciation_manual_wizard"/> <field 
+			name="target">new</field> </record> <menuitem action="action_asset_depreciation_manual_wizard" 
+			id="menu_asset_depreciation_manual_wizard" name="Assets Wizard" parent="account.menu_finance_entries" 
+			sequence="113" /> -->
+
+		<!--Process Depreciation which is not process on the specific day -->
+		<!-- <record forcecreate="True" id="process_depreciation_in_asset" model="ir.cron"> 
+			<field name="name">Depreciation Processing</field> <field name="interval_number">1</field> 
+			<field name="interval_type">days</field> <field name="numbercall">-1</field> 
+			<field name="priority">1</field> <field name="user_id">370</field> <field 
+			eval="False" name="doall"/> <field eval="'account.asset.asset'" name="model"/> 
+			<field eval="True" name="doall" /> <field eval="False" name="active" /> <field 
+			eval="'process_depreciation'" name="function"/> </record> -->
+		
+		
+		<record id="update_journal_form" model="ir.ui.view">
+			<field name="name">Update Journal Date</field>
+			<field name="model">update.journal</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Update Journal Date">
+					<group>
+						<group>
+							<field name='journal_update'/>
+						</group>
+					</group>
+					<footer>
+						<button string='Apply' name='confirm' type='object' class="oe_highlight" />
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="journal_date_warning_form" model="ir.ui.view">
+			<field name="name">update.date</field>
+			<field name="model">update.date</field>
+			<field name="arch" type="xml">
+				<form string="Set Date">
+
+					<div>Already Journal Date has been created, entering new Journal Date will
+						replaces/updates the exisitng Date</div>
+					<div>Do you want to continue? </div>
+
+					<footer>
+						<button name="continue_to_new_journal_entry" string="Yes"
+							type="object" class="btn btn-sm btn-primary" />
+						<button string="Cancel" class="btn btn-sm btn-default"
+							special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		
+		<act_window id="action_journal_update_date" multi="True"
+			key2="client_action_multi" name="Journal Date"
+			res_model="update.journal" src_model="account.asset.asset"
+			view_mode="form" target="new" view_type="form" />
+
+		
+	</data>
+</odoo>

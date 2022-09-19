@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="employee_fields_assets_backend" name="employee_fields assets backend"
+			inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<script type="text/javascript"
+					src="/vitalpet_employee_fields/static/src/js/password_encrypt.js"></script>
+			</xpath>
+		</template>
+
+
+		<!-- Termination Type -->
+		<record id="view_termination_type_form" model="ir.ui.view">
+			<field name="name">termination.type.form</field>
+			<field name="model">termination.type</field>
+			<field name="arch" type="xml">
+				<form string="Termination Type">
+					<group>
+						<field name="name" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_termination_type_list" model="ir.ui.view">
+			<field name="name">termination.type.list</field>
+			<field name="model">termination.type</field>
+			<field eval="8" name="priority" />
+			<field name="arch" type="xml">
+				<tree string="Termination Type">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="open_view_termination_type_form" model="ir.actions.act_window">
+			<field name="name">Termination Type</field>
+			<field name="res_model">termination.type</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_view_termination_type_form" action="open_view_termination_type_form"
+			parent="hr.menu_human_resources_configuration" groups="base.group_no_one"
+			sequence="3" />
+
+		<!-- Termination Reason -->
+		<record id="view_termination_reason_form" model="ir.ui.view">
+			<field name="name">termination.reason.form</field>
+			<field name="model">termination.reason</field>
+			<field name="arch" type="xml">
+				<form string="Termination Reason">
+					<group>
+						<field name="name" />
+						<field name="termination_type" required="1" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_termination_reason_list" model="ir.ui.view">
+			<field name="name">termination.reason.list</field>
+			<field name="model">termination.reason</field>
+			<field eval="8" name="priority" />
+			<field name="arch" type="xml">
+				<tree string="Termination Reason">
+					<field name="name" />
+					<field name="termination_type" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="open_view_termination_reason_form" model="ir.actions.act_window">
+			<field name="name">Termination Reason</field>
+			<field name="res_model">termination.reason</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_view_termination_reason_form" action="open_view_termination_reason_form"
+			parent="hr.menu_human_resources_configuration" groups="base.group_no_one"
+			sequence="4" />
+
+		<record id="view_employee_form_inherited" model="ir.ui.view">
+			<field name="name">hr.employee.form.inherited</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='children']" position="before">
+                    <field name="filing_staus"/>
+                </xpath>
+				<xpath expr="//field[@name='children']" position="attributes">
+                    <attribute name="string">Number of allowances</attribute>
+                </xpath>
+			</field>
+		</record>
+
+
+		<!-- Hr employee inherit Hiring dates and Termination -->
+		<record id="view_employee_form_termination_inherit" model="ir.ui.view">
+			<field name="name">hr.employee.termination.form.inherit</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='identification_id']" position="attributes">
+					<attribute name="required">False</attribute>
+				</xpath>
+				<xpath expr="//group[@name='active_group']" position="after">
+					<group name="hiring_dates" string="Key Dates">
+						<field name="start_date" requird="1" />
+						<field name="benefit_seniority_date" requird="1" />
+						<field name="termination_date" invisible="1" />
+						<field name="hire_date" readonly="1"/>
+						<field name="admin_user_id" invisible="1" />
+					</group>
+
+					<group name="termination" string="Termination">
+						<field name="termination_date" attrs="{'readonly': [('admin_user_id', '!=', True)]}" />
+						<field name="termination_type" attrs="{'readonly': [('admin_user_id', '!=', True)]}" />
+						<field name="termination_reason" attrs="{'readonly': [('admin_user_id', '!=', True)]}" />
+						<field name="rehire_eligible" attrs="{'readonly': [('admin_user_id', '!=', True)]}" />
+						<field name="cobra_eligible" attrs="{'readonly': [('admin_user_id', '!=', True)]}" />
+						<button string="Terminate Team Member" name="terminate_team_members"
+							type="object" class="oe_highlight"
+							groups="vitalpet_employee_fields.group_terminate_team_members"  />
+							<!-- <button string="Terminate Team Member" name="terminate_team_members"
+							type="object" class="oe_highlight"
+							groups="vitalpet_employee_fields.group_terminate_team_members" attrs="{'invisible': [('create_boolean', '!=', True)]}" /> -->
+					</group>
+					<group name="External" string="External HR Sytem">
+						<field name="employee_id" readonly="1" />
+						<field name="time_clock" readonly="1" />
+						<field name="hr_status" readonly="1" />
+						<field name="direct_deposit" readonly="1" />
+						<field name="date_added" readonly="1" />
+						<field name="date_modified" readonly="1" />
+					</group>
+				</xpath>
+				<xpath
+					expr="//notebook/page[2]/group/group[1]/field[@name='passport_id']"
+					position="after">
+					<field name="dl_number" />
+				</xpath>
+				<xpath
+					expr="//notebook/page[2]/group/group[2]/field[@name='address_home_id']"
+					position="after">
+					<field name="location_id" readonly="1" />
+				</xpath>
+				<xpath expr="//notebook/page[2]/group/group[2]/field[@name='address_home_id']" position="attributes">
+					<attribute name="options">{'no_create': True}</attribute>
+				</xpath>
+				<xpath expr="//notebook/page[2]/group/group[4]" position="after">
+					<group string="I-9">
+						<field name="verify" />
+						<field name="work_authorization" />
+						<field name="document_no" />
+						<field name="expiration_date" />
+						<field name="document_A" />
+						<field name="document_B" />
+						<field name="document_C" />
+					</group>
+				</xpath>
+				<xpath expr="//notebook/page[2]/group/group[5]" position="after">
+					<group string="Work Permit\Visa">
+						<field name="visa_type" />
+						<field name="visa_exp" />
+						<field name="country" />
+						<field name="ref_id" />
+						<field name="application_date" />
+						<field name="approval_date" />
+						<field name="exp_date" />
+					</group>
+				</xpath>
+				<xpath expr="//notebook/page[2]/group/group[6]" position="after">
+					<group string="Veteran">
+						<field name="veteran" />
+						<field name="veteran_of" />
+						<field name="branch" />
+						<field name="separation_date" />
+						<field name="service_medal" />
+						<field name="disabled_veteran" />
+						<field name="actv_wartime" />
+					</group>
+				</xpath>
+				<xpath expr="//notebook/page[2]/group/group[7]" position="after">
+					<group string="Disability">
+						<field name="disabled" />
+						<field name="disablity_type" />
+					</group>
+				</xpath>
+
+				<xpath expr="//notebook/page[2]/group/group[4]" position="after">
+					<group string="Emergency Contact Information"> 
+						<field name="emergency_contact_name" />
+						<field name="emergency_contact_phone" />
+						<field name="emergency_contact_relationship" />
+					</group>
+				</xpath>
+
+				<xpath expr="//notebook/page[2]/group/group[2]" position="after">
+					<group string="Alias Name"> 
+						<field name="first_name_alias" />
+						<field name="middle_name_alias" />
+						<field name="last_name_alias" />
+					</group>
+				</xpath>
+				
+			</field>
+		</record>
+
+
+		<record id="view_employee_form_inherit" model="ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="priority" eval="30" />
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//form/sheet/div[@class='oe_button_box']"
+					position="inside">
+
+					<button name="encrpyt_decrypt_values" type="object" class="oe_stat_button"
+						icon="fa-archive">
+						<field name="encrypt_value" widget="boolean_button"
+							options='{"terminology": {"string_true": "Encrypted", "hover_true": "Decrypt", "string_false": "Decrypted", "hover_false": "Encrypt"}}' />
+					</button>
+
+				</xpath>
+
+				<xpath expr="//notebook//page//field[@name='job_id']"
+					position="after">
+					<field name="job_seniority_title" attrs="{'required':[('contracts_count', '>', 0)]}"
+						options="{'no_create' : True,'no_edit' : True}" readonly="1" />
+					<field name="sequence" invisible='1'/>	
+					<field name="employment_status" attrs="{'required':[('contracts_count', '>',0)]}" />
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='department_id']"
+					position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='calendar_id']"
+					position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='work_location']"
+					position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='job_id']"
+					position="attributes">
+					<attribute name="attrs">{'required':[('contracts_count', '>',0)]}
+					</attribute>
+					<attribute name="string">Primary Job</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='parent_id']"
+					position="attributes">
+					<attribute name="attrs">{'required':[('manager', '=',False)]}
+					</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='work_email']"
+					position="attributes">
+					<attribute name="required">True</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='company_id']"
+					position="attributes">
+					<attribute name="required">True</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='user_id']"
+					position="after">
+					<field name="benefit_status" />
+					<field name="scheduled_hours" readonly="True" />
+					<field name="enrollment_deadline" readonly="True" />
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='identification_id']"
+					position="attributes">
+					<!-- <attribute name="attrs">{'readonly':[('encrypt_value', '=',True)]}</attribute> -->
+					<attribute name="password">encrypt_value</attribute>
+
+				</xpath>
+
+				<xpath expr="//notebook//page//field[@name='passport_id']"
+					position="attributes">
+					<!-- <attribute name="attrs">{'readonly':[('encrypt_value', '=',True)]}</attribute> -->
+					<attribute name="password">encrypt_value</attribute>
+
+				</xpath>
+
+
+				<xpath expr="//notebook//page//field[@name='gender']"
+					position="attributes">
+					<attribute name="required">True</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='marital']"
+					position="attributes">
+					<attribute name="required">False</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='birthday']"
+					position="attributes">
+					<attribute name="required">True</attribute>
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='address_home_id']"
+					position="attributes">
+					<attribute name="required">True</attribute>
+				</xpath>
+				
+				<xpath expr="//notebook//page[4]"
+					position="attributes">
+					<attribute name="groups">base.group_user</attribute>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="hr_hr_employee_view_form2_inherit" model="ir.ui.view">
+			<field name="name">hr.hr.employee.view.form2</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2" />
+			<field name="arch" type="xml">
+
+
+				<xpath expr="//notebook//page//field[@name='vehicle_distance']"
+					position="after">
+					<field name="pay_type" attrs="{'required':[('contracts_count', '>',0)]}" />
+					<field name="overtime_pay" />
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='children']"
+					position="after">
+					<field name="ethnic_id" />
+					<field name="smoker" />
+				</xpath>
+				<xpath expr="//notebook//page//field[@name='place_of_birth']"
+					position="after">
+					<field name="birth_country" />
+					<field name="age" />
+				</xpath>
+			</field>
+		</record>
+		<record id="hr_contract_view_tree_inherit" model="ir.ui.view">
+			<field name="name">hr.contract.view.tree.inherit</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_tree" />
+			<field name="arch" type="xml">
+				<field name='job_id' position='after'>
+					<field name="user_id" />
+				</field>
+				<field name='date_end' position='after'>
+					<field name="approved_by" />
+					<field name="reason" />
+					<field name="type" />
+					<field name="state" />
+				</field>
+			</field>
+		</record>
+
+		<record id="view_employee_kanban_inherit_employee_fields"
+			model="ir.ui.view">
+			<field name="name">hr.employee</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.hr_kanban_view_employees" />
+			<field name="priority">1</field>
+			<field name="arch" type="xml">
+				<xpath expr="//ul/li[4]" position="replace">
+				<li t-if="record.work_email.raw_value" style="display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><i class="fa fa-envelope"/> <field name="work_email"/></li>
+		
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="hr_employee_view_form_inherit2" model="ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='bank_account_id']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="view_employee_tree_inherit1" model="ir.ui.view">
+			<field name="name">hr.employee.tree</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='job_id']" position="after">
+					<field name="job_seniority_title" />
+				</xpath>
+			</field>
+		</record>
+		
+		
+	</data>
+</odoo>

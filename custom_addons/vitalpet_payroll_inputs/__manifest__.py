@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'VitalPet Payroll Inputs',
+    'version': '1.0.7',
+    'category': 'Payroll',
+    'author': 'VitalPet',
+    'website': 'http://www.vitalpet.com',
+    'depends': ['hr', 'account', 'account_asset', 'web', 'base', 'calendar',
+                'hr_recruitment', 'hr_holidays', 'hr_attendance','vitalpet_mypractice', 'payroll_period', 'vitalpet_hr_attendance', 'payroll_base', 'payroll_activity', 'payroll_employee_benefit','vitalpet_production_model'],
+    'data': [
+        # 'security/mypractice_security.xml',
+        'security/payroll_inputs_security.xml',
+        'security/ir.model.access.csv',
+        'views/payroll_inputs_dashbard.xml',
+        'views/analytic_tags_type_view.xml',
+        'views/payroll_inputs_view.xml',
+        'views/vitalpet_hr_production.xml',
+        'views/mail_template.xml',
+        'views/hr_work_hours_view.xml',
+        'views/hr_payslip.xml',
+        'data/payroll_data.xml',
+        'views/payroll_period_view.xml',
+        'vitalpet_payroll_inputs.xml',
+        'views/vitalpet_payroll_inputs.xml'
+    ],
+    'qweb': ['static/xml/vitalpet_payroll_inputs_timesheets.xml',
+             'static/xml/vitalpet_payroll_inputs_production.xml',
+             'static/xml/vitalpet_payroll_inputs_validation.xml',
+             ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

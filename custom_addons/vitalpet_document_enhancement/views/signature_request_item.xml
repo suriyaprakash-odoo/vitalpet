@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="signature_item_party_view_form_inherit" model="ir.ui.view">
+        <field name="name">signature.item.party.form</field>
+        <field name="model">signature.item.party</field>
+        <field name="inherit_id" ref="website_sign.signature_item_party_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_title']" position="replace">
+                <group>
+                    <field name="name" />
+                    <field name="model_id" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="signature_item_party_view_tree_inherit" model="ir.ui.view">
+        <field name="name">signature.item.party.tree</field>
+        <field name="model">signature.item.party</field>
+        <field name="inherit_id" ref="website_sign.signature_item_party_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="model_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="signature_item_view_tree_inherit" model="ir.ui.view">
+        <field name="name">signature.item.form</field>
+        <field name="model">signature.item</field>
+        <field name="inherit_id" ref="website_sign.signature_item_view_tree" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='responsible_id']" position="after">
+                <field name="model_id" invisible="1" />
+                <field name="field_id" domain="[('model_id', '=', model_id)]" />
+                <field name="map_to" />
+                <field name="related_field" />
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="signature_request_template_view_form_inherit" model="ir.ui.view">
+        <field name="name">signature.request.template.form</field>
+        <field name="model">signature.request.template</field>
+        <field name="inherit_id" ref="website_sign.signature_request_template_view_form" />
+        <field name="arch" type="xml">
+
+            <!-- <xpath expr="//form/sheet/field[@name='signature_item_ids']" position='attributes'> 
+                <attribute name='context'>{'default_related_field':related_template}</attribute> 
+                </xpath> -->
+
+            <xpath expr="//field[@name='attachment_id']" position="after">
+                <group>
+                    <field name="related_template" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='archived']" position="after">
+                <field name="encrypt" />
+            </xpath>
+            <xpath expr="//field[@name='favorited_ids']" position="after">
+                <field name="document_tag"  widget="many2many_tags" />
+            </xpath>
+        </field>
+    </record>
+    
+    
+
+    <record id="website_sign.signature_request_action" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">signature.request</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="website_sign.signature_request_view_search" />
+        <field name="context" eval="{'search_default_no_archive':  1}" />
+        <field name="domain">[('template_id.encrypt', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">You have no document to sign.</p>
+            <p>
+                Click on
+                <em>Request a Signature</em>
+                to upload a template (or use an existing one) to automate
+                your
+                signature process for employment contracts, trade sale, NDA to
+                sign,
+                ...
+            </p>
+        </field>
+    </record>
+    
+    
+    <record id="encrypt_signature_request_action" model="ir.actions.act_window">
+        <field name="name">Signature Request - Secure</field>
+        <field name="res_model">signature.request</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="website_sign.signature_request_view_search" />
+        <field name="context" eval="{'search_default_no_archive':  1}" />
+        <field name="domain">[('template_id.encrypt', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">You have no document to sign.</p>
+            <p>
+                Click on
+                <em>Request a Signature</em>
+                to upload a template (or use an existing one) to automate
+                your
+                signature process for employment contracts, trade sale, NDA to
+                sign,
+                ...
+            </p>
+        </field>
+    </record>
+ 
+    <menuitem id="signature_request_encrypt" name="Signature Request - Secure" groups="hr.group_hr_manager"
+        parent="website_sign.digital_signatures_menu" action="encrypt_signature_request_action" />
+
+    
+
+</odoo>

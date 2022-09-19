@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<!-- Module Main menus -->
+
+		<!-- Campaigns -->
+				<menuitem id="campaigns_promote" name="Campaigns" parent="vitalpet_promote.main_vitalpet_promote" sequence="4"/>
+
+				<menuitem id="petowners_promote" name="Pet Owners" parent="campaigns_promote" sequence="1" 
+						action='vitalpet_mapping.petowner_action'/>
+        		<menuitem id="pets_promote" name="Pets" parent="campaigns_promote" sequence="2" action='vitalpet_mapping.pet_action'/>
+        		<menuitem id="report_cards_promote" name="Report Cards" parent="campaigns_promote" action='promote_reportcard_action' sequence="3"/>
+        		<menuitem id="reminders_promote" name="Reminders" parent="campaigns_promote" sequence="4" action='vitalpet_mapping.reminder_action'/>
+        		<menuitem id="appointments_promote" name="Appointments" parent="campaigns_promote" sequence="5" action='vitalpet_mapping.pet_action'/>
+        		<menuitem id="surveys_promote" name="Surveys" parent="campaigns_promote" sequence="6"/>
+        		<menuitem id="campaign_log_promote" name="Campaign Log" parent="campaigns_promote" sequence="7"/>
+				
+		<!-- Loyalty -->
+				<menuitem id="loyalty_promote" name="Loyalty" parent="vitalpet_promote.main_vitalpet_promote" sequence="5"/>
+
+				<menuitem id="subscribers_promote" name="Subscribers" parent="loyalty_promote" sequence="1"/>
+        		<menuitem id="payment_plans_promote" name="Payment Plans" parent="loyalty_promote" sequence="2"/>
+        		<menuitem id="schedule_promote" name="Schedule" parent="loyalty_promote" sequence="3"/>
+        		
+		<!-- Configuration -->
+				<menuitem id="care_categories_promote" name="Care Categories" parent="vitalpet_promote.configuration_promote" action="promote_carecategory_action" sequence="5"/>
+        		<menuitem id="carecategory_conditions_promote" name="Care Category Conditions" parent="vitalpet_promote.configuration_promote" action="promote_carecategory_conditions_action" sequence="6"/>
+</odoo>

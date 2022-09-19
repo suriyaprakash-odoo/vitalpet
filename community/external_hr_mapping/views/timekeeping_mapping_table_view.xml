@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Sync Trigger Action and menu -->
+       
+       <record id="timekeeping_mapping_table_tree" model="ir.ui.view">
+            <field name="name">timekeeping.mapping.table.tree</field>
+            <field name="model">timekeeping.mapping.table</field>
+            <field name="arch" type="xml">
+                <tree string="External Attendance Mapping" >
+                    <field name="file_type"/>
+                    <field name="is_mapped"/>
+                    <field name="code"/>
+                    <field name="column"/>
+                    <field name="model_id"/>
+                    <field name="mapped_field"/>
+                    <field name="activity_id"/>
+                    <field name="activity_lookup"/>
+                    <field name="is_validated"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+        
+        
+       <record id="view_timekeeping_mapping_table_form" model="ir.ui.view">
+            <field name="name">timekeeping.mapping.table.form</field>
+            <field name="model">timekeeping.mapping.table</field>
+            <field name="arch" type="xml">
+                <form string="External Attendance Mapping">
+                    <group col="4">
+                    <field name="file_type"/>
+                    <field name="is_mapped"/>
+                    <field name="code"/>
+                    <field name="column"/>
+                    <field name="model_id"/>
+                    <field name="mapped_field"/>
+                    <field name="activity_id"/>
+                    <field name="activity_lookup"/>
+                    <field name="is_validated"/>
+                    <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+       
+       <record model="ir.actions.act_window" id="timekeeping_mapping_table_action">
+            <field name="name">External Attendance Mapping</field>
+            <field name="res_model">timekeeping.mapping.table</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="timekeeping_mapping_table_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    External Attendance Mapping is empty.
+                </p>
+            </field>
+    	</record>	
+
+           <menuitem id="timekeeping_mapping_table_log_mapping" name="External Attendance Mapping" parent="hr.menu_human_resources_configuration" action='timekeeping_mapping_table_action' sequence="99"/>
+
+</odoo>
+

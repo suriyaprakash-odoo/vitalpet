@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<odoo>
+	<record id="view_hr_expense_configuration_inherited" model="ir.ui.view">
+		<field name="name">Configure Expense</field>
+		<field name="model">hr.expense.config.settings</field>
+		<field name="inherit_id" ref="hr_expense.view_hr_expense_configuration"/>
+		<field name="arch" type="xml">
+			<xpath expr="//form/group[@name='config_alias']" position="after">
+				<group string="Expenses" name="config_expense_limit">
+					<label for="credit_limit" string="Expense Limit"/>
+					<div>
+						<div>
+							<p class="text-muted">
+								Based on this limit expense will be submited to manager with attachment(Receipt).
+							</p>
+							<field name="credit_limit_check" class="oe_inline"/>
+						</div>
+					</div>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_mypractice_config_settings_inherit" model="ir.ui.view">
+		<field name="name">mypractice settings</field>
+		<field name="model">mypractice.config.settings</field>
+		<field name="inherit_id" ref="vitalpet_mypractice.view_mypractice_config_settings"/>
+		<field name="arch" type="xml">
+			<div id="main" position="inside">
+				<group>
+					<group string='Accounting'>
+						<label for="accounting" string="Enabled" style="padding-left: 2em;"/>
+						<div>
+							<field name='accounting'/>
+						</div>
+					</group>
+				</group>
+			</div>
+		</field>
+	</record>
+
+</odoo>

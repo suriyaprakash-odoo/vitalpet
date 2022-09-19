@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_payment_order_form_extend_echeck" model="ir.ui.view">
+        <field name="name">view_payment_order_form_extend_echeck</field>
+        <field name="model">account.payment.order</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='open2generated']" position='after'>
+                <button String="Generate E-Check File" name='gen_echeck' type='object'>
+                    </button>
+            </xpath>
+            <!-- <field name='date_uploaded' position='after'>
+                <field name='echeck_acc'/>
+            </field> -->
+        </field>
+    </record>
+
+
+	
+
+</odoo>

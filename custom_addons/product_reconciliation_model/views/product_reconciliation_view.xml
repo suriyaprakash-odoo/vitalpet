@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+	<template id="document_enhancement_js" inherit_id="web.assets_common">
+        <xpath expr="script[last()]" position="after">
+             <script type="text/javascript" src="/product_reconciliation_model/static/src/js/reconciliation_model.js"></script>
+         </xpath>
+    </template>
+    
+    
+        <record id="view_bank_statement_form_inherit" model="ir.ui.view">
+            <field name="name">account.bank.statement.form</field>
+            <field name="model">account.bank.statement</field>
+	    	<field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="arch" type="xml">	            	
+		        <xpath expr="//field[@name='journal_id']" position="attributes">
+		            <attribute name="class">journal_name</attribute>
+		        </xpath>
+		        <!-- <xpath expr="//button[@name='check_confirm_bank']" position="before">
+                	<button string="UNRECONCILE" type="action" name="unreconcile" class="oe_highlight"/>
+                </xpath> -->
+            </field>
+         </record>
+    
+	<record id="custom_account_reconcile_field" model="ir.ui.view">
+	    <field name="name">custom.account.reconcile.field.form</field>
+	    <field name="model">account.reconcile.model</field>
+	    <field eval="30" name="priority"/>	
+	    <field name="inherit_id" ref="account.view_account_reconcile_model_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//field[@name='analytic_account_id']" position="after">
+	            <field name="product_id"/>
+	            <field name="partner_id"/>
+	        </xpath>
+	        <xpath expr="//field[@name='second_analytic_account_id']" position="after">
+	            <field name="second_product_id"/>
+	            <field name="second_partner_id"/>
+	        </xpath>
+	    </field>
+	</record>	
+</odoo>

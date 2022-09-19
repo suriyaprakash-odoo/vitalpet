@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="onboarding_crm_case_form_view_job_inherited2" model="ir.ui.view">
+		<field name="name">hr.applicant.form</field>
+		<field name="model">hr.applicant</field>
+		<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job" />
+		<field name="arch" type="xml">
+<!-- 			<xpath expr="//button[@name='archive_applicant']" position="after">
+				 <button string="Send background Check Mail" name="send_background_check_mail" type="object" attrs="{'invisible': [('btn_send_verification_mail', '=', False)]}"/>
+
+			</xpath>
+			
+			<field name="name" position="after">
+				
+				<field name="btn_send_verification_mail" invisible="1" />
+				<field name="background_check_url" invisible="1" />
+			</field> 
+			
+			<field name="partner_phone" position="after">
+				<field name="ssn_encrypt" password="True" />
+			</field> -->
+			<field name="job_id" position="after">
+				<field name="contract_type_id"/>
+			</field>
+		</field>
+	</record>
+	
+	<!-- <record model="ir.ui.view" id="onboarding_hr_recruitment_stage_form_inherited">
+        <field name="name">hr.recruitment.stage.form</field>
+        <field name="model">hr.recruitment.stage</field>
+		<field name="inherit_id" ref="hr_recruitment.hr_recruitment_stage_form" />
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='send_offer_letter']" position="after">
+        		<field name="send_verification_mail" />
+        	</xpath>
+        </field>
+    </record> -->
+
+</odoo>

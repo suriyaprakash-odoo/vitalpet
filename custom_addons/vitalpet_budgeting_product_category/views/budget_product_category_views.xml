@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="assets_backend" name="budget_view assets backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/vitalpet_budgeting_product_category/static/js/budget_lines.js" />
+            <link href="/vitalpet_budgeting_product_category/static/css/budget.css" type="text/css"  rel="stylesheet"/>
+        </xpath>
+    </template>
+    <record id="view_budget_tree_view" model="ir.ui.view">
+            <field name="name">income.expense.details.tree</field>
+            <field name="model">income.expense.details</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:type == 'income'" string="Income and Expense Details">
+                    
+                    <field name="type_seq" />
+                    <field name="type" />
+                    <!--<field name="product_category"/>-->
+                    <field name="planned_amount" widget="monetary" />
+                    <field name="actual_amount" widget="monetary" />
+                    <field name="variance" widget="monetary" />
+                    <field name="currency_id" />
+                    <field name="company_id" />
+                    <field name="parent_id" invisible="1" />
+                </tree>
+            </field>
+        </record>
+        <record id="view_budget_form_view" model="ir.ui.view">
+            <field name="name">income.expense.details.form</field>
+            <field name="model">income.expense.details</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <form colors="blue:type == 'income'" string="Income and Expense Details">
+                    <group>
+                        <field name="type_seq" />
+                        <field name="type" />
+                        <!--<field name="product_category"/>-->
+                        <field name="planned_amount" />
+                        <field name="actual_amount" />
+                        <field name="variance" />
+                        <field name="currency_id" />
+                        <field name="company_id" />
+                        <field name="parent_id" />
+                        <field name="level" />
+                        <field name="child_ids" />
+                        <field name="date_from" invisible="1" />
+                        <field name="date_to" invisible="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_budget_search_view" model="ir.ui.view">
+            <field name="name">income.expense.details.search</field>
+            <field name="model">income.expense.details</field>
+            <field name="arch" type="xml">
+                <search string="Budget Lines">
+                    <field name='product_id' />
+                    <filter icon="terp-go-month" string="Product" name="product" context="{'product_id':'product_id'}" help="Current Company" />
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_budget_tree_view" model="ir.actions.act_window">
+            <field name="name">income.expense.details.tree</field>
+            <field name="res_model">income.expense.details</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="view_budget_tree_view" />
+        </record>
+
+        <act_window id="action_account_items_details" name="Journal Items" res_model="account.move.line" src_model="income.expense.details" key2="tree_but_open" />
+
+
+
+        <!--    Budgets -->
+      
+
+
+        <record model="ir.ui.view" id="budget_product_category_view_form">
+            <field name="name">budget.category.view.form</field>
+            <field name="model">budget.product.category</field>
+            <field name="arch" type="xml">
+                <form string="Budget">
+                    <header>
+                          <button string="Activate" name="action_budget_confirm" states="draft" type="object" class="oe_highlight" groups="vitalpet_mypractice.group_my_practice_manager"/>
+                      <!--   <button string="Approve" name="action_budget_validate" states="confirm" type="object" class="oe_highlight" groups="vitalpet_mypractice.group_my_practice_manager"/>
+                        <button string="Done" name="action_budget_done" states="validate" type="object" class="oe_highlight" groups="vitalpet_mypractice.group_my_practice_manager"/> -->
+                        <button string="Set to Draft" name="action_budget_draft" states="confirm,validate" type="object" groups="vitalpet_mypractice.group_my_practice_manager"/>
+                        <!-- <button string="Cancel Budget" name="action_budget_cancel" states="confirm,validate" type="object" groups="vitalpet_mypractice.group_my_practice_manager"/> -->
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+                    <sheet string="Budget">
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" attrs="{'readonly':[('state','!=','draft')]}" placeholder="Budget Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="creating_user_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="parent_budget_code" />
+                                <field name="budget_scenario" required="1"/>
+                                <field name="budget_version" required="1" />
+                            </group>
+                            <group>
+                            	<field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            	<field name="custom_calendar" invisible='1'/>
+                                <field name="account_fiscal_period_id" attrs="{'required': [('custom_calendar','==', True)], 'invisible': [('custom_calendar','!=', True)]}" />
+                                <field name="fiscal_period" attrs="{'required': [('custom_calendar','!=', True)], 'invisible': [('custom_calendar','==', True)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Budget Lines">
+                                <field name="budget_category_line" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree string="Budget Lines">
+                                        <!-- <field name="general_budget_id"/> -->
+                                        <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/> -->
+                                        <!-- <field name="date_from"/>
+                                        <field name="date_to"/>
+                                        <field name="paid_date" groups="base.group_no_one"/> -->
+                                        <field name="fin_yr" string="Year" />
+                                        <field name="quarter" string="Quarter" />
+                                        <field name="month" string="Month" />
+                                        <field name="sequence" />
+                                        <field name="product_category" />
+                                        <field name="type" />
+                                        <field name="visibility" />
+                                        <field name="margin" />
+                                        <field name="planned_amount" sum="Planned Amount" widget="monetary"/>
+                                        <field name="plan_margin_pct" />
+                                        <field name="tag" />
+                                        <field name="calc_tag" />
+                                        <field name="calc_tag_offset" />
+                                        <!-- <field name='budget_scenario'/>
+                                        <field name='state'/> -->
+                                        <!-- <field name="practical_amount" sum="Practical Amount" widget="monetary"/>
+                                        <field name="theoritical_amount" sum="Theoretical Amount" widget="monetary"/>
+                                        <field name="percentage"/> -->
+                                    </tree>
+                                    <!-- <form string="Budget Lines">
+                                        <group>
+                                            <group>
+                                                <field name="planned_amount" widget="monetary"/>
+                                                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                                            </group>
+                                            <group>
+                                                <label for="date_from" string="Period"/>
+                                                <div>
+                                                    <field name="date_from" class="oe_inline"/> - 
+                                                    <field name="date_to" class="oe_inline"/>
+                                                </div>
+                                                <field name="paid_date" groups="base.group_no_one"/>
+                                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                            </group>
+                                        </group>
+                                    </form> -->
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="budget_product_category_view_tree">
+            <field name="name">budget.product.category.view.tree</field>
+            <field name="model">budget.product.category</field>
+            <field name="arch" type="xml">
+               <tree decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" string="Budget">
+                    <field name="name" colspan="1"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="creating_user_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="budget_product_category_view_search" model="ir.ui.view">
+           <field name="name">budget.product.category.view.search</field>
+           <field name="model">budget.product.category</field>
+           <field name="arch" type="xml">
+               <search string="Budget">
+                    <field name="name" filter_domain="[('name','ilike',self)]" string="Budget" />
+                    <filter string="Draft" domain="[('state','=','draft')]" help="Draft Budgets" />
+                    <filter string="Active" domain="[('state','=','confirm')]" help="To Approve Budgets" />
+                    <filter string="Done" domain="[('state','=','done')]" help="To Approve Budgets" />
+                    <filter string="Validated" domain="[('state','=','validate')]" help="To Approve Budgets" />
+
+                    <field name="state" />
+                    <group expand="1" string="Group By...">
+                        <filter string="Company" icon="terp-project" domain="[]" context="{'group_by':'company_id'}" />
+                        <filter string="Scenario" icon="terp-project" domain="[]" context="{'group_by':'budget_scenario'}" />
+                        <filter string="Status" icon="terp-project" domain="[]" context="{'group_by':'state'}" />
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="act_budget_category_view">
+            <field name="name">Budgets</field>
+            <field name="res_model">budget.product.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="budget_product_category_view_tree"/>
+            <field name="search_view_id" ref="budget_product_category_view_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new budget.
+              </p><p>
+                A budget is a forecast of your company's income and/or expenses
+                expected for a period in the future. A budget is defined on some
+                financial accounts and/or analytic accounts (that may represent
+                projects, departments, categories of products, etc.)
+              </p><p>
+                By keeping track of where your money goes, you may be less
+                likely to overspend, and more likely to meet your financial
+                goals. Forecast a budget by detailing the expected revenue per
+                analytic account and monitor its evolution based on the actuals
+                realised during that period.
+              </p>
+            </field>
+        </record>
+
+
+       <record id="view_budget_category_line_search" model="ir.ui.view">
+            <field name="name">account.budget.line.search</field>
+            <field name="model">budget.category.lines</field>
+            <field name="arch" type="xml">
+                <search string="Budget Lines">
+                    <group expand="1" string="Group By...">
+						<filter string="Budget Line" icon="terp-project" context="{'group_by':'name'}" />
+                        <filter string="Budgetary Type" icon="terp-project" domain="[]" context="{'group_by':'budget_scenario'}" />
+                        <filter string="Company" icon="terp-project" domain="[]" context="{'group_by':'company_id'}" />
+                        <filter string="Month" icon="terp-project" domain="[]" context="{'group_by':'month'}" />
+                        <filter string="Quarter" icon="terp-project" domain="[]" context="{'group_by':'quarter'}" />
+                        <filter string="Year" icon="terp-project" domain="[]" context="{'group_by':'fin_yr'}" />
+                        
+                        <filter string="Current Company" name="current_company" domain="[( 'current_company', '=', '1' )]" />
+                    	<filter string="This F.Year" name="this_year" domain="[('fin_yr','=',  time.strftime('%%Y'))]"/>
+                    	<filter string="Last F.Year" name="last_year" 
+            				domain="[('fin_yr','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+						<filter string="This Period" name="current_month" domain="[( 'current_month', '=', '1' )]" />
+						<filter string="Last Year This Period" name="last_year_current_month" domain="[( 'last_year_current_month', '=', '1' )]" />
+						
+						<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+						<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+						<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_budget_category_line_tree">
+            <field name="name">view.budget.category.line.tree</field>
+            <field name="model">budget.category.lines</field>
+            <field name="arch" type="xml">
+                <tree string="Budget Lines">
+                    <field name="budget_category_id" invisible="1" />
+                    <field name="analytic_account_id" invisible="1" />
+                    <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" invisible="1" /> -->
+                    <field name="date_from" invisible="1" />
+                    <field name="date_to" invisible="1" />
+                    <field name="parent_id" />
+                    <field name="company_month" invisible="1"/>
+                    <field name="company_id" />
+                    <field name="budget_scenario" />
+                    <field name="sequence" />
+                    <field name="product_category" />
+                   <!--  <field name="general_budget_id" invisible="1" /> -->
+                    <field name="type" />
+                    <field name="visibility" />
+                    <field name="margin" />
+                    <field name="planned_amount" widget="monetary" />
+                    <field name="actual_amount" widget="monetary" />
+                    <field name="var_margin" string="Variance" />
+                    <field name="plan_pct_nr" string="% Net Plan" />
+                    <field name="act_pct_nr" string="% Net Actual" />
+                    <field name="growth_ly" />
+                    <!-- <field name="type" string="Display" />
+                    <field name="budget_scenario" string="Budget Type" /> -->
+                    <field name="plan_margin" widget="monetary" />
+                    <field name="tag" />
+                    <field name="calc_tag" />
+                    <field name="calc_tag_offset" />
+                    <field name="status" />
+                    <field name="budget_version" />
+                    <field name="upper_name" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_budget_category_line_form">
+            <field name="name">view.budget.category.line.form</field>
+            <field name="model">budget.category.lines</field>
+            <field name="arch" type="xml">
+                <form string="Budget Lines">
+                    <sheet>
+                        <group col="4">
+                            <field name="budget_category_id"/>
+                            <field name='name'/>
+                            <field name='general_budget_id'/>
+                            <field name="product_category" />
+                            <field name="visibility" />
+                            <field name="margin" />
+                            <field name="type" />
+                            <field name="sequence" />
+                            <field name="tag" />
+                            <field name="calc_tag" />
+                            <field name="calc_tag_offset" />
+                            <field name="plan_margin_pct" />
+                            <field name="actual_margin_pct" />
+                            <field name="planned_amount" widget="monetary"/>
+                            <field name="actual_amount" readonly='1' />
+                            <field name="plan_offset" />
+                            <field name="actuals_offset" />
+                            <field name="actuals_previous_year" />
+                            <field name="budget_scenario" readonly='1' />
+                            <field name="company_year" />
+                            <field name="company_quarter" />
+                            <field name="company_month" />
+                            <field name="quarter" readonly='1'/>
+                            <field name="month" />
+                            <field name='fin_yr' readonly='1'/>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+<!--                             <field name="analytic_account_id" invisible="1"/> -->
+                            <!-- <field name="general_budget_id"/> -->
+                            <field name="date_from" readonly='1' />
+                            <field name="date_to" readonly='1' />
+                            <!-- <field name="paid_date"/> -->
+                            <!-- <field name="practical_amount" widget="monetary"/>
+                            <field name="theoritical_amount" widget="monetary"/>
+                            <field name="percentage"/> -->
+                            <field name="account_fiscal_period_id" attrs="{'invisible': [('account_fiscal_period_id','=', False)]}"/>
+                            <field name="fiscal_period" attrs="{'invisible': [('fiscal_period','=', False)]}"/>
+                            
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_budget_category_line_kanban">
+            <field name="name">budget.category.line.kanban</field>
+            <field name="model">budget.category.lines</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="company_month">
+                    <field name="company_id" widget="selection" groups="base.group_multi_company" />
+                    <field name="margin" />
+                    <field name="is_margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="is_visible" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <templates>
+             
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"'>
+	                    	<div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}">
+	                    		
+	                            <div style='width:100%;border-radius: 2px;'  class="box">
+	                                <table class="oe_budget_oneline" style="border:0;width: 100%;color:#000000;" >
+	                                    <thead>
+	                                        <tr>
+	                                            <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+	                                                <field name="company_type" />
+	                                                <span style="display:none;">
+	                                                    <field name="name" />
+	                                                </span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+	                                                <span>Planned</span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px; " title="Amount computed">
+	                                                <span>Actual</span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+	                                                <span>Variance / YoY</span>
+	                                            </td>
+	                                        </tr>
+	                                        <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+	                                            <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+	                                                <field name="name" />
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+	                                                <span>
+	                                                    <field name='planned_amount' />
+	                                                </span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px; " title="Amount computed" class="c_actual_value">
+	                                                <field name='actual_amount' />
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+	                                                <span>
+	                                                    <field name='var_amount' />%
+	                                                </span>
+	                                            </td>
+	                                        </tr> 
+	                                        <div t-if='record.is_margin.raw_value'> 
+		                                        <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+		                                            <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+		                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+		                                                <span>
+		                                                    <field name='plan_margin' />%
+		                                                </span>
+		                                            </td>
+		                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px; " title="Amount computed" class="m_actual_value">
+		                                                <span>
+		                                                    <field name='actual_margin' />%
+		                                                </span>
+		                                            </td>
+		                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+		                                                <span>
+		                                                    <field name='var_margin' />%
+		                                                </span>
+		                                            </td>
+		                                        </tr>
+		                                     </div>
+	                                        <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+	                                            <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+	                                                <span>
+	                                                    <field name='plan_pct_nr' />%
+	                                                </span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right; padding:4px 4px;" title="Amount computed" class="p_actual_value">
+	                                                <span>
+	                                                    <field name='act_pct_nr' />%
+	                                                </span>
+	                                            </td>
+	                                            <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+	                                                <span>
+	                                                    <field name='yoy' />%
+	                                                </span>
+	                                            </td>
+	                                        </tr>
+	                                    </thead>
+	                                </table>
+	                            </div>
+	                            <div class="oe_clear">
+	                            </div>                           
+	                        </div>
+    						<style >
+    							.box:hover
+    							{
+    								-moz-box-shadow: 0 0 11px #4c4c4c;
+    								-webkit-box-shadow: 0 0 11px #4c4c4c;
+    								box-shadow: 0 0 11px #4c4c4c;
+    							}
+    						</style>
+
+                       <!--  </t> -->
+                        </div>
+                    	
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.actions.act_window" id="act_budget_category_lines_view">
+            <field name="name">Budget Lines</field>
+            <field name="res_model">budget.category.lines</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_budget_category_line_tree"/>
+        </record>
+
+       <!--  <menuitem parent="account.account_reports_management_menu"
+            id="menu_act_crossovered_budget_lines_view"
+            action="act_crossovered_budget_lines_view" sequence="20"/> -->
+
+
+
+        <menuitem parent="vitalpet_mypractice.menu_mypractice_config" id="budget_category_main_menu" name="Budget" sequence="02" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+        <menuitem parent="budget_category_main_menu"
+            id="menu_act_budget_category_view"
+            name="Budgets"
+            action="act_budget_category_view" sequence="1" 
+            groups="vitalpet_mypractice.group_my_practice_user,vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager"/>
+
+
+        <menuitem parent="budget_category_main_menu" name="Budget Lines" id="menu_act_budget_category_lines_view" action="act_budget_category_lines_view" sequence="02" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+
+        <record model="ir.actions.act_window" id="act_budget_category_quarter_view_dashboard">
+            <field name="name">Budget</field>
+            <field name="res_model">budget.category.lines</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{"search_default_currentcompany":1}</field>
+            <field name="view_id" ref="view_budget_category_line_kanban" />
+            <field name="search_view_id" ref="view_budget_category_line_search" />
+            <field name="context">{'search_default_current_month': 1,'search_default_budget': 1}</field>
+        </record>
+
+
+
+
+
+        <!-- Budget Formulae View -->
+        <record model="ir.ui.view" id="view_budget_formula_tree">
+            <field name="name">budget.formula.tree</field>
+            <field name="model">budget.formula</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name='name' />
+                    <field name='budget_type' />
+                    <field name='formula_single' />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="view_budget_formula_form">
+            <field name="name">budget.formula.form</field>
+            <field name="model">budget.formula</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='name' />
+                                <field name='formula_single' />
+                            </group>
+                            <group>
+                                <field name='budget_type' />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_view_budget_formula">
+            <field name="name">Budget Formula</field>
+            <field name="res_model">budget.formula</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="view_budget_formula_tree" />
+        </record>
+
+        <menuitem parent="budget_category_main_menu" name="Budget Formula" id="menu_act_budget_formula_view" action="act_view_budget_formula" sequence="03" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+
+
+        <record id="view_budget_cron_tree" model="ir.ui.view">
+            <field name="name">budget.cron.tree</field>
+            <field name="model">budget.cron</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sch_date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_budget_cron_from" model="ir.ui.view">
+            <field name="name">budget.cron.form</field>
+            <field name="model">budget.cron</field>
+            <field name="arch" type="xml">
+                <form string="Daily Budget Status" version="7.0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sch_date" />
+                                <field name='schedule_for' />
+                            </group>
+                            <group>
+                                <field name="type" />
+                                <field name='company_ids' widget='many2many_tags' attrs="{'invisible':[('schedule_for','=','all')]}" />
+                            </group>
+                        </group>
+                        <field name="child_ids" attrs="{'readonly':[('type','!=','manual')]}">
+                            <tree editable="bottom">
+                                <field name="year" />
+                                <field name="month" />
+                                <field name="status" />
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_budget_status_cron">
+            <field name="name">Budget</field>
+            <field name="res_model">budget.cron</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="view_budget_cron_tree" />
+        </record>
+
+
+        <record forcecreate="True" id="ir_cron_budget_daily" model="ir.cron">
+            <field name="name">Budget Daily Update</field>
+            <field eval="True" name="active" />
+            <!-- <field name="user_id" ref="base.user_root" /> -->
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="doall" />
+            <field eval="'budget.cron'" name="model" />
+            <field eval="'cron_budget_calc'" name="function" />
+            <field eval="'()'" name="args" />
+        </record>
+
+
+
+
+
+
+        <menuitem name="Budget Status" action="act_budget_status_cron" id="menu_view_budget_status" parent="budget_category_main_menu" sequence="4" groups="vitalpet_mypractice.group_my_practice_manager"/>
+
+
+ 		<record model="ir.cron" id="budget_category_quarter">
+            <field name="name">Budget category Quarterly</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="active" />
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'budget.category.quarterly'"/>
+            <field name="function" eval="'action_create_budget_category_quarter'"/>
+            <field name="args" eval="'(2,)'"/>
+        </record> 
+        
+        <record id="view_budget_category_search" model="ir.ui.view">
+            <field name="name">budget.category.quarterly.search</field>
+            <field name="model">budget.category.quarterly</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Budget Line" context="{'group_by':'name'}"/>
+                    <filter string="Company" context="{'group_by':'company_id'}"/>
+                    <filter string="Quarter" context="{'group_by':'quarter'}"/>
+                    <filter string="Year" context="{'group_by':'fin_yr'}"/>
+                    <filter string="Current Company" name="current_company" domain="[( 'current_company', '=', '1' )]" />
+                    <filter string="This F.Year" name="this_year" domain="[('fin_yr','=',  time.strftime('%%Y'))]"/>
+                    <filter string="Last F.Year" name="last_year" domain="[('fin_yr','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+					<filter string="This Quarter" name="current_quarter" domain="[( 'current_quarter', '=', '1' )]" />
+					<filter string="Last Year This Quarter" name="last_year_current_quarter" domain="[( 'last_year_current_quarter', '=', '1' )]" />
+					<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+					<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+					<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_budget_category_quarterly_kanban">
+            <field name="name">budget.category.quarterly.kanban</field>
+            <field name="model">budget.category.quarterly</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="quarter">
+                    <field name="company_id" widget="selection" groups="base.group_multi_company" />
+                    <field name="margin" />
+                    <field name="is_margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <field name="is_visible" />
+                    <templates>
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"' >
+                            <div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}">
+                                <div style='width:100%;border-radius: 2px;'  class="box">
+                                    <table class="oe_budget_oneline"  style="border:0;width: 100%;color:#000000" >
+                                        <thead>
+                                            <tr>
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+                                                    <span style="display:none;">
+                                                        <field name="name" />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+                                                    <span>Planned</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Actual</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Variance / YoY</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+                                                    <field name="name" />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+                                                    <span>
+                                                        <field name='planned_amount' />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="c_actual_value">
+                                                    <field name='actual_amount' />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+                                                    <span>
+                                                        <field name='var_amount' />%
+                                                    </span>
+                                                </td>
+                                            </tr> 
+                                            <div t-if='record.is_margin.raw_value'>  
+                                                <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+                                                    <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+                                                        <span>
+                                                            <field name='plan_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="m_actual_value">
+                                                        <span>
+                                                            <field name='actual_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+                                                        <span>
+                                                            <field name='var_margin' />%
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+                                                    <span>
+                                                        <field name='plan_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="p_actual_value">
+                                                    <span>
+                                                        <field name='act_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+                                                    <span>
+                                                        <field name='yoy' />%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="oe_clear">
+                                </div>                           
+                            </div>
+                            <style >
+                                .box:hover
+                                {
+                                    -moz-box-shadow: 0 0 11px #4c4c4c;
+                                    -webkit-box-shadow: 0 0 11px #4c4c4c;
+                                    box-shadow: 0 0 11px #4c4c4c;
+                                }
+                            </style>
+
+                       <!--  </t> -->
+                        </div>
+                    </templates>
+                </kanban>
+            </field>
+        </record>	
+
+		<record id="action_budget_category_quarterly" model="ir.actions.act_window">
+			<field name="name">Budget Category Quarterly</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">budget.category.quarterly</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban</field>
+            <field name="context">{'search_default_current_quarter': 1,'search_default_budget': 1}</field>
+		</record>
+
+	 <record model="ir.cron" id="budget_category_yearly">
+            <field name="name">Budget category Yearly</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="True" name="active" />
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'budget.category.yearly'"/>
+            <field name="function" eval="'action_create_budget_category_yearly'"/>
+            <field name="args" eval="'(1,)'"/>
+        </record> 
+		
+		<record id="view_budget_category_yearly_search" model="ir.ui.view">
+            <field name="name">budget.category.yearly.search</field>
+            <field name="model">budget.category.yearly</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Budget Line" context="{'group_by':'name'}"/>
+                    <filter string="Company" context="{'group_by':'company_id'}"/>
+                    <filter string="Year" context="{'group_by':'fin_yr'}"/>
+                    <filter string="Current Company" name="current_company" domain="[( 'current_company', '=', '1' )]" />
+                    <filter string="This F.Year" name="this_year" domain="[('year','=',  time.strftime('%%Y'))]"/>
+                    <filter string="Last F.Year" name="last_year" 
+            			domain="[('year','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+					<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+					<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+					<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                </search>
+            </field>
+        </record>
+		
+		<record model="ir.ui.view" id="view_budget_category_yearly_kanban">
+            <field name="name">budget.category.yearly.kanban</field>
+            <field name="model">budget.category.yearly</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="fin_yr">
+                    <field name="company_id" widget="selection" groups="base.group_multi_company" />
+                    <field name="budget_category_id" />
+                    <field name="is_margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <field name="is_visible" />
+                    <templates>
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"' >
+                            <div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}">
+                                <div style='width:100%;border-radius: 2px;'  class="box">
+                                    <table class="oe_budget_oneline"  style="border:0;width: 100%;color:#000000" >
+                                        <thead>
+                                            <tr>
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+                                                    <span style="display:none;">
+                                                        <field name="name" />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+                                                    <span>Planned</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Actual</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Variance / YoY</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+                                                    <field name="name" />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+                                                    <span>
+                                                        <field name='planned_amount' />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="c_actual_value">
+                                                    <field name='actual_amount' />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+                                                    <span>
+                                                        <field name='var_amount' />%
+                                                    </span>
+                                                </td>
+                                            </tr> 
+                                            <div t-if='record.is_margin.raw_value'> 
+                                                <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+                                                    <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+                                                        <span>
+                                                            <field name='plan_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="m_actual_value">
+                                                        <span>
+                                                            <field name='actual_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+                                                        <span>
+                                                            <field name='var_margin' />%
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+                                                    <span>
+                                                        <field name='plan_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="p_actual_value">
+                                                    <span>
+                                                        <field name='act_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+                                                    <span>
+                                                        <field name='yoy' />%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="oe_clear">
+                                </div>                           
+                            </div>
+                            <style >
+                                .box:hover
+                                {
+                                    -moz-box-shadow: 0 0 11px #4c4c4c;
+                                    -webkit-box-shadow: 0 0 11px #4c4c4c;
+                                    box-shadow: 0 0 11px #4c4c4c;
+                                }
+                            </style>
+
+                       <!--  </t> -->
+                        </div>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <record id="action_budget_category_yearly" model="ir.actions.act_window">
+			<field name="name">Budget Category Yearly</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">budget.category.yearly</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban</field>
+            <field name="context">{'search_default_this_year': 1,'search_default_budget': 1}</field>
+		</record>
+
+	
+        <menuitem id="menu_act_budget_pactice_view"  parent="vitalpet_mypractice.menu_mypractice_reports" name="Budget Practice" action="act_budget_category_quarter_view_dashboard" sequence="01" groups="vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_user"/>
+
+		 <menuitem id="menu_act_budget_pactice_view_monthly" parent="menu_act_budget_pactice_view" name="Budget" action="act_budget_category_quarter_view_dashboard" sequence="1" groups="vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_user"/>
+	
+
+
+
+
+</odoo>

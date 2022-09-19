@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="signature_enhancement" xml:space="preserve">
+
+
+    <t t-name="vitalpet_document_enhancement.signature_item" name="Signature Item">
+        <t t-if="readonly">
+            <div t-if="type == 'signature' || type == 'initial'" class="o_sign_signature_item text-center" style="text-align: center;" t-att-data-signature="value"><span class="o_sign_helper"/><img t-if="value" t-att-src="value"/><t t-if="!value"><t t-esc="placeholder"/></t><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+
+            <div t-if="type == 'text' || type == 'textarea'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+            <div t-if="type == 'integer' || type == 'float' || type == 'selection'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+            <div t-if="type == 'boolean'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+        </t>
+
+        <t t-if="!readonly">
+            <button t-if="type == 'signature' || type == 'initial'" class="o_sign_signature_item text-center"><span class="o_sign_helper"/><t t-esc="placeholder"/></button>
+            <input t-if="type == 'text'" type="text" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+            <textarea t-if="type == 'textarea'" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+            <input t-if="type == 'integer'" type="number" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+            <input t-if="type == 'float'" type="number" step="0.01" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+            <input t-if="type == 'boolean'" type="checkbox" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+        	<input t-if="type == 'selection'" type="text" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+        	
+        </t>
+    </t>
+    
+    <!-- <t t-name="vitalpet_document_enhancement.no_thank_you_dialogue" t-extend="website_sign.thank_you_dialog">
+        <t t-jquery=".o_thankyou_message" t-operation="replace">
+        	<p>something</p>
+        </t>
+    </t> -->
+
+ </templates>

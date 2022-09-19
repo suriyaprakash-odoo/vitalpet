@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <!--  Line Graphs -->
+
+        <record id="prospect_rate_line_graph" model="ir.ui.view">
+            <field name="name">prospect.rate.line.graph</field>
+            <field name="model">crm.phonecall</field>
+                       <field name="type">graph</field>
+			                  <field name="arch" type="xml">
+        	<graph string="Prospect Call Rate Line" type="line" stacked="True">
+                    <field name="date_of_call" interval="month" type="row"/>
+					           <field name="prospect_calls_rate" type="measure" />
+                </graph>
+            </field>
+        </record>
+
+
+
+        <record id="action_prospect_rate_line_graph" model="ir.actions.act_window">
+            <field name="name">Prospect Rate Line Graph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="context">{'graph_mode':'line'}</field>
+            <field name="domain">[('date_of_call', '!=', False),('date_of_call', '&gt;=', (context_today()-datetime.timedelta(weeks=23)).replace(day=1).strftime('%Y-%m-%d'))]</field>
+            <field name="view_id" ref="prospect_rate_line_graph"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Graph Line.
+                </p>
+            </field>
+        </record>
+
+        <record id="appointment_rate_line_graph" model="ir.ui.view">
+            <field name="name">appointment.rate.line.graph</field>
+            <field name="model">crm.phonecall</field>
+                       <field name="type">graph</field>
+			<field name="arch" type="xml">
+        	<graph string="Appointment Rate Line" type="line" stacked="True">
+                    <field name="date_of_call" interval="month" type="row"/>
+					<field name="appointments_rate" type="measure" />
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_appointment_rate_line_graph" model="ir.actions.act_window">
+            <field name="name">Appointment Rate Line Graph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="context">{'graph_mode':'line'}</field>
+            <field name="domain">[('date_of_call', '!=', False),('call_summary.is_lead', '=', True),('date_of_call', '&gt;=', (context_today()-datetime.timedelta(weeks=23)).replace(day=1).strftime('%Y-%m-%d'))]</field>
+            <field name="view_id" ref="appointment_rate_line_graph"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Graph Line.
+                </p>
+            </field>
+        </record>
+
+        <record id="missed_opportunities_line_graph" model="ir.ui.view">
+            <field name="name">missed.opportunities.line.graph</field>
+            <field name="model">crm.phonecall</field>
+           <field name="type">graph</field>
+			<field name="arch" type="xml">
+        	<graph string="Appointment Rate Line" type="line" stacked="True">
+                    <field name="date_of_call" interval="month" type="row"/>
+					<field name="missed_opportunities_rate" type="measure" />
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_missed_opportunities_line_graph" model="ir.actions.act_window">
+            <field name="name">Missed Opportunities Line Graph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.phonecall</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="context">{'graph_mode':'line'}</field>
+            <field name="domain">[('date_of_call', '!=', False),('call_summary.is_lead', '=', True),('date_of_call', '&gt;=', (context_today()-datetime.timedelta(weeks=23)).replace(day=1).strftime('%Y-%m-%d'))]</field>
+            <field name="view_id" ref="missed_opportunities_line_graph"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Graph Line.
+                </p>
+            </field>
+        </record>
+
+        <record id="performance_gauges_board" model="ir.ui.view">
+            <field name="name">board.performance.gauges</field>
+            <field name="model">board.board</field>
+            <field name="arch" type="xml">
+                <form string="Performance Gauges Dashboard" version="7.0">
+                    <board style="1-1-1">
+                        <column>
+                            <action name="%(prospect_rate_gauge_action)d"/>
+                            <action name="%(action_prospect_rate_line_graph)d"/>
+                        </column>
+                        <column>
+                            <action name="%(appointment_rate_gauge_action)d"/>
+                            <action name="%(action_appointment_rate_line_graph)d"/>
+                        </column>
+                        <column>
+                            <action name="%(missed_opportunities_gauge_action)d"/>
+                            <action name="%(action_missed_opportunities_line_graph)d"/>
+                        </column>
+                    </board>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="performance_gauges_action" model="ir.actions.act_window">
+            <field name="name">Performance Gauges</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="performance_gauges_board"/>
+            <field name="help" type="html">
+                <div class="oe_empty_custom_dashboard">
+              <p>
+                <b>This Dashboard is empty.</b>
+              </p>
+          </div>
+            </field>
+        </record>
+
+        <menuitem id="performance_gauge" name="Performance Gauges" parent="frontdesk_promote" action='performance_gauges_action' sequence="3"/>>
+
+    		<menuitem id="dashboard_promote" name="Dashboard" action='performance_gauges_action'
+    							groups="group_promote_user" parent="main_vitalpet_promote" sequence="1"/>
+
+
+     </data>
+</odoo>

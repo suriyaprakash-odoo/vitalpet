@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		
+        <record forcecreate="True" id="ir_cron_scheduler_appraisal" model="ir.cron">
+           <field name="name">Run Employee Appraisal</field>
+           <field eval="False" name="active" />
+           <field name="user_id" ref="base.user_root" />
+           <field name="interval_number">30</field>
+           <field name="interval_type">minutes</field>
+           <field name="numbercall">-1</field>
+           <field eval="'hr.employee'" name="model" />
+           <field eval="'run_employee_appraisal'" name="function"/>
+           <field eval="'(False,)'" name="args" />
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_appraisal_tree_inherit">
+	        <field name="name">hr.appraisal.tree</field>
+	        <field name="model">hr.appraisal</field>
+			<field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_tree" />
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='count_completed_survey']" position="after">
+	                <field name="total_score" />
+	            </xpath>
+	        	<xpath expr="//field[@name='count_completed_survey']" position="before">
+	                <field name="appraisal_completed_date" />
+	            </xpath>
+	        </field>
+	    </record>
+
+	    <record id="hr_appraisal_kanban_inherit" model="ir.ui.view">
+	        <field name="name">hr.appraisal.kanban</field>
+	        <field name="model">hr.appraisal</field>
+			<field name="inherit_id" ref="hr_appraisal.hr_appraisal_kanban" />
+        	<field name="arch" type="xml">
+        		<xpath expr="//kanban/templates/t/div/div[2]/div[4]" position="after">
+	                <span>Score : </span><field name="total_score" /><br/>
+	                <span>Completed Date : </span><field name="appraisal_completed_date" />
+	            </xpath>
+	        	<!-- <xpath expr="//field[@name='count_completed_survey']" position="after">
+	                <field name="appraisal_completed_date" />
+	            </xpath> -->
+        	</field>
+        </record>
+
+		<record model="ir.ui.view" id="view_hr_appraisal_form_inherit">
+			<field name="name">hr.appraisal.form</field>
+			<field name="model">hr.appraisal</field>
+			<field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form" />
+			<field name="arch" type="xml">
+
+				<field name="manager_appraisal" position="before">
+						<field name="appraisal_by_short" />
+						<field name="appraisal_short_id" nolabel="1"
+							placeholder="Select Appraisal..." widget="many2many_tags"
+							attrs="{'invisible':[('appraisal_by_short','=',False)]}"
+							readonly="0" />
+						<field name="appraisal_short_survey_id" nolabel="1"
+							placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_short','=',False)]}" />
+				</field>
+				<field name="colleagues_survey_id" position="after">
+					<field name="appraisal_by_coach" />
+					<field name="appraisal_coach_id" nolabel="1"
+						placeholder="Select Appraisal Coach..." widget="many2many_tags"
+						attrs="{'invisible':[('appraisal_by_coach','=',False)]}" readonly="0" />
+					<field name="appraisal_coach_survey_id" nolabel="1"
+						placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_coach','=',False)]}" />
+				</field>
+				
+				<field name="collaborators_appraisal" position="attributes">
+					<attribute name="string">Direct Reports</attribute>
+				</field>
+				
+				
+				<field name="collaborators_appraisal" position="replace">  
+					<div><b>Direct Reports</b></div>  
+					<div><field name="collaborators_appraisal"/><field name="direct_report_anonymous" help="Check to make the answers anonymous"/>Anonymous</div>
+				</field>
+				<field name="colleagues_appraisal" position="replace">    
+					<div><b>Colleagues</b></div>  
+					<div><field name="colleagues_appraisal"/><field name="colleague_report_anonymous" help="Check to make the answers anonymous"/>Anonymous</div>				
+				</field>
+				
+				<!-- <field name="collaborators_appraisal" position="after">    
+				    <field name="direct_report_anonymous" />   
+				</field>
+				<field name="colleagues_appraisal" position="after">    
+				    <field name="colleague_report_anonymous"/>   
+				</field> -->
+				<field name="date_close" position="replace">  
+                   <field name="date_close"
+                    attrs="{'readonly':[('state','in', ('pending','done'))]}">
+                </field>				
+               </field>
+			</field>
+		</record>
+
+	<record id="hr_appraisal_custom_search" model="ir.ui.view">
+		<field name="name">hr.appraisal.search</field>
+		<field name="model">hr.appraisal</field>
+		<field name="inherit_id" ref="hr_appraisal.hr_appraisal_search" />
+		<field name="arch" type="xml">
+			<filter name="inactive" position="after">
+				<filter string="Over due" name="custom_over_due"
+					domain="[('date_close', '&lt;', context_today().strftime('%Y-%m-%d'))]" />
+			</filter>
+		</field>
+	</record>
+
+    <record model="ir.actions.act_window" id="hr_appraisal.open_view_hr_appraisal_tree">
+        <field name="name">Appraisal</field>
+        <field name="res_model">hr.appraisal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{"search_default_next_month":1}</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new appraisal.
+          </p><p>
+            You will be able to choose which forms will be sent (Employee,Managers,Collaborators or Colleagues),
+            to whom and the evaluation deadline. Once you have defined it,
+            change the stage to send it and view the results.
+          </p>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="hr_appraisal.open_view_hr_appraisal_tree2">
+        <field name="name">Appraisal</field>
+        <field name="res_model">hr.appraisal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{"search_default_employee_id": [active_id]}</field>
+    </record>
+		
+		<record id="hr_job_survey_inherit" model="ir.ui.view">
+			<field name="name">hr.job.form</field>
+			<field name="model">hr.job</field>
+			<field name="inherit_id" ref="hr_recruitment.hr_job_survey" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='address_id']" position="after">
+						<field name="short_survey_id" readonly="1" />
+						<field name="long_survey_id" readonly="1" />
+						<field name="colleague_survey_id" readonly="1" />
+						<field name="career_goals_survey" readonly="1" />
+				</xpath>
+			</field>
+		</record>
+
+		
+		<record id="hr_employee_view_form_inherit" model="ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr_appraisal.hr_employee_view_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//page[2]/group[1]" position="before">
+					<group col="4">
+					 	<field name="appraisal_by_short"/>
+	                    <field name="appraisal_short_id" nolabel="1" placeholder="Select Appraisal..." widget="many2many_tags" attrs="{'invisible':[('appraisal_by_short','=',False)]}" readonly="0"/>
+	                    <field name="appraisal_short_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_short','=',False)]}"/>
+					</group>
+					
+				</xpath>
+				<xpath expr="//page[2]/group[3]" position="after">
+					<group>
+					 	<field name="auto_send_appraisals"/>	                   
+					</group>					
+				</xpath>
+				<field name="appraisal_date" position="replace">  
+                   <field name="appraisal_date"
+                   attrs="{'invisible':[('periodic_appraisal','=',False)], 'required':[('periodic_appraisal','=',True)]}">
+                </field>				
+               </field>
+
+<!--      			<field name="appraisal_by_manager" position="before">
+                    <field name="appraisal_by_short"/>
+                    <field name="appraisal_short_id" nolabel="1" placeholder="Select Appraisal..." widget="many2many_tags" attrs="{'invisible':[('appraisal_by_short','=',False)]}" readonly="0"/>
+                    <field name="appraisal_short_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_short','=',False)]}"/>
+				</field> -->
+				
+				<field name="appraisal_colleagues_survey_id" position="after">
+                    <field name="appraisal_by_coach"/>
+                    <field name="appraisal_coach_id" nolabel="1" placeholder="Select Appraisal Coach..." widget="many2many_tags" attrs="{'invisible':[('appraisal_by_coach','=',False)]}" readonly="0"/>
+                    <field name="appraisal_coach_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_coach','=',False)]}"/>
+				</field>
+				<field name="appraisal_by_collaborators" position="attributes">    
+				    <attribute name="string">Direct Reports</attribute>    
+				</field>
+				<field name="appraisal_by_collaborators" position="replace">  
+					<div><b>Direct Reports</b></div>  
+					<div><field name="appraisal_by_collaborators"/><field name="direct_report_anonymous" help="Check to make the answers anonymous"/>Anonymous</div>
+				</field>
+				<field name="appraisal_by_colleagues" position="replace">    
+					<div><b>Colleagues</b></div>  
+					<div><field name="appraisal_by_colleagues"/><field name="colleague_report_anonymous" help="Check to make the answers anonymous"/>Anonymous</div>				
+				</field>
+			</field>
+		</record>
+
+		<record id="send_link_again_wizard" model="ir.ui.view">
+            <field name="name">send.appraisal.link.form</field>
+            <field name="model">send.appraisal.link</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <center>Do you want to resend the Link?</center>
+                    <footer>
+                        <button string="Extend Deadline" type="object" name="send_mail_again" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="oe_cancel"/>
+                    </footer>
+                </form>
+	        </field>
+	    </record>
+
+	    <record id="action_send_link_again" model="ir.actions.act_window">
+	        <field name="name">Extend Deadline</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">send.appraisal.link</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="target">new</field>
+	        <field name="view_id" ref="send_link_again_wizard"/>
+	    </record>
+
+	    <record model="ir.values" id="ir_action_send_link_again">
+	        <field name="model_id" ref="survey.model_survey_user_input" />
+	        <field name="name">Extend Deadline</field>
+	        <field name="key2">client_action_multi</field>
+	        <field name="value"
+	            eval="'ir.actions.act_window,' + str(ref('action_send_link_again'))" />
+	        <field name="key">action</field>
+	        <field name="model">survey.user_input</field>
+	    </record>
+
+	    <record id="survey_user_inpit_inherit" model="ir.ui.view">
+			<field name="name">survey.user_input.form</field>
+			<field name="model">survey.user_input</field>
+			<field name="inherit_id" ref="survey.survey_user_input_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//button[@name='action_survey_resend']" position="attributes">
+						<attribute name="string">Extend Deadline</attribute>
+				</xpath>
+			</field>
+		</record>
+
+	<!--Email template -->
+	<record id="appraisal_failed_to_send_mail" model="mail.template">
+		<field name="name">Appraisal Failed to send</field>
+		<field name="email_from">admin@vitalpet.com</field>
+		<field name="subject">Appraisal not sent</field>
+		<field name="email_to">nbano@vitalpet.com</field>
+		<field name="email_cc">mani.jayaraman@pptservices.com,suriyaprakash.subramanian@pptservices.com,</field>
+		<field name="model_id" ref="survey.model_survey_mail_compose_message" />
+		<field name="auto_delete" eval="True" />
+		<field name="body_html">
+            <![CDATA[
+				<p>Hi Team,</p>
+				<p>Appraisal not sent for ${ctx['employee']}.</p>
+
+				<br/>
+                <p><b>Best Regards,</b></p>
+                <p><b>Vitalpet Team</b></p>
+
+	    ]]>
+		</field>
+	</record>
+	</data>
+</odoo>

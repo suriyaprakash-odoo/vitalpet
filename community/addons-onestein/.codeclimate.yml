@@ -1,0 +1,51 @@
+---
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    exclude_fingerprints:
+    - 59095e20d7328c406d566eaa9cb137b1    # code duplication on a test file;
+    - 95345fa7d89388e7ccede80bdb51b86c    # code duplication on a copy();
+    - 8da12304144d7139eeaece48550fd7c7    # code duplication on a copy();
+    config:
+      languages:
+      - ruby
+      - javascript
+      - python
+      - php
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+- "hr_holidays_leave_repeated/tests/test_holidays_leave_repeated.py"
+- "hr_leave_hours/tests/test_leave_hours.py"
+- "account_asset_maintenance/tests/test_account_asset_maintenance.py"
+- "hr_public_holidays_leaves/tests/test_public_holidays_leaves.py"
+- "project_issue_stage/tests/test_project_issue_stage.py"
+- "hr_contract_approval/tests/test_hr_contract_approval.py"
+- "hr_absenteeism/tests/test_hr_absenteeism.py"
+- "hr_absenteeism_hours/tests/test_hr_absenteeism_hours.py"
+- "hr_holidays_expiration/tests/test_holidays_expiration.py"
+- "hr_holidays_status_expiration/tests/test_holidays_status_expiration.py"
+- "account_analytic_account_states/tests/test_analytic_account_state.py"
+- "project_analytic_align_follower/tests/test_align_followers.py"
+- "account_invoice_line_pricelist/tests/test_invoice_line_pricelist.py"
+- "account_cost_center/tests/test_cost_center.py"
+- "partner_sequence/tests/test_partner_sequence.py"
+- "account_invoice_line_pricelist/tests/test_invoice_line_pricelist.py"
+- "account_cost_spread/tests/test_code_spread.py"
+- "account_budgetary_position_one_account/tests/test_account_budget_position.py"

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <menuitem id='menu_sales_summary_config' name='Daily Summary' sequence='50' parent='vitalpet_mypractice.menu_mypractice_config' />
+
+        <record id="view_account_move_line_inherited" model="ir.ui.view">
+            <field name="name">Account Move</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='name']" position="after">
+               		<field name='product_id' />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_account_config_settings_ss_inherited" model="ir.ui.view">
+            <field name="name">res.company</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+               <!--<xpath expr="//form/sheet/notebook" position="inside">
+                    <page string='Configuration'>
+                       <group string="Sales Summary Round-Off">
+                            <group>
+                                <field name="ss_roundof" class="oe_inline" required='False'/>
+                                <field name="ss_adjustments_id" class="oe_inline" domain="[('company_id', '=', id)]" required='False'/>
+                                <field name='daily_report' class="oe_inline"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>-->
+                <xpath expr="//field[@name='company_registry']" position="after">
+                    <field name="code"/>
+                </xpath>
+
+            </field>
+        </record>
+   
+
+
+        <!-- Sales Summary Configuration-->
+
+        <record id="view_sale_summary_config_form" model="ir.ui.view">
+            <field name="name">sale.summary.config.form</field>
+            <field name="model">sale.summary.config</field>
+            <field name="arch" type="xml">
+                <form string="Sales Summary Configuration">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='field_label'/>
+                                <field name='category_id' domain="[('model', '=', 'sales.summary'),('ttype','=', 'float')]"/>
+                                <field name='product_categ'/>
+                                
+                                <field name='credit'/>
+                                <field name='is_group'/>
+                                <!-- <field name='is_group' attrs="{'invisible': [('field_label','=','Payments')]}"/> -->
+                            
+                            </group>
+                            <group>
+                                <field name='product_id' />
+                                <field name='journal_id'/>
+                                <field name='account_income_id'/>
+                                <field name='opposite_ac'/>
+                                <!-- <field name='opposite_ac' attrs="{'invisible': [('field_label','!=','Payments')]}"/> -->
+                                <field name='debit'/>
+                                <field name='group_code'/>
+                                <!-- <field name='group_code' attrs="{'invisible': [('field_label','=','Payments')]}"/> -->
+                                <field name='desc'/>
+                                <!-- <field name='reference' attrs="{'invisible': ['|',('field_label','!=','Payments'),('is_group', '!=', True)]}"/> -->     
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record id="view_sale_summary_config_tree" model="ir.ui.view">
+            <field name="name">sale.summary.config.tree</field>
+            <field name="model">sale.summary.config</field>
+            <field name="arch" type="xml">
+                <tree string='Summary'>
+                    <field name='field_label'/>
+                    <field name='category_id' domain="[('model', '=', 'sales.summary'),('ttype','=', 'float')]"/>
+                    <field name='product_id' />
+                    <field name='product_categ'/>
+                    <field name='account_income_id'/>
+                    <!-- <field name='account_expense_id'/> -->
+                    <field name='journal_id'/>
+                    <field name='debit'/>
+                    <field name='credit'/>
+                    <field name='group_code' attrs="{'invisible': [('field_label','=','Payments')]}"/>
+                    <field name='is_group' attrs="{'invisible': [('field_label','=','Payments')]}"/>
+                    <!-- <field name='is_active'/> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sale_summary_config_filter" model="ir.ui.view">
+            <field name="name">sale.summary.config.select</field>
+            <field name="model">sale.summary.config</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                    <field name='product_id'/>
+                    <field name="field_label"/>
+                    <field name='product_categ'/>
+                    <field name='account_income_id'/>
+                    <group string="Group By" name="groupby">
+                        <filter name="category" string="Category" context="{'group_by': 'field_label'}"/>
+                    </group>
+                   <!--  <field name='account_expense_id'/> -->
+                    <field name='journal_id'/>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record id="action_sale_summary_config" model="ir.actions.act_window">
+            <field name="name">Services</field>
+            <field name="res_model">sale.summary.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <!--  <field name="domain"></field> -->
+            <field name="context">{'search_default_category':1}</field>
+            <field name="search_view_id" ref="view_sale_summary_config_filter"/>
+        </record>
+
+
+
+    <!-- <menuitem id="menu_sale_summary_config_parent" name="Sales Summary" parent="menu_sales_summary_config" sequence="15"/> -->
+
+        <menuitem id="menu_sale_summary_config" name="Services" parent="menu_sales_summary_config" sequence="15" action="action_sale_summary_config"/>
+
+
+        <!-- Sales Summary Grouping-->
+
+        <record id="view_sale_summary_group_form" model="ir.ui.view">
+            <field name="name">sale.summary.group.form</field>
+            <field name="model">sale.summary.group</field>
+            <field name="arch" type="xml">
+                <form string="Sales Summary Groups">
+                    <sheet>
+                        <group>
+                            <group>
+                               <field name='name'/>
+                            </group>
+                            <group>
+                                <field name='code'/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record id="view_sale_summary_group_tree" model="ir.ui.view">
+            <field name="name">sale.summary.group.tree</field>
+            <field name="model">sale.summary.group</field>
+            <field name="arch" type="xml">
+                <tree string='Summary'>
+                    <field name='name'/>
+                    <field name='code'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sale_summary_group_filter" model="ir.ui.view">
+            <field name="name">sale.summary.group.select</field>
+            <field name="model">sale.summary.group</field>
+            <field name="arch" type="xml">
+                <search string="Search Summary Group">
+                    <field name='name'/>
+                    <field name='code'/>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record id="action_sale_summary_group" model="ir.actions.act_window">
+            <field name="name">Summary Group</field>
+            <field name="res_model">sale.summary.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <!--  <field name="domain"></field> -->
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_sale_summary_group_filter"/>
+        </record>
+
+
+        <menuitem id="menu_sale_summary_group" name="Summary Group" parent="menu_sales_summary_config" sequence="15" action="action_sale_summary_group"/>
+
+
+
+    <!-- Sales Summary Dashboard Grouping-->
+
+        <record id="view_summary_dashboard_group_form" model="ir.ui.view">
+            <field name="name">summary.dashboard.group.form</field>
+            <field name="model">summary.dashboard.group</field>
+            <field name="arch" type="xml">
+                <form string="Sales Summary Groups">
+                    <sheet>
+                        <group>
+                            <group>
+                               <field name='name'/>
+                               <field name='group_dashboard'/>
+                            </group>
+                            <group>
+                                <field name='code'/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record id="view_summary_dashboard_group_tree" model="ir.ui.view">
+            <field name="name">summary.dashboard.group.tree</field>
+            <field name="model">summary.dashboard.group</field>
+            <field name="arch" type="xml">
+                <tree string='Summary'>
+                    <field name='name'/>
+                    <field name='code'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_summary_dashboard_group_filter" model="ir.ui.view">
+            <field name="name">summary.dashboard.group.select</field>
+            <field name="model">summary.dashboard.group</field>
+            <field name="arch" type="xml">
+                <search string="Search Summary Dashboard Group">
+                    <field name='name'/>
+                    <field name='code'/>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record id="action_summary_dashboard_group" model="ir.actions.act_window">
+            <field name="name">Summary Group</field>
+            <field name="res_model">summary.dashboard.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <!--  <field name="domain"></field> -->
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_summary_dashboard_group_filter"/>
+        </record>
+
+
+       <!--  <menuitem id="menu_summary_dashboard_group" name="Summary Dashboard Group" parent="menu_sales_summary_config" sequence="15" action="action_summary_dashboard_group"/> -->
+
+
+
+        <record id="action_product_voucher_list" model="ir.actions.act_window">
+            <field name="name">Voucher Lines</field>
+            <field name="res_model">account.voucher.line</field>
+            <field name="context">{'search_default_product_id': [active_id], 'default_product_id': active_id}</field>
+            <!-- <field name="domain">[('product_id', '=', active_id)]</field> -->
+        </record>
+
+
+
+        <record id="view_product_template_inherited" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" name="action_view_voucher"
+                        type="object" icon="fa-usd">
+                        <field string="Summary" name="summary_count" widget="statinfo" />
+                    </button>
+
+                </xpath>
+            </field>
+        </record>
+
+
+
+
+ </data>
+</odoo>

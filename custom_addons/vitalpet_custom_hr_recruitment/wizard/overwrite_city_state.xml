@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+ 		 <record id="view_overwrite_city_state" model="ir.ui.view">
+            <field name="name">overwrite.city.state</field>
+            <field name="model">overwrite.city.state</field>
+            <field name="arch" type="xml">
+                <form string="Over Write City and State">
+                    <group>
+	                    <field name="city" required="1"/>
+	                    <field name="state" required="1"/>
+                    </group>
+                    <footer> 
+	                    <button name="apply_values" type="object" string="Confirm" class="oe_highlight"/> or
+	                    <button name="cancel" string="Close" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+		<record id="action_city_state" model="ir.actions.act_window">
+            <field name="name">Over Write City and State</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">overwrite.city.state</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_overwrite_city_state"/>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="cenit_base.menu_cenit_integration" name="Cenit Integration"
+                  sequence="30" groups="group_cenit_user"/>
+
+        <menuitem id="cenit_base.menu_cenit_settings" parent="base.menu_administration"
+            sequence="90" name="Cenit settings" groups="group_cenit_user"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+{
+    'name' : 'VitalPet My Practice',
+    'version' : '1.1',
+    'category' : 'My Practice',
+    'author' : 'VitalPet',
+    'website': 'http://www.vitalpet.com',
+    'depends': ['product','project', 'hr', 'account', 'account_asset', 'account_voucher', 'base', 'calendar','hr_contract', 
+    'hr_recruitment','hr_holidays','hr_attendance','hr_appraisal', 'account_reports','portal','vitalpet_additional_fiscal_periods','vitalpet_custom_hr_recruitment','payroll_period','vitalpet_appraisal_enhancements','account_payment_order'],
+    'data': [
+        'security/mypractice_security.xml',
+        'data/mypractice_data.xml',
+        'views/mypractice_view.xml',
+        'views/account_view.xml',
+        'views/mypractice_config_view.xml',
+        'vitalpet_mypractice.xml',
+        #'wizard/portal_wizard_views.xml',
+        'views/mypractice_menu_view.xml',
+        'security/ir.model.access.csv',
+    ],
+    'qweb': ['static/xml/vitalpet_mypractice.xml'],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

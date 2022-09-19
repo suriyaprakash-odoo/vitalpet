@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="onboarding_record_rule" model="ir.rule">
+            <field name="name">Employee_onboarding</field>
+            <field name="model_id" ref="vitalpet_onboarding.model_hr_employee_onboarding" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|',('company','=',False),('company','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+
+        <record model="ir.module.category" id="module_onboarding">
+            <field name="name">Onboarding</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_onboarding_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_onboarding" />
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="implied_ids" eval="[(4, ref('vitalpet_experience.group_experience_user')),(4, ref('vitalpet_custom_hr_recruitment.group_hr_recruitment_recruiter'))]"/>
+
+        </record>
+
+        <record id="group_onboarding_benefits_admin" model="res.groups">
+            <field name="name">Benefits Admin</field>
+            <field name="category_id" ref="module_onboarding" />
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="implied_ids" eval="[(4, ref('group_onboarding_user')),(4, ref('vitalpet_experience.group_experience_manager')),(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
+        </record>
+
+        <record id="group_onboarding_officer" model="res.groups">
+            <field name="name">Officer</field>
+            <field name="category_id" ref="module_onboarding" />
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="implied_ids" eval="[(4, ref('group_onboarding_benefits_admin')),(4, ref('vitalpet_experience.group_experience_manager')),(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
+        </record>
+
+        <record id="group_onboarding_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_onboarding" />
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="implied_ids" eval="[(4, ref('group_onboarding_officer')),(4, ref('vitalpet_experience.group_experience_manager')),(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

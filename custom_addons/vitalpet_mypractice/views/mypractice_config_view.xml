@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Mypractice config wizard -->
+    <record id="view_mypractice_config_settings" model="ir.ui.view">
+        <field name="name">mypractice settings</field>
+        <field name="model">mypractice.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Configure Mypractice" class="oe_form_configuration">
+                <header>
+                    <button string="Apply" type="object" name="execute" class="oe_highlight" />
+                    <button string="Cancel" type="object" name="cancel" class="oe_link" />
+                </header>
+                <group>
+                    <group string='Company' name='default_data' groups="base.group_multi_company">
+                        <label for="id" string="Company" style="padding-left: 2em;" />
+                        <div>
+                            <div>
+                                <field name="company_id" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                        <label for="id" string="Manager" style="padding-left: 2em;"/>
+                        <div>
+                            <div>
+                                <field name="manager_user_id" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                        <label for="id" string="Designee" style="padding-left: 2em;" />
+                        <div>
+                            <div>
+                                <field name="designee_user_id" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                        <label for="id" string="Federal Tax ID" style="padding-left: 2em;" />
+                        <div>
+                            <div>
+                                <field name="vat" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                        <label for="id" string="State Tax ID" style="padding-left: 2em;" />
+                        <div>
+                            <div>
+                                <field name="vat_state" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                        <label for="id" string="City Tax ID" style="padding-left: 2em;" />
+                        <div>
+                            <div>
+                                <field name="vat_city" options="{'no_create': True}" class="oe_inline" />
+                            </div>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="company_logo" widget="image" nolabel="1" class="oe_avatar oe_left"/>
+                    </group>
+                </group>
+                <group string='Operations' col='4'>
+
+                    <table>
+                        <tr >
+                            <td style="padding-right: 110px;padding-left: 2em; ">
+                                <label for="id" string="Days Open" name='daysopen' style="font-size: 20px;    font-weight: normal;"/>
+                            </td>
+                            <td style=" padding-right: 91px;">  </td>
+                            <td style="padding-left: 50px">
+                                <label for="id" string="Shifts" style="font-size: 20px;font-weight: normal;" />
+                            </td>
+                            <td style="padding-left: 100px;">
+                                <label for="id" string="Boarding" style="font-size: 20px; font-weight: normal;"      />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Sunday" />
+                            </td>
+                            <td >
+                                <field name="Sunday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;"  width="150">
+                                <field name="sunday_shift"  />
+                            </td>
+                            <td style="width: 124px;padding-left: 100px;">
+
+                                <field name="total_capacity" class="oe_inline" />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Monday" />
+                            </td>
+                            <td>
+                                <field name="Monday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="monday_shift"  />
+                            </td>
+                            <td style="padding-left: 100px;">
+                                <label for="id" string="Day Campers" style="font-size: 20px; font-weight: normal;"      />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Tuesday" />
+                            </td>
+                            <td >
+                                <field name="Tuesday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="tuesday_shift"  />
+                            </td>
+                            <td style="width: 124px;padding-left: 100px;">
+
+                                <field name="total_day_camp_capacity" class="oe_inline" />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Wednesday" />
+                            </td>
+                            <td >
+                                <field name="Wednesday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="wednesday_shift"  />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Thursday" />
+                            </td>
+                            <td >
+                                <field name="Thursday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="thursday_shift"  />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Friday" />
+                            </td>
+                            <td >
+                                <field name="Friday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="friday_shift"  />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-right: 110px;padding-left: 2em;">
+                                <label for="id" string="Saturday" />
+                            </td>
+                            <td >
+                                <field name="Saturday" class="oe_inline" />
+                            </td>
+                            <td style="padding-left: 50px;" width="150">
+                                <field name="saturday_shift"  />
+                            </td>
+                        </tr>
+
+
+                    </table> 
+
+                    
+                </group>
+
+                <group string='Dashboard'>
+
+                        <group>
+
+                        <label for="id" string="To Dos" style="font-size: 20px;padding-left: 24px;    font-weight: normal;"/>
+                        <div>
+                        </div>
+
+                        <label for="id" string="Expenses" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;"/>
+                        <div>
+                            <field name="expense" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Recruitment" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;"/>
+                        <div>
+                            <field name="recruitment" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Onboarding" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;" />
+                        <div>
+                            <field name="onboarding" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Leaves" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;"/>
+                        <div>
+                            <field name="leaves" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Attendance" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;" />
+                        <div>
+                            <field name="attendance" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Contracts"  style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;"/>
+                        <div>
+                            <field name="contract" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Appraisals" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;" />
+                        <div>
+                            <field name="performance" class="oe_inline" />
+                        </div>
+                        <label for="id" string="Payroll" style="font-weight: 600;padding-right: 110px;;   padding-left: 2em;" />
+                        <div>
+                            <field name="payroll_conf" class="oe_inline" />
+                        </div>
+						
+
+                    </group>
+                </group>
+
+                <div id="main">
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mypractice_config" model="ir.actions.act_window">
+        <field name="name">Configure Mypractice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mypractice.config.settings</field>
+        <field name="view_id" ref="view_mypractice_config_settings" />
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+
+</odoo>

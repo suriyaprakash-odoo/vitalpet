@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      
+		<record model="ir.module.category" id="module_category_vitalpet_mapping">
+            <field name="name">Vitalpet Mapping</field>
+            <field name="description">Module containing the main information coming from Sikka, and maps to the Vetzip Infrastructure.</field>
+            <field name="sequence">100</field>
+        </record>
+
+		<record model="res.groups" id="vitalpet_mapping.group_mapping_user">
+			<field name="name">User</field>
+	        <field name="category_id" ref="vitalpet_mapping.module_category_vitalpet_mapping"/>
+	        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	    </record>
+
+		<record model="res.groups" id="vitalpet_mapping.group_mapping_officer">
+			<field name="name">Officer</field>
+	        <field name="category_id" ref="vitalpet_mapping.module_category_vitalpet_mapping"/>
+	        <field name="implied_ids" eval="[(4, ref('vitalpet_mapping.group_mapping_user'))]"/>
+	    </record>
+	
+		<record model="res.groups" id="vitalpet_mapping.group_mapping_manager">
+			<field name="name">Manager</field>
+	        <field name="category_id" ref="vitalpet_mapping.module_category_vitalpet_mapping"/>
+	        <field name="implied_ids" eval="[(4, ref('vitalpet_mapping.group_mapping_officer'))]"/>
+	    </record>
+
+
+    </data>
+
+</odoo>

@@ -1,0 +1,107 @@
+ <!-- <template id="assets_backend" name="sales_summary assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        <script type="text/javascript" src="/sales_summary/static/src/js/listview_extend.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script>   
+            $(function() {
+                 $( "#calendar" ).datepicker();   
+            }); 
+        </script>
+    </xpath>
+</template> -->
+
+
+<template id="template_listview_extend" xml:space="preserve">
+   <!--  <t t-extend="ListView.buttons">
+        <div class="o_list_buttons" position="replace">
+                <button t-if="widget.model == 'sales.summary'"  class="oe_button oe_new_button oe_highlight" type="button">Создать новый проект</button>
+                <button t-if="widget.model != 'sales.summary'" class="oe_button oe_list_add oe_highlight" type="button">Создать</button>
+        </div>
+    </t> -->
+
+
+
+<t t-name="ControlPanel">
+    <div class="o_control_panel">
+        <ol class="breadcrumb"/>
+        <div class="o_cp_searchview">
+            <!-- <div id='period' t-if="widget.model == 'sales.summary'">
+                        <h4>Date :</h4> 
+                        <input type="text" id="#datepicker-13" />
+                    </div>
+                    <div id='journal' t-if="widget.model == 'sales.summary'">
+                        <h4>Journal :</h4> 
+                        <select class="oe_account_select_journal" >
+                            <option>Missing reports by Practice</option>
+                            <option>Draft - Balanced but not validated</option>
+                            <option>Draft - Imbalanced</option>
+                        </select>
+                    </div> -->
+        </div>
+        <div class="o_cp_left">
+            <div style="margin-bottom:0px;">
+                <div class='o_account_reports_next_action_date_picker' />
+            </div>
+            <div class="o_cp_buttons"/>
+            <div class="o_cp_sidebar"/>
+        </div>
+        <div class="o_cp_right">
+            <div class="btn-group o_search_options"/>
+            <div class="o_cp_pager"/>
+            <div class="btn-group btn-group-sm o_cp_switch_buttons"/>
+        </div>
+    </div>
+</t>
+
+
+
+
+
+
+<!-- <t t-name="ListView.buttons">
+    <t t-if="!widget.no_leaf and widget.options.action_buttons !== false">
+        <div class="o_list_buttons">
+            <t t-if="widget.options.addable and widget.is_action_enabled('create')">
+                <button type="button" class="btn btn-primary btn-sm o_list_button_add" accesskey="c">
+                    <t t-esc="widget.options.addable"/>
+                </button>
+            </t>
+            <button type="button" class="btn btn-primary btn-sm o_list_button_save" accesskey="s">
+                Save
+            </button>
+            <button type="button" class="btn btn-default btn-sm o_list_button_discard" accesskey="j">
+                Discard
+            </button>
+            <t t-name="AccountMoveLineQuickAdd"> -->
+			     <!--  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+			         rel = "stylesheet">
+			      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+			      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+			      			      <script>
+			         $(function() {
+			            $( "#datepicker-13" ).datepicker();
+			            $( "#datepicker-13" ).datepicker("show");
+			         });
+			      </script> -->
+		       <!--  <div class="oe_account_quickadd ui-toolbar" style="margin-bottom:0px;">
+		            <div class="oe_form_dropdown_section" id='period' t-if="widget.model == 'sales.summary'">
+		                <h4>Date :</h4> 
+
+		                <input type="text" id="#datepicker-13" />
+		            </div>
+		            <div class="oe_form_dropdown_section"  id='journal' t-if="widget.model == 'sales.summary'">
+		                <h4>Journal :</h4> 
+		                <select class="oe_account_select_journal" >
+		                	<option>Missing reports by Practice</option>
+		                	<option>Draft - Balanced but not validated</option>
+		                	<option>Draft - Imbalanced</option>
+		                </select>
+		            </div>
+		        </div>
+    		</t>
+        </div>
+    </t>
+    
+</t> -->
+
+</template>

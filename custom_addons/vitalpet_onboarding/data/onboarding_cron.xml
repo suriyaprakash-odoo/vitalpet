@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+		<record id="ir_remainder_mail" model="ir.cron">
+	        <field name="name">Remainder Mail</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'hr.employee.onboarding'" name="model" />
+	        <field eval="'remainder_email_cron'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+
+		<record id="document_expiration_cron" model="ir.cron">
+	        <field name="name">Document Expiration Cron</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'hr.employee.onboarding'" name="model" />
+	        <field eval="'documents_expiration_cron'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+
+		<record id="document_remainder_cron" model="ir.cron">
+	        <field name="name">Sign Documents Cron</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'hr.employee.onboarding'" name="model" />
+	        <field eval="'remainder_mail_about_expiration'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+    
+    </data>
+</odoo>

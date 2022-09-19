@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="hr_holidays.property_rule_holidays_officer" model="ir.rule">
+
+			<field name="domain_force">['|',('employee_id.company_id','=',False),('employee_id.company_id','child_of',[user.company_id.id])]</field>
+
+		</record>
+
+
+
+	</data>
+</odoo>

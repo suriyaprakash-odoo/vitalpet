@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+   <t t-name="vitalpet_mypractice.HomePage">
+      <div class="o_dashboards">
+         <div class="o_website_dashboard">
+         </div>
+      </div>
+   </t>
+   <t t-name="vitalpet_mypractice.dashboard_visits">
+      <div class="row o_dashboard_visits">
+         <div class="o_view_manager_content">
+            <div class="o_control_panel" style="display: block;">
+               <div class="container-fluid" style="display:block;">
+                  <div class="row">
+                     <div class="heading" style="margin-top: 14px;">
+                        <div style="font-size: 12px;">
+                           <h1>Dashboard</h1>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-2 col-sm-12 to-do-list-first" id='div1'>
+                        <div>To do</div>
+                        <div style="margin-bottom: 14px;" >Today</div>
+                        <div>Next 2 Weeks</div>
+                        <div>Action</div>
+                     </div>
+                     <div class="col-md-1 col-sm-4 to-do-list" id='div2'>
+                        <div class="list1">Calendar</div>
+                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.action_calendar_event_today" id='today' style="color:#ffffff;">
+                           <div class="list2">
+                              <span class="o_highlight">
+                                 <t t-esc="values['meeting']['today']"/>
+                              </span>
+                            
+                              <br/>
+                              Meetings
+                           </div>
+                          
+                        </a>
+                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.action_calendar_event_next2week" id='nextweek'>
+                        <div class="list3">
+                           
+                              <span class="o_highlight">
+                                 <t>
+                                    <t t-esc="values['meeting']['next_7_days']"/>
+                                 </t>
+                              </span>
+                              <br/>
+                        </div>
+                        
+                        </a>
+                     </div>
+                     <div class="col-sm-4 col-md-1 to-do-list" id='div3'>
+                           <div class="list1">Admin</div>
+                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='today'>
+                           <div class="list2">
+                              <span class="o_highlight">
+                                <t>
+	                                <t t-esc="values['admin']['today']"/>
+	                            </t>
+                              </span>
+                              <br/>
+                              ToDo
+                           </div>
+                           
+                           </a>
+                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='next2week'>
+	                           <div class="list3">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['admin']['next_7_days']"/>
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+		                       
+		                    </a>
+                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='overdue'>
+	                           <div t-if="values['admin']['over_due'] == 0" style="background:orange" class="list4">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['admin']['over_due']"/> Overdue
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+		                        <div t-if="values['admin']['over_due'] > 0" style="background:red" class="list4">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['admin']['over_due']"/> Overdue
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+		                    </a>
+                     </div>
+                     <t t-if="values['expenses']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div4'>
+	                        <div class="list1">Expenses</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_expense_approve" >
+		                        <div class="list2">
+		                           <span class="o_highlight">
+		                              <t t-esc="values['expenses']['to_approve']"/>
+		                           </span>
+		                           <br/>
+		                           To Approve
+		                        </div>
+		                        
+		                    </a>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_expense_submit" >
+	                           <div class="list3">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['expenses']['to_submit']"/> to Submit
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+		                       
+		                    </a>
+		                    <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_expense_refuse" id="refuse" >
+	                        <div t-if="values['expenses']['refuse'] == 0" style="background:orange"  class="list4">
+	                              <span class="o_highlight">
+	                                 <t>
+	                                    <t t-esc="values['expenses']['refuse']"/> Refused
+	                                 </t>
+	                              </span>
+	                           </div>
+	                      <div t-if="values['expenses']['refuse'] > 0" style="background:red"  class="list4">
+	                              <span class="o_highlight">
+	                                 <t>
+	                                    <t t-esc="values['expenses']['refuse']"/> Refused
+	                                 </t>
+	                              </span>
+	                           </div>
+	                        </a>
+	                     </div>
+	                 </t>
+                     <t t-if="values['recruitment']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Recruitment</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_hr_applicant_interview" >
+	                        <div class="list2">
+		                           <span class="o_highlight">
+		                              <t t-esc="values['recruitment']['inbox']"/> 
+		                           </span>
+		                           <br/>
+		                           Applications
+	                        </div>
+	                         
+	                        </a>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_hr_applicant_offer" >
+	                        	<div t-if="values['recruitment']['offer'] == 0" style="background:orange" class="list3">
+	                        		<span class="o_highlight">
+		                              <t t-esc="values['recruitment']['offer']"/> Offers
+		                           </span>
+		                           <br/>
+		                           
+	                        	</div>
+	                        	<div t-if="values['recruitment']['offer'] > 0" style="background:" class="list3">
+	                        		<span class="o_highlight">
+		                              <t t-esc="values['recruitment']['offer']"/> Offers
+		                           </span>
+		                           <br/>
+		                           
+	                        	</div>
+	                    	</a>
+	                    	<a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_action_hr_job" >
+	                        <div  t-if="values['recruitment']['recruitment'] == 0" style="background:orange" class="list4">
+	                              <span class="o_highlight">
+		                              <t t-esc="values['recruitment']['recruitment']"/> Open Reqs
+		                           </span>
+		                           <br/>
+	                           </div>
+	                          <div  t-if="values['recruitment']['recruitment'] > 0" style="background:red" class="list4">
+	                              <span class="o_highlight">
+		                              <t t-esc="values['recruitment']['recruitment']"/> Open Reqs
+		                           </span>
+		                           <br/>
+	                           </div>
+	                        </a>
+	                     </div>
+	                 </t>
+	                 <t t-if="values['onboarding']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Onboarding</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice_dashboard.mypractice_action_hr_onboarding_today_filter_inherit" >
+		                        <div class="list2">
+		                           <span class="o_highlight">
+			                              <t t-esc="values['onboarding']['today']"/> 
+			                           </span>
+			                           <br/>
+			                           Open Tasks
+		                           <br/>
+		                        </div>
+		                    </a>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice_dashboard.mypractice_action_hr_onboarding_open_filter_inherit" >
+	                        <div  t-if="values['onboarding']['next_7_days'] == 0" style="background:orange" class="list3">
+	                              <span class="o_highlight">
+		                              <t t-esc="values['onboarding']['next_7_days']"/> Open Reqs
+		                           </span>
+		                           <br/>
+	                           </div>
+	                          <div  t-if="values['onboarding']['next_7_days'] > 0" style="background:" class="list3">
+	                              <span class="o_highlight">
+		                              <t t-esc="values['onboarding']['next_7_days']"/> Open Reqs
+		                           </span>
+		                           <br/>
+	                           </div>
+	                        </a>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice_dashboard.mypractice_action_hr_onboarding_to_onboard_filter_inherit" >
+	                            <div t-if="values['onboarding']['to_onboard'] == 0" style="background:orange" class="list4">
+	                        		<span class="o_highlight">
+		                              <t t-esc="values['onboarding']['to_onboard']"/> To Onboard
+		                           	</span>
+		                         <br/>
+		                        </div>
+	                        	<div t-if="values['onboarding']['to_onboard'] > 0" style="background:red" class="list4">
+	                        		<span class="o_highlight">
+		                              <t t-esc="values['onboarding']['to_onboard']"/> To Onboard
+		                           	</span>
+		                           <br/>
+	                        	</div>
+		                    </a>
+	                     </div>
+	                 </t>
+
+	                 <!-- <t t-if="values['cvisit']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div3'>
+	                           <div class="list1">Visit Report</div>
+	                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='visit_today'>
+	                           <div class="list2">
+	                              <span class="o_highlight">
+	                                <t>
+		                                <t t-esc="values['cvisit']['today_visit']"/>
+		                            </t>
+	                              </span>
+	                              <br/>
+	                              ToDo
+	                           </div>	                           
+	                           </a>
+	                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='visit_next2week'>
+		                           <div class="list3">
+			                              <span class="o_highlight">
+			                                 <t>
+			                                    <t t-esc="values['cvisit']['next_7_days_visit']"/>
+			                                 </t>
+			                              </span>
+			                              <br/>
+			                        </div>			                       
+			                    </a>
+	                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.open_view_mypractice_todo_task_all" id='visit_overdue'>
+		                           <div t-if="values['cvisit']['over_due_visit'] == 0" style="background:orange" class="list4">
+			                              <span class="o_highlight">
+			                                 <t>
+			                                    <t t-esc="values['cvisit']['over_due_visit']"/> Overdue
+			                                 </t>
+			                              </span>
+			                              <br/>
+			                        </div>
+			                        <div t-if="values['cvisit']['over_due_visit'] > 0" style="background:red" class="list4">
+			                              <span class="o_highlight">
+			                                 <t>
+			                                    <t t-esc="values['cvisit']['over_due_visit']"/> Overdue
+			                                 </t>
+			                              </span>
+			                              <br/>
+			                        </div>
+			                    </a>
+	                     </div>
+                 	</t> -->
+	                 <t t-if="values['leaves']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Leaves</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_open_department_holidays_approve">
+	                        <div class="list2">
+	                           <span class="o_highlight">
+	                               <t t-esc="values['leaves']['today']"/>
+	                           </span>
+	                           <br/>
+	                           <span style="font-size: 12px;" >Open Requests</span>
+	                        </div>
+	                         </a>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_action_hr_holidays_dashboard">
+		                        <div class="list3">
+		                           
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    0
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+                        </a>
+	                        <div class="list4">
+	                              <span class="o_highlight">
+	                                 <t>
+	                                    None
+	                                 </t>
+	                              </span>
+	                           </div>
+	                     </div>
+                     </t>
+                     <t t-if="values['attendance']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Attendance</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.hr_attendance_mypractice_action" id='today_chkout'>
+	                           <div class="list2">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['attendance']['today_chkout']"/>
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                            <span style="font-size: 11px;">Punched In</span>
+		                        </div>
+		                    </a>
+	                        <div class="list3">0</div>
+	                        <div class="list4">
+	                              <span class="o_highlight">
+	                                 <t>
+	                                    Clock Offline
+	                                 </t>
+	                              </span>
+	                           </div>
+	                     </div>
+                     </t>
+                     <t t-if="values['contract']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Contracts</div>
+
+	                      
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_hr_contract" id='running'>
+	                           <div class="list2">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['contract']['running']"/>
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        <span style="font-size: 11px;">Active Contracts</span>
+		                        </div>
+		                       
+		                    </a>
+                           <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_hr_contract_renew" id='renew'>
+	                           <div class="list3">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['contract']['renew']"/> to Renew
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                              
+		                        </div>
+		                        
+		                    </a>
+		                    <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.mypractice_action_hr_contract_draft" id='draft'>
+	                           <div t-if="values['contract']['draft'] == 0" style="background:orange" class="list4">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['contract']['draft']"/> Draft
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                              
+		                        </div>
+		                         <div t-if="values['contract']['draft'] > 0" style="background:red" class="list4">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['contract']['draft']"/> Draft
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                              
+		                        </div>
+		                    </a>
+	                     </div>
+		            </t>
+
+                     <t t-if="values['performance']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Appraisals</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_hr_appraisal_action_from_today" id='expi#b30000'>
+		                        <div class="list2">
+		                           <span class="o_highlight">
+		                              <t>
+		                                 <t t-esc="values['appraisals']['today_due']"/>
+		                              </t>
+		                           </span>
+		                           <br/>
+		                           Review Due
+		                        </div>
+	                    	</a>
+	                    	<a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_hr_appraisal_action_from_next2week" id='expi#b30000'>
+	                        <div class="list3">
+	                        	<span class="o_highlight">
+		                              <t>
+		                                 <t t-esc="values['appraisals']['next_due']"/>
+		                              </t>
+		                           </span>
+		                    
+		                    </div>
+		                    </a>
+		                    <a href="#" class="o_dashboard_action" name="vitalpet_mypractice.practice_hr_appraisal_action_from_overdue" id='custom_over_due'>
+	                        <div t-if="values['appraisals']['overdue'] == 0" style="background:orange" class="list4">
+	                              <span class="o_highlight">
+	                                 <t>
+	                                     <t t-esc="values['appraisals']['overdue']"/> Overdue
+	                                 </t>
+	                              </span>
+	                           </div>
+	                           <div t-if="values['appraisals']['overdue'] > 0" style="background:red" class="list4">
+		                              <span class="o_highlight">
+		                                 <t>
+		                                    <t t-esc="values['appraisals']['overdue']"/> Overdue
+		                                 </t>
+		                              </span>
+		                              <br/>
+		                        </div>
+	                     	</a>
+	                     </div>
+
+	                 </t>
+
+	                 <t t-if="values['payroll']">
+	                     <div class="col-sm-4 col-md-1 to-do-list" id='div5'>
+	                        <div class="list1">Payroll</div>
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_payroll_inputs.hr_payroll_inputs_action_menu" id="today">
+	                        <div t-if="values['payroll']['toady'] == 0" style="background:#85c47b" class="list2">
+	                           <span class="o_highlight">
+	                              <t>
+	                                 <t t-esc="values['payroll']['toady']"/>
+	                              </t>
+	                           </span>
+	                           <br/>
+	                           Report Due
+	                        </div>
+	                        <div t-if="values['payroll']['toady'] > 0" style="background:red" class="list2">
+	                           <span class="o_highlight">
+	                              <t>
+	                                 <t t-esc="values['payroll']['toady']"/>
+	                              </t>
+	                           </span>
+	                           <br/>
+	                           Report Due
+	                        </div>
+	                         </a>
+	                        
+	                        <a href="#" class="o_dashboard_action" name="vitalpet_payroll_inputs.hr_payroll_inputs_action_menu" id="pending" >
+	                        	<div t-if="values['payroll']['next2week'] == 0" style="background:" class="list3">
+	                        		<span class="o_highlight" style="font-size: 11px;">
+		                              <t t-esc="values['payroll']['next2week']"/> Pending Validations
+		                           </span>
+		                           <br/>
+		                           
+	                        	</div>
+	                        	<div t-if="values['payroll']['next2week'] > 0" style="background:orange" class="list3">
+	                        		<span class="o_highlight" style="font-size: 11px;">
+		                              <t t-esc="values['payroll']['next2week']"/> Pending Validations
+		                           </span>
+		                           <br/>
+		                           
+	                        	</div>
+	                    	</a>
+	                        
+    	                   	 <a href="#" class="o_dashboard_action" name="vitalpet_payroll_inputs.hr_payroll_inputs_action_menu" id="overdue_pending" >
+								<div t-if="values['payroll']['action'] == 0" style="background:orange" class="list4">
+								     <span class="o_highlight">
+								        <t>
+								           <t t-esc="values['payroll']['action']"/> Overdue
+								        </t>
+								     </span>
+								</div>
+								<div t-if="values['payroll']['action'] > 0" style="background:red" class="list4">
+								     <span class="o_highlight">
+								        <t>
+								           <t t-esc="values['payroll']['action']"/> Overdue
+								        </t>
+								     </span>
+								</div>
+	                        </a> 
+	                     </div>
+	                 </t>
+                  </div>
+              <br/>
+			<!-- 
+              <div class="row gray_base">
+                     <div class="col-xs-2 to-do-list-first" id='div1'>
+                        <div>Performance</div>
+                        <div style="margin-bottom: 14px;" >This Month</div>
+                        <div>Target</div>
+                        <div>Last Year</div>
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div10' >
+                        <div class="list1">Revenue</div>
+                           <div class="list2">
+                              <span class="o_highlight">
+								<t>
+                                  $<t t-esc="values['revenue']['this month']"/>
+                                 </t>                              
+		                        </span>
+                              <br/>
+                              To Date
+                           </div>
+                        <div class="list3">
+                           
+                              <span class="o_highlight">
+                               <t>
+                                    $<t t-esc="values['revenue']['target']"/>
+                                 </t>
+                                 <br/>
+								<t>
+                                    <t t-esc="values['revenue']['target_per']"/>
+                                 </t>
+                              </span>
+                              <br/>
+                        </div>
+                        <div class="list4">
+                          <span class="o_highlight">
+                             <t>
+                                    $<t t-esc="values['revenue']['last year']"/>
+                                 </t>
+                             <br/>
+							 <t>
+                                    <t t-esc="values['revenue']['last year_per']"/>
+                                 </t>
+                          </span>
+                       </div>
+               
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div3' >
+                        <div class="list1"  >Visits</div>
+		                        <div class="list2">
+		                           <span class="o_highlight">
+		                              <t>
+                                   <t t-esc="values['visit']['this month']"/>
+                                 </t>
+		                           </span>
+		                           <br/>
+		                            To Date
+		                        </div>
+	                           <div class="list3">
+		                              <span class="o_highlight">
+		                                 <t>
+                                    		<t t-esc="values['visit']['target']"/>
+                                 		</t>
+		                                 <br/>
+										<t>
+                                    		<t t-esc="values['visit']['target_per']"/>
+                                 		</t>		                              
+                                 	</span>
+		                              <br/>
+		                        </div>
+	                        <div class="list4">
+	                              <span class="o_highlight">
+									<t>
+                                    	<t t-esc="values['visit']['last year']"/>
+                                 	</t>	                                 
+                                 	<br/>
+	                                <t>
+                                    	<t t-esc="values['visit']['last year_per']"/>
+                                 	</t>
+	                              </span>
+	                           </div>
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div12'>
+                        <div class="list1">APC</div>
+                        <div class="list2">
+	                           <span class="o_highlight">
+	                              <t>
+                                    $<t t-esc="values['apc']['this month']"/>
+                                 </t>
+	                           </span>
+	                           <br/>
+	                           To Date
+                        </div>
+                        <div class="list3">
+                        	<t>
+                                    $<t t-esc="values['apc']['target']"/>
+                                 </t>
+                        	<br/>
+                        	<t>
+                                    <t t-esc="values['apc']['target_per']"/>
+                                 </t>
+                        </div>
+                        <div class="list4">
+                              <span class="o_highlight">
+                                <t>
+                                   $<t t-esc="values['apc']['last year']"/>
+                                 </t>
+                                 <br/>
+                               <t>
+                                    <t t-esc="values['apc']['last year_per']"/>
+                                 </t>
+                              </span>
+                           </div>
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div13'>
+                        <div class="list1">New Clients</div>
+                        <div class="list2">
+                           <span class="o_highlight">
+                                <t>
+                                    <t t-esc="values['new_client']['this month']"/>
+                                 </t>
+                           </span>
+                           <br/>
+                           To Date
+                        </div>
+                        <div class="list3">
+                        	<t>
+                                    <t t-esc="values['new_client']['target']"/>
+                                 </t>
+                        	<br/>
+                        	<t>
+                                   <t t-esc="values['new_client']['target_per']"/>
+                                 </t>
+                        </div>
+                        <div class="list4">
+                              <span class="o_highlight">
+                                <t>
+                                    <t t-esc="values['new_client']['last year']"/>
+                                 </t>
+                                 <br/>
+                                 <t>
+                                   <t t-esc="values['new_client']['last year_per']"/>
+                                 </t>
+                              </span>
+                           </div>
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div14'>
+                        <div class="list1">Staff Labor</div>
+                        <div class="list2">
+                           <span class="o_highlight">
+                                 <t>
+                                    <t t-esc="values['staff_labour']['this month']"/>
+                                 </t>
+                           </span>
+                           <br/>
+                           <span style="font-size: 12px;" >To Date</span>
+                        </div>
+                        <div class="list3">
+                           
+                              <span class="o_highlight">
+                                    <t>
+                                    <t t-esc="values['staff_labour']['target']"/>
+                                 </t>
+                                    <br/>
+                                    <t>
+                                    <t t-esc="values['staff_labour']['target_per']"/>
+                                 </t>
+                              </span>
+                              <br/>
+                        </div>
+                        <div class="list4">
+                              <span class="o_highlight">
+                              	<t>
+                                    <t t-esc="values['staff_labour']['last year']"/>
+                                 </t>
+                              	<br/>
+                              	<t>
+                                    <t t-esc="values['staff_labour']['last year_per']"/>
+                                 </t>
+                              </span>
+                           </div>
+                     </div>
+                     <div class="col-xs-1 to-do-list" id='div15'>
+                        <div class="list1">Schedule</div>
+                           <div class="list2">
+	                              <span class="o_highlight">
+	                                <t>
+                                   	<t t-esc="values['schedule']['this month']"/>
+                                 </t>
+	                              </span>
+	                              <br/>
+	                            <span style="font-size: 12px;" >To Date</span>
+	                        </div>
+                        <div class="list3">
+                        	<t>
+                                    <t t-esc="values['schedule']['target']"/>
+                                 </t>
+                        	<br/>
+                        	<t>
+                                   <t t-esc="values['schedule']['target_per']"/>
+                                 </t>
+                        </div>
+                        <div class="list4">
+                              <span class="o_highlight">
+                                <t>
+                                   <t t-esc="values['schedule']['last year']"/>
+                                 </t>
+                                <br/>
+                                <t>
+                                    <t t-esc="values['schedule']['last year_per']"/>
+                                 </t>
+                              </span>
+                           </div>
+	                 </div>
+               </div>
+ -->
+               <style>
+               	.gray_base .to-do-list div.list1,
+               	.gray_base .to-do-list div.list2,
+               	.gray_base .to-do-list div.list3,
+               	.gray_base .to-do-list div.list4,
+               	.gray_base .to-do-list a
+               	{ background-color: #cacaca; color:#000;}
+               </style>
+            </div>
+         </div>
+      </div>
+  </div>
+   </t>
+</templates>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Loan config wizard -->
+    <record id="view_loan_config_settings" model="ir.ui.view">
+        <field name="name">loan settings</field>
+        <field name="model">loan.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Loan Mypractice" class="oe_form_configuration">
+                <header>
+                    <button string="Apply" type="object" name="execute" class="oe_highlight" />
+                    <button string="Cancel" type="object" name="cancel" class="oe_link" />
+                </header>
+                    <group string='Company' name='default_data' >
+                    		<div>
+                    		<group>
+                   				<field name="company_id" options="{'no_create': True}" class="oe_inline" />
+                   			</group>
+                   			</div>
+                   			<br></br>
+                   			<div>
+                   				<h3><b>Principle Journal and Account Settings</b></h3>
+                   			</div>
+                   			<br></br>
+                   			<div>
+                   			<group>
+                           		<field name="journal_principle_id" options="{'no_create': True}" domain="[('type', '=', 'purchase')]"/>
+                            	<field name="loan_acc_debit_id" options="{'no_create': True}" />
+                            	<field name="loan_acc_credit_id" options="{'no_create': True}" />
+                            </group>
+                            </div>
+                            <br></br>
+                            <div>
+                            <group>
+                            	<field name="product_debit_id" options="{'no_create': True}" />
+                            	<field name="product_credit_id" options="{'no_create': True}" />
+                            </group>
+                            </div>
+                            <br></br>
+                   			<div>
+                   				<h3><b>Interest Journal and Account Settings</b></h3>
+                   			</div>
+                   			<br></br>
+                   			<div>
+                   			<group>
+                            	<field name="journal_interest_id" options="{'no_create': True}" domain="[('type', '=', 'purchase')]"/>
+                            	<field name="interest_acc_id" options="{'no_create': True}" />
+                            	<field name="product_id" options="{'no_create': True}" />
+                            </group>
+                            </div>
+                    </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_loan_config" model="ir.actions.act_window">
+        <field name="name">Configure Loan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loan.config.settings</field>
+        <field name="view_id" ref="view_loan_config_settings" />
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+	<!-- <menuitem sequence="1" id="menu_loan_settings" parent="dev_employee_customer_loan.loan_configuration" name="Settings" action='action_loan_config'/> -->
+</odoo>

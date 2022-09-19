@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="bill_pay assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/vitalpet_bill_pay/static/css/bill_pay.css"/>
+                <t t-call="web.pdf_js_lib"></t>
+                <script type="text/javascript" src="/vitalpet_bill_pay/static/lib/pdfslidesviewer/PDFSlidesViewer.js"></script>
+                <script type="text/javascript" src="/vitalpet_bill_pay/static/js/bill_pay.js"/>
+                <script type="text/javascript" src="/vitalpet_bill_pay/static/js/dashboard.js"/>
+                
+            </xpath>
+        </template>
+
+        <!-- <record id="billpay_inbox" model="ir.actions.client">
+            <field name="name">Drag &amp; Drop Inbox</field>
+            <field name="tag">billpay_inbox</field>
+        </record>
+
+        <menuitem id="menu_billpay_inbox" action="billpay_inbox" parent="menu_bill_pay_inbox_main" sequence="2"/> -->
+   </data>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <record id="actual_labor_weekly_tree" model="ir.ui.view">
+            <field name="name">actual.labor.weekly.tree</field>
+            <field name="model">actual.labor.weekly</field>
+            <field name="arch" type="xml">
+                <tree colors="red:labor_budget_per &lt; actual_labor_per">
+                    <field name="fin_year"/>
+                    <field name="quarter"/>
+                    <field name="fin_month"/>
+                    <field name="fin_week"/>
+                    <field name="company_id"/>
+                    <field name="revenue_budget"/>
+                    <field name="revenue_actual"/>
+                    <field name="variance_revenue"/>
+                    <field name="labor_budget_per"/>
+                    <field name="actual_labor_weekly"/>
+                    <field name="actual_labor_per"/>
+                    <field name="variance_labor"/>
+                    <button name="redirect_actual" string="Actual" type="object" class="oe_highlight" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_actuallabourcost_dailyreport_filter" model="ir.ui.view">
+            <field name="name">actual.labor.weekly</field>
+            <field name="model">actual.labor.weekly</field>
+            <field name="arch" type="xml">
+                <search string="Actual Labor Cost Daily Report">
+                    <field string="Year" name="year"/>
+                    <field string="Quarter" name="quarter"/>
+                    <field string="Month" name="month"/>
+                    <field string="Week" name="week"/>
+                    <field string="Company" name="company_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Company" name="group_company_id" context="{'group_by':'company_id'}" default="1" />                        
+                        <filter string="Fiscal Year" name="group_year" context="{'group_by':'fin_year'}"/>
+                        <filter string="Fiscal Quarter" name="group_quarter" context="{'group_by':'quarter'}"/>
+                        <filter string="Fiscal Month" name="group_month" context="{'group_by':'fin_month'}"/>
+                        <filter string="Fiscal Week" name="group_week" context="{'group_by':'fin_week'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        
+        <record id="action_actual_labor_weekly" model="ir.actions.act_window">
+            <field name="name">Team Scheduler Tree View</field>
+            <field name="res_model">actual.labor.weekly</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'search_default_group_year': 1, 'search_default_group_month': 1, 'search_default_group_week': 1, }</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+        
+        
+
+      	<record forcecreate="True" id="ir_cron_actual_labour_weekly" model="ir.cron">
+	        <field name="name">Actual Labor Cost Weekly</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'actual.labor.weekly'" name="model" />
+	        <field eval="'cron_act_labor_weekly'" name="function" />
+	        <field eval="'()'" name="args" />
+      	</record>
+       
+		<menuitem name="Weekly Labor Summary" id="team_menu_action_actual_labor_weekly"  sequence="2" action="action_actual_labor_weekly" parent="team_menu_staff_planning" groups="vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_user"/>
+        
+    </data>
+</odoo>

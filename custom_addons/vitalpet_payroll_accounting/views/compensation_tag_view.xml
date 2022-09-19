@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="compensation_tag_form" model="ir.ui.view">
+            <field name="name">compensation.tag.form</field>
+            <field name="model">compensation.tag</field>
+            <field name="arch" type="xml">
+                <form string="Compensation Tag">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="compensation_tag_tree" model="ir.ui.view">
+            <field name="name">compensation.tag.tree</field>
+            <field name="model">compensation.tag</field>
+            <field name="arch" type="xml">
+                <tree string="Compensation Tag">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_compensation_tag" model="ir.actions.act_window">
+            <field name="name">Compensation Tag</field>
+            <field name="res_model">compensation.tag</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="compensation_tag_tree"/>
+        </record>
+
+        <menuitem
+            id="menu_compensation_tag"
+            action="action_compensation_tag"
+            parent="hr_recruitment.menu_hr_recruitment_configuration"
+            sequence="3"
+            groups="base.group_no_one"
+        />
+
+    </data>
+</openerp>

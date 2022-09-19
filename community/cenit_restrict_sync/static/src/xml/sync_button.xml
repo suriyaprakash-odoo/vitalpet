@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <template id="template" xml:space="preserve">       
+
+          <t t-extend="ListView.buttons">                   
+        <t t-jquery="button.o_list_button_add" t-operation="after">                           
+
+                          <button t-if="widget.model == 'pims.practice'"  class="oe_button oe_new_button oe_highlight" type="button"
+                          groups="cenit_group.group_cenit_manager">Refresh</button>            
+
+                </t>       
+
+          </t>   
+
+</template>

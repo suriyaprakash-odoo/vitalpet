@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="account_analytic_tag_tree_view_inherit" model="ir.ui.view">
+		<field name="name">analytic.tag.form</field>
+		<field name="model">account.analytic.tag</field>
+		<field name="inherit_id" ref="analytic.account_analytic_tag_tree_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//tree/field[@name='name']" position='before'>
+				<field name='code' />
+			</xpath>
+			<xpath expr="//tree/field[@name='name']" position='after'>
+
+				<field name='rate' />
+				<field name='subtract_amount' />
+				<field name='payout' />
+				<field name='salary_rule_id' />
+				<field name='double_validation' />
+			</xpath>
+		</field>
+	</record>
+
+	<record id="account_analytic_tag_form_view_inherit" model="ir.ui.view">
+		<field name="name">analytic.tag.form</field>
+		<field name="model">account.analytic.tag</field>
+		<field name="inherit_id" ref="analytic.account_analytic_tag_form_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position='before'>
+				<field name='code' />
+			</xpath>
+			<xpath expr="//field[@name='name']" position='after'>
+
+				<field name='rate' />
+				<field name='subtract_amount' />
+				<field name='payout' />
+				<field name='salary_rule_id' />
+				<field name='double_validation' />
+			</xpath>
+		</field>
+	</record>
+</odoo>

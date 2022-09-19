@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Call campaigns action menu and Tree view-->
+
+	<record id="call_campaign_tree" model="ir.ui.view">
+		<field name="name">call.campaign.form</field>
+		<field name="model">call.campaign</field>
+		<field name="arch" type="xml">
+		<tree editable='bottom'>
+			<field name="campaign_name" required='True'/>
+			<field name="company_id" required='True'/>
+			<field name="provider_id" required='True'/>
+			<field name="enable_inb_calls"/>
+			<field name="enable_sms"/>
+			<field name="phone_number_char" required='True'/>
+			<field name="forward_number_char"/>
+			<field name="call_frequency"/>
+			<field name="trunk_ID"/>
+		</tree>
+		</field>
+	</record>
+
+			<record model="ir.actions.act_window" id="promote_settings_callcampaigns_action">
+	        	<field name="name">Campaigns</field>
+		        <field name="res_model">call.campaign</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree</field>
+		        <field name="view_id" ref="call_campaign_tree"/>
+	    	</record>
+
+	           <menuitem id="call_campaigns_menu" name="Campaigns" parent="configuration_promote" action='promote_settings_callcampaigns_action' sequence="1"/>
+
+
+		<!-- Call source Views, Action and menu -->
+
+		<record model="ir.ui.view" id="promote_settings_call_source_tree">
+			<field name="name">Call Sources</field>
+			<field name="model">promote.settings.source</field>
+			<field name="arch" type="xml">
+				<tree string="Call Sources" editable='bottom'>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="api_url"/>
+                    <field name="api_key"/>
+                    <field name="account_sid"/>
+                    <field name="auth_token"/>
+                </tree>
+             </field>
+		</record>
+
+		<record model="ir.actions.act_window" id="promote_settings_callsource_action">
+        	<field name="name">Call Sources</field>
+	        <field name="res_model">promote.settings.source</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree</field>
+	        <field name="view_id" ref="promote_settings_call_source_tree"/>
+    	</record>
+
+           <menuitem id="call_sources_menu" name="Call Sources" parent="configuration_promote" action='promote_settings_callsource_action' sequence="0"/>
+
+
+</odoo>

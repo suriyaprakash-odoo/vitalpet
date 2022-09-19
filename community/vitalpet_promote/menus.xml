@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<!-- Module Main menus -->
+
+		<menuitem id="main_vitalpet_promote" name="Promote" web_icon="vitalpet_promote,static/description/icon.png"
+sequence="6"/>
+
+				<!-- menuitem id="website_promote" name="Website" parent="main_vitalpet_promote" sequence="2"/> -->
+
+				<menuitem id="frontdesk_promote" name="Front Desk" parent="main_vitalpet_promote"
+					groups="group_promote_user" sequence="3"/>
+
+				<menuitem id="configuration_promote" name="Configuration" parent="main_vitalpet_promote"
+					groups="group_promote_manager"	sequence="6"/>
+
+        <menuitem id="callsource_promote" name="Call Source" parent="configuration_promote"
+					sequence="4"/>
+
+</odoo>

@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+    <record id="prospect_rate_kanban_view" model="ir.ui.view">
+    	<field name="name">Prospect Rate Gauge</field>
+    	<field name="model">res.company</field>
+    	<field name="arch" type="xml">
+                 <kanban class="oe_background_grey">  
+                 <field name="all_calls"/>     
+                    <templates>
+                        <t t-name="kanban-box"  > 
+                             		<div t-attf-class="oe_kanban_card"  > 
+                                		<field name="prospect_calls" widget="gauge" 
+                                				style="width:300px; height: 200px; cursor: pointer;" 
+                                				options="{'max_field': 'all_calls'}">Prospect Rate</field> 
+                                	</div> 
+						</t>
+                	</templates>  
+                </kanban>          
+     		</field>
+		</record>
+		
+	<record id="appointment_rate_kanban_view" model="ir.ui.view">
+    	<field name="name">Appointment Rate Gauge</field>
+    	<field name="model">res.company</field>
+    	<field name="arch" type="xml">
+                 <kanban class="oe_background_grey">  
+                 <field name="prospect_calls"/>     
+                    <templates>
+                        <t t-name="kanban-box"  > 
+                        	
+                             		<div t-attf-class=" oe_kanban_card "  > 
+                                		<field name="appointments_set" widget="gauge" 
+                                			style="width:300px; height: 200px; cursor: pointer;" 
+                                			options="{'max_field': 'prospect_calls'}">Appointment Rate</field>
+                                	</div> 
+						</t>
+                	</templates>  
+                </kanban>          
+     		</field>
+		</record>
+                             
+	<record id="missed_opportunities_kanban_view" model="ir.ui.view">
+    	<field name="name">Missed Opportunities Gauge</field>
+    	<field name="model">res.company</field>
+    	<field name="arch" type="xml">
+        	<kanban class="oe_background_grey">  
+                 <field name="prospect_calls"/>     
+                    <templates>
+                        <t t-name="kanban-box"  > 
+                        	<!-- field name="name"/>   -->
+                             		<div t-attf-class=" oe_kanban_card "  > 
+                                		<field name="missed_opportunities" widget="gauge" 
+                                			style="width:300px; height: 200px; cursor: pointer;" 
+                                			options="{'max_field': 'prospect_calls'}">Missed Opportunities</field>
+                                	</div> 
+						</t>
+                	</templates>  
+                </kanban>          
+     		</field>
+		</record>            
+		
+		
+		<record id="filter_score_category_per_company" model="ir.rule">
+           <field name="name">score category multi company</field>
+           <field name="model_id" search="[('model','=','score.category')]" model="ir.model"/>
+           <!-- field name="groups" eval="[(4, ref('base.group_sale_salesman'))]"/>  -->
+           <field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+		</record>    	
+    	
+    	<record id="filter_phonecall_per_company" model="ir.rule">
+           <field name="name">Phonecall multi company</field>
+           <field name="model_id" search="[('model','=','crm.phonecall')]" model="ir.model"/>
+           <!-- field name="groups" eval="[(4, ref('base.group_sale_salesman'))]"/>  -->
+           <field name="domain_force">['|',('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+		</record> 
+		
+    	<record id="appointment_rate_gauge_action" model="ir.actions.act_window">
+            <field name="name">Appointment Rate Gauge Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.company</field> 
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="domain">[('user_ids', 'in', uid)]</field>
+            <field name="view_id" ref="appointment_rate_kanban_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+        
+        <record id="prospect_rate_gauge_action" model="ir.actions.act_window">
+            <field name="name">Prospect Rate Gauge Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.company</field> 
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="domain">[('user_ids', 'in', uid)]</field>
+            <field name="view_id" ref="prospect_rate_kanban_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+    
+		<record id="missed_opportunities_gauge_action" model="ir.actions.act_window">
+            <field name="name">Missed Opportunities Gauge Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.company</field> 
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="domain">[('user_ids', 'in', uid)]</field>
+            <field name="view_id" ref="missed_opportunities_kanban_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   No data to show in this Leaderboard.
+                </p>
+            </field>
+        </record>
+        
+        <!-- menuitem id="performance_gauges" name="Performance Gauges domain" parent="crm.menu_crm_case_phone" action='appointment_rate_gauge_action' sequence="103"/>
+   		 -->
+    </data>
+</openerp>

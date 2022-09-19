@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<record id="echeck_chase_transfer" model="account.payment.method">
+    <field name="name">E-Check</field>
+    <field name="code">echeck_chase_transfer</field>
+    <field name="payment_type">outbound</field>
+    <field name="address_required" eval="True"/>
+    <field name="pain_version">echeck.chase.1.0</field>
+</record>
+
+
+
+</odoo>

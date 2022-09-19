@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gl_payroll_import_officer,gl_payroll_import_officer,model_gl_payroll_import,payroll_base.group_hr_payroll_user,1,1,1,1
+access_temp_move_line,temp_move_line,model_temp_move_line,payroll_base.group_hr_payroll_user,1,1,1,1
+access_gl_payroll_import_line,gl_payroll_import_line,model_gl_payroll_import_line,payroll_base.group_hr_payroll_user,1,1,1,1
+access_gl_payroll_mapping,gl_payroll_mapping,model_gl_payroll_mapping,payroll_base.group_hr_payroll_user,1,1,1,1

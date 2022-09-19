@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+
+    <!-- <menuitem id="vitalpet_hr_production_menu" action="vitalpet_hr_production_action"
+        string="Production Details" parent="vitalpet_mypractice.menu_mypractice_team"
+        sequence="7" /> -->
+
+
+</odoo>

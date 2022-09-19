@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-extend="accountReports.searchView">
+    	<t t-jquery="li.divider:eq(1)" t-operation="after">
+    		<li class="o_account_reports_custom-dates_month" data-value='custom_month' style='margin-left: 10px; margin-right: 10px;'>
+	            <div t-if="report_type.date_range" class="form-group custom-date">
+	                <div class='date_year' t-att-data-default-value="context.date_year">
+	                	
+	                    <select name="year" class="date_year_select" t-att-data-default-value="context.year">
+	                    	<option value="">Select year</option>
+	                    	
+	                    	<t t-foreach="context.fiscal_periods" t-as="f">
+	                    		<option t-att-value="f[0]" ><t t-esc='f[1]'/></option>
+	                    	</t>
+	                    </select>
+	                    <span class="o_datepicker_button"/>
+	                </div>
+	            </div>
+	            
+	        </li>
+    	</t>
+    </t>
+</templates>

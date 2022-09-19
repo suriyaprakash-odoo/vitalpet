@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_termination_details" model="ir.ui.view">
+			<field name="name">terminate.member.form</field>
+			<field name="model">terminate.member</field>
+			<field name="arch" type="xml">
+				<form string="Terminate Team Member">
+					<group>
+						<field name="termination_date" />
+						<field name="paid_through_date" />
+						<field name="termination_reason" />
+						<field name="termination_type" readonly="1" />
+						<field name="rehire_eligible" />
+						<field name="cobra_eligible" />
+					</group>
+					<footer>
+						<button name="terminate_ok" string="OK" type="object"
+							class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_account_income_expense" model="ir.ui.view">
+            <field name="name">account.income.expense</field>
+            <field name="model">account.income.expense</field>
+            <field name="arch" type="xml">
+                <form string="Income and Expense Detail">
+                    <group>
+						<field name="company_id"/>
+                        <field name='custom_calendar' invisible='1'/>
+                        <label for="fiscalyear"/>
+                        <div> 
+                            <field name="fiscalyear" attrs="{'invisible': [('custom_calendar','!=',True)]}"/>
+                            <field name='fiscal_year' attrs="{'invisible': [('custom_calendar','==', True)], 'required': [('custom_calendar','!=', True)]}"/>
+                        </div>
+
+                        <label for="period_from" string="Periods" attrs="{'invisible': [('custom_calendar','!=',True)]}"/>
+                        <div attrs="{'invisible': [('custom_calendar','!=',True)]}">
+                            <field name="period_from" class="oe_inline" domain="[('account_fiscal_period_id', '=', fiscalyear)]" required='1'/> - 
+                            <field name="period_to" class="oe_inline" domain="[('account_fiscal_period_id', '=', fiscalyear)]" required='1'/>
+                        </div>
+
+
+                        <label for="fiscalyear_start_month" string="Periods" attrs="{'invisible': [('custom_calendar','==',True)]}"/>
+                        <div attrs="{'invisible': [('custom_calendar','==',True)]}">
+                            <div attrs="{'invisible': [('custom_calendar','==', True)]}">
+                                <field name="fiscalyear_start_month" class="oe_inline"/> - 
+                                <field name="fiscalyear_end_month" class="oe_inline"/>
+                            </div>
+                        </div>
+
+                        <!-- <div> 
+                            <field name="fiscalyear" required='True'/>
+                        </div> -->
+                       <field name="target_move"/>
+                       <!--   <label for="period_from" string="Periods"/>
+                        <div>
+                            <field name="period_from" class="oe_inline" domain="[('account_fiscal_period_id', '=', fiscalyear)]" required='1'/> - 
+                            <field name="period_to" class="oe_inline" domain="[('account_fiscal_period_id', '=', fiscalyear)]" required='1'/>
+                        </div> -->
+
+
+
+                       <!--  <field name='scenario'/> -->
+                    </group>
+                    <footer>
+                        <button string="Open Charts" name="open_income_expense" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_budget_income_expense" model="ir.actions.act_window">
+            <field name="name">Income and Expense Detail</field>
+            <field name="res_model">account.income.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_account_income_expense"/>
+            <field name="target">new</field>
+        </record>
+
+		<menuitem action="action_budget_income_expense" id="menu_action_budget_income_expense" parent="vitalpet_mypractice.menu_mypractice_financials" sequence="3" groups="vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_user"/>
+    
+    
+    
+    	<record id="view_wizard_income_expense" model="ir.ui.view">
+            <field name="name">wizard.income.expense</field>
+            <field name="model">wizard.income.expense</field>
+            <field name="arch" type="xml">
+                <form string="Income and Expense Detail">
+               		<div>
+               			Are you sure want to Proceed
+               		</div>
+               		<field name='draft' invisible='1'/>
+               		<field name='confirm' invisible='1'/>
+                    <footer>
+                        <button string="Confirm" name="set_confirm" type="object" class="oe_highlight" attrs="{'invisible':[('confirm','=',False)]}"/>
+                        <button string="Confirm" name="set_draft" type="object" class="oe_highlight" attrs="{'invisible':[('draft','=',False)]}"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_widget_income_expense" model="ir.actions.act_window">
+            <field name="name">Confirm Budget</field>
+            <field name="res_model">wizard.income.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_wizard_income_expense"/>
+            <field name="target">new</field>
+        </record>
+    	
+    	<act_window id="budget_wizard_action_confirm"
+            name="Set Confirm"
+            src_model="crossovered.budget"
+            res_model="wizard.income.expense"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            context="{'default_confirm':True}"/>
+            
+            
+        <act_window id="budget_wizard_action_draft"
+            name="Set Draft"
+            src_model="crossovered.budget"
+            res_model="wizard.income.expense"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            context="{'default_draft':True}"/>
+    	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </data>
+</openerp>

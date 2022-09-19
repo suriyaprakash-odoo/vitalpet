@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_category_budget_settings_forms" model="ir.ui.view">
+            <field name="name">view.category.budget.settings.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="stock_account.view_category_property_form"/>
+            <field name="arch" type="xml">
+        	<xpath expr="//form/sheet/div[@name='button_box']" position='inside'>
+        		<button type="object"
+        			class="oe_stat_button"
+        			id="budget_button"
+        			name="open_budget_history" 
+        			icon="fa-th-list"
+        			context="{'default_product_category': active_id}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value"><field name='total_budget'/> </span>
+                        <span class="o_stat_text"> Budget Lines</span>
+                    </div>
+                </button>
+        	</xpath>
+            
+				<!-- <xpath expr="//group[2]/group" position="after">
+					<group name="budget_settings" string="Budget Settings">
+                        <field name="income_expense_detail"/>
+						<field name="income_view_parent"/>
+						<field name="income_view_code"/>
+						<field name="income_budget_code"/>
+						<field name="expense_view_parent"/>
+						<field name="expense_view_code"/>
+						<field name="expense_budget_code"/>
+						<field name="index_products"/>
+                    </group>
+				</xpath> -->
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+       <record id="paperformat_team_scheduler_preview" model="report.paperformat">
+        <field name="name">Team scheduler Report Preview</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">80</field>
+    </record>
+    
+    <report
+            string="Print Schedule"
+            id="action_team_schedule_preview"
+            model="staff.planning"
+            report_type="qweb-html"
+            name="vitalpet_team_scheduler.team_scheduler_report_preview"
+            file="vitalpet_team_scheduler.team_scheduler_report_preview"
+            paperformat="vitalpet_team_scheduler.paperformat_team_scheduler_preview"/>
+       />
+</data>
+</odoo>
+

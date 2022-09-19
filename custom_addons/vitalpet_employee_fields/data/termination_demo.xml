@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="termination_type_1" model="termination.type">
+            <field name="name">Voluntary</field>
+        </record>
+        <record id="termination_type_2" model="termination.type">
+            <field name="name">Involuntary</field>
+        </record>
+
+		<record id="termination_reason_1" model="termination.reason">
+            <field name="name">Terminated for Cause</field>
+        </record>
+        <record id="termination_reason_2" model="termination.reason">
+            <field name="name">Terminated Not for Cause</field>
+        </record>
+		<record id="termination_reason_3" model="termination.reason">
+            <field name="name">Resigned</field>
+        </record>
+</data>
+</odoo>

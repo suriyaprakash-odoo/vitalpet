@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>        
+
+      
+	  
+        <record id="payroll_input_contract_view_tree" model="ir.ui.view">
+            <field name="name">payroll.input.contract.tree</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Contracts" decoration-bf="message_needaction == True">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="type_id"/>
+                    <field name="job_id"/>
+                    <field name="working_hours"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="wage" invisible="1"/>
+                    <field name="message_needaction" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_contract_view_search" model="ir.ui.view">
+            <field name="name">hr.contract.search</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <search string="Search Contract">
+                    <field name="name" string="Contracts"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="working_hours"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="state"/>
+                    <filter string="To Renew" name="to_renew" domain="[('state', '=', 'pending')]"/>
+                    <separator />
+                    <filter string="Current Employee" name="current_employee" domain="[('employee_id.active','=',True)]"/>
+                    <separator/>
+                    <filter string="Important Messages" name="message_needaction" domain="[('message_needaction','=',True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Employee" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Job" domain="[]" context="{'group_by':'job_id'}"/>
+                        <filter string="Contract Type" domain="[]" context="{'group_by':'type_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record> 
+
+        
+        <record id="action_payroll_input_contract" model="ir.actions.act_window">
+            <field name="name">Payroll Inputs</field>
+            <field name="res_model">hr.contract</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{"search_default_to_renew": 1}</field>
+            <field name="search_view_id" ref="hr_contract.hr_contract_view_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+
+		<menuitem name="Payroll Inputs" id="payroll_inputs_menu_heading" sequence="3" parent="vitalpet_mypractice.menu_mypractice_team" />
+		
+        <menuitem id="menu_payroll_inputs_nerw" action="action_payroll_input_contract" string="Payroll Inputs" parent="payroll_inputs_menu_heading" sequence="1"/>
+
+		
+		  <record id="act_hr_employee_holiday_request_new" model="ir.actions.act_window">
+            <field name="name">Leaves</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.holidays</field>
+            <field name="src_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_approve": 1}</field>
+            <field name="domain">[]</field>
+        </record>
+
+
+		
+		
+		
+		<record id="action_payroll_input_contract_view_tree" model="ir.actions.act_window.view">
+			<field name="sequence">1</field>
+			<field name="view_mode">tree</field>
+			<field name="name">Contracts</field>
+			<field name="view_id" ref="payroll_input_contract_view_tree" />
+			<field name="act_window_id" ref="action_payroll_input_contract" />
+		</record>
+		
+		<record id="action_payroll_input_timesheets" model="ir.actions.client">
+	        <field name="name">Payroll Input Timesheets</field>
+	        <field name="tag">action_payroll_input_timesheets</field>
+	    </record>
+		<record id="action_payroll_input_timesheets_new" model="ir.actions.client">
+	        <field name="name">Payroll Input Timesheets</field>
+	        <field name="tag">action_payroll_input_timesheets</field>
+	    </record>
+
+	    <record id="action_payroll_input_production" model="ir.actions.client">
+	        <field name="name">Payroll Input Production</field>
+	        <field name="tag">action_payroll_input_production</field>
+	    </record>
+
+		<record id="action_payroll_validation" model="ir.actions.client">
+	        <field name="name">Payroll Validation</field>
+	        <field name="tag">action_payroll_validation</field>
+	    </record>
+
+		<record id="action_payroll_input_production_new" model="ir.actions.client">
+	        <field name="name">Payroll Input Production</field>
+	        <field name="tag">action_payroll_input_production</field>
+	    </record>
+
+		<record id="action_payroll_validation_new" model="ir.actions.client">
+	        <field name="name">Payroll Validation</field>
+	        <field name="tag">action_payroll_validation</field>
+	    </record>
+
+		<menuitem id="menu_payroll_inputs_timesheet_new" action="action_payroll_input_timesheets_new" name="Timesheets" parent="payroll_inputs_menu_heading" sequence="3"/>
+ 		<menuitem id="menu_payroll_inputs_production" action="action_payroll_input_production_new" name="Production" parent="payroll_inputs_menu_heading" sequence="4"/>
+		<menuitem id="menu_payroll_inputs_validation" action="action_payroll_validation_new" name="Validation" parent="payroll_inputs_menu_heading" sequence="5" groups="vitalpet_mypractice.group_my_practice_manager"/>
+ 		
+		
+
+        <record id="hr_payroll_period_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.period.inherit</field>
+            <field name="model">hr.period</field>
+            <field name="inherit_id" ref="payroll_period.view_hr_period_form"/>
+            <field name="arch" type="xml">
+                <field name='state' position='attributes'>
+                    <attribute name='statusbar_visible'>draft,inputs,payslip,export,import,allocate,open,done</attribute>
+                </field>
+                
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="payroll_final_kanban_view">
+			<field name="name">Finalized</field>
+			<field name="model">payroll.final</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<templates>
+						<t t-name="kanban-box">
+								<div class="oe_kanban_content" style="width: 100% !important;flex: none;">
+									<div class="oe_kanban_details">
+                                        <style>
+                                            .o_control_panel{display:none;}
+                                        </style>
+										<h2 class="text-center">
+                                            <br />
+                                            <br />
+											Thank You
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+										</h2>
+
+									</div>
+
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+
+
+
+		  <record id="act_payroll_final" model="ir.actions.act_window">
+            <field name="name">Finalized</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payroll.final</field>
+            <field name="view_mode">kanban</field>
+
+        </record>
+<!--         <menuitem id="menu_act_payroll_final" action="act_payroll_final" name="Finalized" parent="vitalpet_mypractice.menu_mypractice_team" sequence="9"/>
+ -->	</data>
+
+
+    <data noupdate="1">
+		<record id="payroll_final_first_column" model="payroll.final">
+			<field name="name">Thank You</field>
+		</record>
+    </data>
+
+</odoo>
+        

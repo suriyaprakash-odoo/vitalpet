@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <template id="partner_loan_report">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="sp">
+                        <div class="page">
+                            <style type="text/css">
+                                hr{
+                                    border: 0.1px;
+                                    color: #333;
+                                    background-color: #333;
+                                }
+                             </style>
+                            <table class="t1" width="50%">
+                                <tr>
+                                    <td> <span><b>Ref</b></span></td>
+                                    <td><span>   :   </span></td>
+                                    <td> <span t-field="sp.calc_months"/></td>
+                                </tr>
+                                <tr>
+                                    <td> <span><b>Date</b></span></td>
+                                    <td><span>   :   </span></td>
+                                    <td> <span t-field="sp.loan_release_date"/></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <br/>
+                            <table width="70%">
+                                <tr><span><b>Dear Sir / Madam,</b><br/><br/></span></tr>
+                                <tr>
+                                    <td width="10%"><span><b>Re</b></span></td>
+                                    <td width="10%"><span><b>Property</b></span></td>
+                                    <td width="10%" >:</td>
+                                    <td width="40%" > <span t-field="sp.partner_id.street"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" ><span></span></td>
+                                    <td width="10%" ><span><b>Borrower</b></span></td>
+                                    <td width="10%" >:</td>
+                                    <td width="40%" > <span t-field="sp.partner_id"/></td>
+                                </tr>
+                            </table>
+                            <hr size="2"/>
+                        
+                        <p class="text-left">
+                        	WE REFER TO <span t-field="sp.partner_id.display_name"/> - <span t-field="sp.name"/>
+                        	LOAN AMOUNT HK$<span t-field="sp.calc_principle_amount"/> in respect of the above premises made between us 
+                        	as the Mortgagors and your company as the Mortgagee of even date.
+                        </p> 
+                        <p class="text-left">
+                        	We hereby authorize your company to issue cheque(s) for loan amount advance to us uner the said SECOND MOTGAGE 
+                        	in the following manner: 
+                        </p> 
+                        <div width="100%" style="color:white">
+                        	dsldksldksldkslkdslkdlklkkd<br/>
+                        </div>
+                        <t t-set="total_fee" t-value="0"/>
+                        <table class="table table-condensed" width="50%">
+                        	<tr>
+                        		<th class="text-left">For Account</th>
+                        		<th class="text-right">Amount(HK$)</th>
+                        	</tr>
+                        	<t t-foreach="sp.process_fee_ids" t-as="fee">
+                        		<t t-set="total_fee" t-value="total_fee + fee.item_fee"/>
+                        		<tr>
+                        			<td class="text-left"><span t-field="fee.processing_item"/></td>
+                        			<td class="text-right"><span t-field="fee.item_fee"/></td>
+                        			
+                        		</tr>
+                        		
+                        	</t>
+                    		<t t-set="total_fee" t-value="sp.calc_principle_amount-total_fee"/>
+                    		<tr>
+                    			<td class="text-left">Balance of Loan</td>
+                    			<td class="text-right"><span t-esc="total_fee"/></td>
+                    			
+                    		</tr>
+                        		
+                        		
+                        </table>
+                        <table class="table table-condensed">
+                        	<tr>
+                        		<th class="text-right">Total: <span t-field="sp.calc_principle_amount"/></th>
+                        	</tr>
+                        </table>
+                        <div width="100%" style="color:white">
+                        	dsldksldksldkslkdslkdlklkkd<br/>
+                        </div>
+                        <table width="30%">
+                        	<tr> <td>-------------------------------------------------</td>
+                        	</tr>
+                        	<tr><td><center>Borrower Signature</center></td></tr>
+                        </table>
+                        
+                      </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

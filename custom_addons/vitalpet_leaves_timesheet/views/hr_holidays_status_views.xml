@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+       <!-- Holidays status -->
+       <record id="edit_holiday_status_form_view_customize" model="ir.ui.view">
+            <field name="name">hr.holidays.status.form.customize</field>
+            <field name="model">hr.holidays.status</field>
+			<field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='limit']" position="after">
+                	<field name="minimum_hours"/>
+					<field name="add_approved_leaves"/>
+					<field name="timesheet_id"/>
+					<field name="activity_id"/>
+	            </xpath>
+            </field>
+       </record>
+		
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+	
+		<record model="ir.module.category"
+			id="module_category_employee_documents">
+			<field name="name">Employee Documents</field>
+			<field name="sequence">10</field>
+		</record>
+
+		 <record id="group_employee_documents_employee" model="res.groups">
+			<field name="name">Employee</field>
+			<field name="category_id" ref="vitalpet_employee_documents.module_category_employee_documents" />
+			<field name="users" eval="[(4, ref('base.user_root'))]" />
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		</record> 
+		
+		 <record id="group_employee_documents_manager" model="res.groups">
+			<field name="name">Manager</field>
+			<field name="category_id" ref="vitalpet_employee_documents.module_category_employee_documents" />
+			<field name="users" eval="[(4, ref('base.user_root'))]" />
+			<field name="implied_ids" eval="[(4, ref('group_employee_documents_employee'))]"/>
+		</record>
+	</data>
+</odoo>

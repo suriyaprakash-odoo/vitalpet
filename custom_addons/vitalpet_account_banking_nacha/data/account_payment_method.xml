@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+	<record id="nacha_chase_transfer" model="account.payment.method">
+	    <field name="name">ACH Chase Transfer to suppliers</field>
+	    <field name="code">ach_chase_transfer</field>
+	    <field name="payment_type">outbound</field>
+	    <field name="bank_account_required" eval="True"/>
+	    <field name="pain_version">NACHA.xml.1.0</field>
+	</record>
+</data>
+</odoo>

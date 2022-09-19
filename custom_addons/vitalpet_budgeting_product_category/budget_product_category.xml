@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend_nre" name="vitalpet_budgeting_product_category assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/vitalpet_budgeting_product_category/static/js/dashboard.js"/>
+                
+            </xpath>
+        </template>
+
+
+
+
+
+
+        <!-- <record id="billpay_inbox" model="ir.actions.client">
+            <field name="name">Drag &amp; Drop Inbox</field>
+            <field name="tag">billpay_inbox</field>
+        </record>
+
+        <menuitem id="menu_billpay_inbox" action="billpay_inbox" parent="menu_bill_pay_inbox_main" sequence="2"/> -->
+   </data>
+</odoo>

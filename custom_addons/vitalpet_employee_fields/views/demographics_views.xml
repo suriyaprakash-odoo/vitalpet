@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="demographic_report_menu"
+            action="action_demographics_file_wizard_report"  name="Demographics Report"
+            parent="hr.menu_open_view_employee_list_my"
+            sequence="6"
+            />
+    </data>
+
+    <!-- <record id="demographics_file_view" model="ir.actions.server">
+        <field name="name">Demographics File</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_employee" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.generate_demographics_file()
+        </field>
+
+    </record>
+
+    <record id="action_put_on_hold" model="ir.values">
+        <field name="name">Demographics File</field>
+        <field name="model_id" ref="model_hr_employee" />
+        <field name="model">hr.employee</field>
+        <field name="key2">client_action_multi</field>
+        <field eval="'ir.actions.server,%d'%demographics_file_view" name="value" />
+    </record> -->
+
+</odoo>

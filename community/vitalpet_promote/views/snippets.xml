@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="s_title" inherit_id="website.s_title" name="Title">
+	<xpath expr="//h1[@class='text-center']" position="replace">
+
+		<h1 class="text-center"> </h1>
+	</xpath>
+	<xpath expr="//h3[@class='text-center text-muted']" position="replace">
+		<h3 class="text-center text-muted"> </h3>
+
+	</xpath>
+</template>
+<!-- Snippets menu -->
+<template id="snippets" inherit_id="web_editor.snippets" primary="True">
+    <xpath expr="//div[@id='o_scroll']" position="replace">
+        <div id="o_scroll">
+            <div id="snippet_structure" class="o_panel">
+                <div class="o_panel_header">
+                    <i class="fa fa-th-large"/> Structure
+                </div>
+                <div class="o_panel_body">
+                    <t t-snippet="website.s_title" t-thumbnail="/website/static/src/img/blocks/block_title.png"/>
+                    <t t-snippet="website.s_text_image" t-thumbnail="/website/static/src/img/blocks/block_text_image.png"/>
+                    <t t-snippet="website.s_image_text" t-thumbnail="/website/static/src/img/blocks/block_image_text.png"/>
+                    <t t-snippet="website.s_text_block" t-thumbnail="/website/static/src/img/blocks/block_text_block.png"/>
+                    <t t-snippet="website.s_features" t-thumbnail="/website/static/src/img/blocks/block_features.png"/>
+                    <t t-snippet="website.s_big_picture" t-thumbnail="/website/static/src/img/blocks/block_big_picture.png"/>
+                    <t t-snippet="website.s_three_columns" t-thumbnail="/website/static/src/img/blocks/block_three_columns.png"/>
+                </div>
+            </div>
+
+            <div id="snippet_feature" class="o_panel">
+                <div class="o_panel_header">
+                    <i class="fa fa-diamond"/> Feature
+                </div>
+                <div class="o_panel_body">
+                    <t t-snippet="website.s_image_gallery" t-thumbnail="/website/static/src/img/blocks/block_image_gallery.png"/>
+                    <t t-snippet="website.s_comparisons" t-thumbnail="/website/static/src/img/blocks/block_comparison.png"/>
+                    <t t-snippet="website.s_button" t-thumbnail="/website/static/src/img/blocks/block_button.png"/>
+                    <t t-snippet="website.s_faq_collapse" t-thumbnail="/website/static/src/img/blocks/block_faq.png"/>
+                    <t t-snippet="website.s_feature_grid" t-thumbnail="/website/static/src/img/blocks/block_feature_grid.png"/>
+                </div>
+            </div>
+
+            <div id="snippet_content" class="o_panel">
+                <div class="o_panel_header">
+                    <i class="fa fa-indent"/> Inner content
+                </div>
+                <div class="o_panel_body">
+                    <t t-snippet="website.s_image_floating" t-thumbnail="/website/static/src/img/blocks/block_text_image.png"/>
+                    <t t-snippet="website.s_share" t-thumbnail="/website/static/src/img/blocks/block_share.png"/>
+                </div>
+            </div>
+        </div>
+    </xpath>
+
+    <xpath expr="//div[@id='snippet_options']/t" position="attributes">
+        <attribute name="t-call">website.snippet_options</attribute>
+    </xpath>
+</template>
+</odoo>

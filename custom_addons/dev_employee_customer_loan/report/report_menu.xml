@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+	<report
+            string="Loan Application"
+            id="action_partner_loan"
+            model="partner.loan"
+            report_type="qweb-pdf"
+            name="dev_employee_customer_loan.partner_loan_report"
+            file="dev_employee_customer_loan.partner_loan_report"
+       />
+</data>
+</openerp>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hold_reason_wizard_view_form" model="ir.ui.view">
+        <field name="name">hold.reason.wizard.form</field>
+        <field name="model">hold.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Hold Reason">
+                <field name="description"  placeholder="Additional info..." style="min-height: 120px;font-size: 16px;"/>
+                <footer>
+                    <button string='Hold' name="hold_reason" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+    <record id="hold_reason_wizard_action" model="ir.actions.act_window">
+        <field name="name">Hold Reason</field>
+        <field name="res_model">hold.reason.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hold_reason_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

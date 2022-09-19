@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Delete existing reports and menus -->
+		<delete model="account.financial.html.report" search="[('name','=','Profit and Loss')]" />
+		<delete model="account.financial.html.report" search="[('name','=','Balance Sheet')]" />
+		<delete model="account.financial.html.report" search="[('name','=','Cash Flow Statement')]" />
+		<delete model="account.financial.html.report" search="[('name','=','Executive Summary')]" />
+		<!-- Delete existing reports and menus -->
+		
+		<template id="account_reports_backend" inherit_id="web.assets_backend" active="True">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/vitalpet_dynamic_financial_reports/static/src/js/account_report_extended.js"></script>
+               <!--  <script type="text/javascript" src="/account_reports/static/src/js/account_reports_followup_widgets.js"></script>
+                <script type="text/javascript" src="/account_reports/static/src/js/account_reports_backend.js"></script>
+                <script type="text/javascript" src="/account_reports/static/src/js/account_reports_followup_backend.js"></script>
+                <link rel="stylesheet" href="/account_reports/static/src/less/account_financial_report.less" /> -->
+            </xpath>
+        </template>
+	</data>	
+</odoo>

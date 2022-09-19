@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_partner_tree_inherit" model="ir.ui.view">
+		<field name="name">res.partner.tree</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='display_name']" position="attributes">
+				<attribute name="string">First Name</attribute>
+			</xpath>
+			<!-- <xpath expr="//field[@name='display_name']" position="after">
+				<field name="last_name" />
+			</xpath> -->
+		</field>
+	</record>
+
+	<record id="view_partner_simple_form_inherit1" model="ir.ui.view">
+		<field name="name">res.partner.simplified.form</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="placeholder">First Name</attribute>
+			</xpath>
+			<!-- <xpath expr="//field[@name='name']" position="after">
+				<field name="last_name" class="last_name" placeholder="Last Name"
+					style="margin-bottom:15px;padding-left:1%" />
+				<style>
+					h1 input{float:left;width:49.5% !important;border-bottom:2px solid
+					#666666 !important;}
+					h1 input.last_name{border-bottom:2px solid #aaa !important;}
+				</style>
+			</xpath> -->
+			<xpath expr="//field[@name='user_id']" position="before">
+<!-- 				<field name="is_petowner"/>
+				<field name="is_pet" />
+ -->				<field name="is_applicant" invisible="1"/>
+			</xpath>
+			
+		</field>
+	</record>
+
+
+	<record id="view_employee_tree_inherit" model="ir.ui.view">
+		<field name="name">hr.employee.tree</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="string">Name</attribute>
+			</xpath>
+<!-- 			<xpath expr="//field[@name='name']" position="after">
+				<field name="last_name" />
+			</xpath>
+ -->		</field>
+	</record>
+
+	<record id="view_employee_form_inherit" model="ir.ui.view">
+		<field name="name">hr.employee.form</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="placeholder">First Name</attribute>
+			</xpath>
+<!-- 			<xpath expr="//field[@name='name']" position="after">
+				<field name="last_name" class="last_name" placeholder="Last Name"
+					style="margin-bottom:15px;padding-left:1%" />
+				<style>
+					h1 input{float:left;width:49.5% !important;border-bottom:2px solid
+					#666666 !important;}
+					h1 input.last_name{border-bottom:2px solid #aaa !important;}
+					.oe_hr_attendance_status{display:none}
+				</style>
+				<br />
+				<br />
+			</xpath>
+ -->		</field>
+	</record>
+</odoo>

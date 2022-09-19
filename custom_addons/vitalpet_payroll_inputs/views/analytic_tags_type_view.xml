@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <!-- Tags Type-->
+       <!--  <record model="ir.ui.view" id="analytic_tags_type_search_view">
+            <field name="name">Tags</field>
+            <field name="model">hr.production.type</field>
+            <field name="arch" type="xml">
+                <search string="Type">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record> -->
+        <record model="ir.ui.view" id="analytic_tags_type_form_view">
+            <field name="name">Tags</field>
+            <field name="model">hr.production.type</field>
+            <field name="arch" type="xml">
+                <form string="Tags">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name='color'/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="analytic_tags_type_action" model="ir.actions.act_window">
+            <field name="name">Analytic Tags Type</field>
+            <field name="res_model">hr.production.type</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new tag.
+              </p>
+            </field>
+        </record>
+
+
+<!--         <menuitem action="analytic_tags_type_action" id="menu_analytic_tags_type_act" parent="account.menu_analytic_accounting" groups="base.group_no_one" name='Analytic Tags Type' sequence='5'/>
+ -->        
+        <!-- This menu has to remove -->
+<!--         <menuitem action="action_timesheet_test_menu" id="timesheet_test_menu" parent="account.menu_analytic_accounting" groups="base.group_no_one" name='Testing Menu For Timesheet' sequence='5'/>
+ -->
+
+
+<!--         <record id="view_analytic_tag_form_inherited" model="ir.ui.view">
+            <field name="name">analytic.tag.form</field>
+            <field name="model">hr.production.tag</field>
+            <field name="inherit_id" ref="analytic.account_analytic_tag_form_view"/>
+            <field name="arch" type="xml">
+                <field name='name' position='after'>
+                    <field name='analytic_type'/>
+                </field>
+            </field>
+        </record>
+ -->
+<!-- 
+        <record id="view_analytic_tag_tree_inherited" model="ir.ui.view">
+            <field name="name">analytic.tag.tree</field>
+            <field name="model">hr.production.tag</field>
+            <field name="inherit_id" ref="analytic.account_analytic_tag_tree_view"/>
+            <field name="arch" type="xml">
+                <field name='name' position='after'>
+                    <field name='analytic_type'/>
+                </field>
+            </field>
+        </record>
+ -->
+
+
+
+    </data>
+</odoo>

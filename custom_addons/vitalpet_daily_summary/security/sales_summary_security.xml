@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	   	<record id="sale_summary_record_rule" model="ir.rule">
+	        <field name="name">Sale Summary Entry</field>
+	        <field name="model_id" ref="model_sales_summary"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+	        <field name="groups" eval="[(4, ref('vitalpet_mypractice.group_my_practice_user')), 
+	        	(4, ref('vitalpet_mypractice.group_my_practice_officer')), (4, ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record>
+    </data>
+</odoo>

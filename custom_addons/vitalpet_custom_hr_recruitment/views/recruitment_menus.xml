@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<menuitem id="menu_hr_seniority_title" name="Job Seniority Titles"
+		parent="hr_recruitment.menu_hr_recruitment_configuration" 
+		action="hr_job_seniority_action" 		
+		sequence="5"
+	    groups="group_hr_recruitment_recruiter"/>
+		
+		
+	<menuitem id="menu_hr_job_template" name="Job Template"
+		parent="hr_recruitment.menu_hr_recruitment_configuration" action="hr_recruitment_job_template"
+		groups="hr_recruitment.group_hr_recruitment_user" sequence="8" />
+	
+	<menuitem name="Resumes and Letters" parent="hr_recruitment.menu_hr_recruitment_root" id="hr_recruitment.menu_crm_case_categ0_act_job02" action="hr_recruitment.hr_applicant_resumes"
+	sequence="3"
+	groups="group_hr_recruitment_recruiter,hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"/>
+
+				
+    <menuitem id="hr_recruitment.menu_hr_recruitment_configuration" name="Configuration" parent="hr_recruitment.menu_hr_recruitment_root"
+        sequence="100" groups="hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"/>
+        
+	<menuitem parent="hr_recruitment.menu_hr_recruitment_root" id="hr_recruitment.menu_hr_job_position" action="hr_recruitment.action_hr_job" sequence="1"
+		groups="group_hr_recruitment_recruiter,hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"/>
+	
+	    <menuitem
+        id="hr_recruitment.hr_applicant_category_menu"
+        parent="hr_recruitment.menu_hr_recruitment_configuration"
+        action="hr_recruitment.hr_applicant_category_action"
+        sequence="2" groups="base.group_no_one,hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"
+        />
+        
+        <menuitem
+        id="hr_recruitment.menu_hr_recruitment_source"
+        parent="hr_recruitment.menu_hr_recruitment_configuration"
+        action="hr_recruitment.hr_recruitment_source_action"
+         groups="base.group_no_one,hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"
+        sequence="10"/>
+        <menuitem id="hr_recruitment.menu_hr_recruitment_global_settings" name="Settings"
+            parent="hr_recruitment.menu_hr_recruitment_configuration" sequence="0" action="hr_recruitment.action_hr_recruitment_configuration"            
+        	groups="hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"/>
+        
+	<menuitem parent="hr_recruitment.menu_hr_recruitment_configuration" id="hr_recruitment.menu_hr_job_position_config" action="hr_recruitment.action_hr_job_config" sequence="10"
+	groups="group_hr_recruitment_recruiter,hr_recruitment.group_hr_recruitment_user,hr_recruitment.group_hr_recruitment_manager"/>
+
+	<menuitem name="Reports" id="hr_recruitment.report_hr_recruitment" parent="hr_recruitment.menu_hr_recruitment_root"
+    sequence="99" action="hr_recruitment.action_hr_recruitment_report_all"
+	groups="hr_recruitment.group_hr_recruitment_user"/>
+
+
+	<menuitem
+        name="Applications"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        id="hr_recruitment.menu_crm_case_categ0_act_job" action="hr_recruitment.crm_case_categ0_act_job" sequence="2" groups="group_hr_recruitment_recruiter"/>
+	
+	<record model="ir.ui.menu" id="hr_recruitment.menu_hr_department">
+		<field name="action" eval="False" />
+	</record>
+
+</odoo>

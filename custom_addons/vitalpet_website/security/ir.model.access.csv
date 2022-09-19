@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_website_camera_values_user,access_website_camera_values,model_website_camera_values,base.group_user,1,1,1,1
+access_website_camp_values_user,access_website_camp_values,model_website_camp_values,base.group_user,1,1,1,1
+access_website_business_hour_user,access_website_business_hour,model_website_business_hour,base.group_user,1,1,1,1
+access_website_form_heading_user,access_website_form_heading,model_website_form_heading,base.group_user,1,1,1,1
+access_website_title_meta_seo_user,access_website_title_meta_seo,model_website_title_meta_seo,base.group_user,1,1,1,1

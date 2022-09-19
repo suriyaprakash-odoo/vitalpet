@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+		<record id="hr_contract_job_form_view" model="ir.ui.view">
+			<field name="name">hr.contract.job.form</field>
+			<field name="model">hr.contract.job</field>
+			<field name="arch" type="xml">
+				<form string="Contract Job">
+					<sheet>
+						<group>
+							<group>
+								<field name="job_id"  />
+								<field name="hourly_rate_class_id"  />
+								<field name="is_main_job"  />
+								<field name="user_approved_id" attrs="{'required':[('is_main_job','=',True)]}"/>
+							</group>
+							<group>
+							     <field name="seniority_id"  />
+							     <field name="hourly_rate"  />
+							     <field name="is_bonus"  />
+							     <field name="reason_approved" attrs="{'required':[('is_main_job','=',True)]}"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

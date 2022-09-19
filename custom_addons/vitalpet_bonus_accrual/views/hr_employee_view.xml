@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		
+		
+		<record model="ir.ui.view" id="hr_bonus_accrual_view_tree">
+			<field name="name">hr.bonus.accrual.tree</field>
+			<field name="model">hr.bonus.accrual</field>
+			<field name="arch" type="xml">
+				<tree string="Bonuses">
+					<field name="employee_id" />
+					<field name="production_type" />
+					<field name="company_id" />
+					<field name="date" />
+					<field name="payroll_period" invisible="1"/>
+					<field name="payroll_period_num" />
+					<field name="earned" />
+					<field name="paid" />
+					<field name="balance" />
+					<field name="source" />
+					<field name="payout" />
+					<field name="account_fiscal_periods_year" />
+					<field name="account_fiscal_periods_quarterly" />
+					<field name="account_fiscal_periods_id" />
+					<field name="account_fiscal_period_week_id" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="hr_bonus_accrual_view_form" model="ir.ui.view">
+			<field name="name">hr.bonus.accrual.form</field>
+			<field name="model">hr.bonus.accrual</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="employee_id" />
+							<field name="contract_id" invisible="1" />
+							<field name="production_type" />
+							<field name="company_id" />
+							<field name="date" />
+							<field name="payroll_period" invisible="1"/>
+							<field name="payroll_period_num" />
+							<field name="source" />
+							<field name="earned" />
+							<field name="paid" />
+							<field name="balance" />
+							<field name="account_fiscal_periods_year" />
+							<field name="account_fiscal_periods_quarterly" />
+							<field name="account_fiscal_periods_id" />
+							<field name="account_fiscal_period_week_id" />
+							<field name="date_create" invisible="1"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		
+
+		<record id="hr_bonus_accrual_view_search" model="ir.ui.view">
+			<field name="name">hr.bonus.accrual.search</field>
+			<field name="model">hr.bonus.accrual</field>
+			<field name="arch" type="xml">
+				<search string="Search Bonuses">
+					<filter string="Paid" name="paid" domain="[('paid','=',True)]" />
+					<filter string="Accrued" name="accured" domain="[('accured', '=',True)]" />
+					<filter string="Balance" name="balance" domain="[('balance','=',True)]" />
+					<filter string="Source" name="source" domain="[('source','=',True)]" />
+
+					<group expand="0" string="Group By">
+						<filter string="Company" domain="[]" context="{'group_by':'company_id'}" />
+						<filter string="Source" domain="[]" context="{'group_by':'source'}" />
+						<filter string="Production Type" domain="[]"
+							context="{'group_by':'production_type'}" />
+						<filter string="Date" domain="[]" context="{'group_by':'date'}" />
+						<filter string="Fiscal Year" context="{'group_by':'account_fiscal_periods_year'}" />
+						<filter string="Fiscal Quarter"
+							context="{'group_by':'account_fiscal_periods_quarterly'}" />
+						<filter string="Fiscal Month" context="{'group_by':'account_fiscal_periods_id'}" />
+						<filter string="Fiscal Week"
+							context="{'group_by':'account_fiscal_period_week_id'}" />
+							<filter string="Employee"
+							context="{'group_by':'employee_id'}" />
+					</group>
+
+					<field name="employee_id" string="Employee"
+						filter_domain="[('employee_id','ilike',self)]" />
+					<field name="production_type" string="Bonus type"
+						filter_domain="[('production_type','ilike',self)]" />
+				</search>
+			</field>
+		</record>
+		
+		
+		
+		
+		<record id="hr_bonus_accrual_menu_action" model="ir.actions.act_window">
+			<field name="name">Bonuses</field>
+			<field name="res_model">hr.bonus.accrual</field>
+			<field name="view_id" ref="hr_bonus_accrual_view_tree" />
+			<field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	
+		<record id="bonus_accrual_view_employee_form" model="ir.ui.view">
+			<field name="name">hr.employee.view.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//notebook" position="inside">
+					<page name="bonus_accrual" string="Bonus Accrual">
+						<field name="bonus_accrual_line_ids">
+							<tree editable="bottom">
+								<field name="payroll_period" />
+								<field name="source" />
+								<field name="production_type" />
+								<field name="salary_rule" />
+								<field name="accured" />
+								<field name="paid" />
+								<field name="balance" />
+							</tree>
+						</field>
+					</page>
+				</xpath>
+					<xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="%(hr_bonus_accrual_menu_action)d" class="oe_stat_button"
+                        type="action" >
+                        <img src="/vitalpet_bonus_accrual/static/img/icon.png" style="height:30px;margin-left: 20px;margin-right: 12px;"/>
+                       <field name="bonus_count" widget="statinfo" string="Bonus" />
+                    </button>
+                </xpath>
+			</field>
+		</record>
+
+		
+		
+		  <record id="action_bonus_accrual_menu" model="ir.actions.act_window">
+            <field name="name">Bonuses</field>
+            <field name="res_model">hr.bonus.accrual</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+		
+		<menuitem id="hr_bonus_accrual_menuitem" action="action_bonus_accrual_menu"
+			string="Bonuses" parent="vitalpet_mypractice.menu_mypractice_team"
+			sequence="10" />
+
+	</data>
+</odoo>

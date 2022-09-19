@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_wizard_intercompany_balance" model="ir.ui.view">
+            <field name="name">wizard.intercompany.validate</field>
+            <field name="model">wizard.intercompany.validate</field>
+            <field name="arch" type="xml">
+                <form string="Income and Expense Detail">
+                    <p> Intercompany Balance exceeds $10.00. Shall we proceed?</p>
+                    <footer>
+                        <button string="Yes" name="action_yes" type="object" class="oe_highlight"/>
+                        or
+                        <button string="No" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_intercompany_balance" model="ir.actions.act_window">
+            <field name="name">InterCompany Balance</field>
+            <field name="res_model">wizard.intercompany.validate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_wizard_intercompany_balance"/>
+            <field name="target">new</field>
+        </record>
+    
+    </data>
+</openerp>

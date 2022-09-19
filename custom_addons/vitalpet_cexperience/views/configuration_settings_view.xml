@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="client_exp_settings_from" model="ir.ui.view">
+		<field name="name">client.config.settings.form</field>
+		<field name="model">client.config.settings</field>
+		<field name="arch" type="xml">
+			<form class="oe_form_configuration">
+				<header>
+					<button string="Save" type="object" name="execute" class="oe_highlight" />
+					<button string="Cancel" type="object" name="cancel" class="oe_link" />
+				</header>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Company Settings</h1>
+					</div>
+				</div>
+				<group>
+				    <field name="exp_visit_company_id" style="width:120px" />
+					<field name="boarding" style="width:60px" />
+					<field name="grooming" style="width:60px" />
+					<field name="day_camp_res" style="width:60px" />
+					<field name="pre_exam_pts" style="width:60px" />
+					<field name="post_exam_pts" style="width:60px" />
+					<field name="director_id" style="width:60px" invisible="1"/>
+					<field name="survey_visit" style="width:60px" />
+					<field name="tasks_per_week" style="width:60px" />
+				</group>
+				<group string = "Global Settings">
+				    <field name="survey_temp_id" style="width:120px" />
+				</group>
+				<group string = "Benchmarks Weighting">
+				<group string = "Pre-Exam">
+					<!-- <div name="your_field_name">
+					    <label for="email_file" style="font-weight: bold;"/>
+					    <field name="email_file" style="width:60px" class="oe_inline"/> (%%)
+					    <br/>	
+					    <label for="mobile_ph" style="font-weight: bold;"/>
+					    <field name="mobile_ph" style="width:60px" class="oe_inline"/> (%%)
+					</div> -->
+				       <field name="email_file" style="width:60px" readonly="1"/> 
+				      <field name="mobile_ph" style="width:60px" readonly="1"/>
+				      <field name="new_client" style="width:60px" readonly="1"/>
+				      <field name="day_camp" style="width:60px" readonly="1"/>
+				      <field name="nail_trim" style="width:60px" readonly="1"/>
+				      <field name="bath" style="width:60px" readonly="1"/>
+				      <field name="anal_gland" style="width:60px" readonly="1"/>
+				      <field name="groomer_sch" style="width:60px" readonly="1"/>
+				      <field name="vaccines" style="width:60px" readonly="1"/>
+				      <field name="paracitides" style="width:60px" readonly="1"/>
+				      <field name="blood_work" style="width:60px" readonly="1"/>
+				      <field name="dental" style="width:60px" readonly="1"/>
+				      <field name="total" style="width:60px" readonly="1"/>
+				 </group>
+				 <group string = "Exam">
+				      <field name="tpr" style="width:60px" readonly="1"/>
+				      <field name="dental_grade" style="width:60px" readonly="1"/>
+				      <field name="dental_recom" style="width:60px" readonly="1"/>
+				      <field name="dental_sch" style="width:60px" readonly="1"/>
+				      <field name="int_parasite" style="width:60px" readonly="1"/>
+				      <field name="blood_parasite" style="width:60px" readonly="1"/>
+				      <field name="blood_panel" style="width:60px" readonly="1"/>
+				      <field name="worm_prevent" style="width:60px" readonly="1"/>
+				      <field name="flea_prevent" style="width:60px" readonly="1"/>
+				      <field name="rads" style="width:60px" readonly="1"/>
+				      <field name="cbc" style="width:60px" readonly="1"/>
+				      <field name="bcs" style="width:60px" readonly="1"/>
+				      <field name="work_up" style="width:60px" readonly="1"/>
+				      <field name="estimate" style="width:60px" readonly="1"/>
+				      <field name="total_exam" style="width:60px" readonly="1"/>
+				 </group>
+				  <group string = "Post">
+				      <field name="bord_sch" style="width:60px" readonly="1"/>
+				      <field name="diet_recom" style="width:60px" readonly="1"/>
+				      <field name="card" style="width:60px" readonly="1"/>
+				      <field name="rem_setup" style="width:60px" readonly="1"/>
+				      <field name="trt_plan" style="width:60px" readonly="1"/>
+				      <field name="follw_sch" style="width:60px" readonly="1"/>
+				      <field name="call_back" style="width:60px" readonly="1"/>
+				      <field name="total_post" style="width:60px" readonly="1"/>
+				 </group>
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="action_client_exp_settings" model="ir.actions.act_window">
+		<field name="name">Configuration</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">client.config.settings</field>
+		<field name="view_mode">form</field>
+		<field name="target">inline</field>
+	</record>
+	
+	<record id="view_custom_my_practice_config_settings_inherited" model="ir.ui.view">
+		<field name="name">mypractice.config.settings</field>
+		<field name="model">mypractice.config.settings</field>
+		<field name="inherit_id" ref="vitalpet_mypractice.view_mypractice_config_settings" />
+		<field name="arch" type="xml"> 
+        <xpath expr="//group/group/div" position="after">
+             <label for="id" string="Medical Director" style="padding-left: 2em;" />
+             <div>
+                 <div>
+                      <field name="medical_director_id" class="oe_inline"/>
+                 </div>
+             </div>    
+        </xpath> 	
+	</field>
+	</record>
+	
+</odoo>

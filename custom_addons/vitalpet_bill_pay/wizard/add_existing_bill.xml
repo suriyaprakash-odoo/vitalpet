@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_existing_bill_view_form" model="ir.ui.view">
+        <field name="name">add.existing.bill.form</field>
+        <field name="model">add.existing.bill</field>
+        <field name="arch" type="xml">
+            <form string="Add to Existing Bill">
+            	<group>
+	                <field name="partner_id"  placeholder="Select Vendor" domain="[('supplier','=',True)]"/>
+	                                
+	                <field name="from_date" />
+	                <field name="to_date" />
+	                <field name="bill_credit_type" invisible="1" />
+	                <field name="inbox_id" invisible="1" />
+	            </group>
+	            <group>
+	                <div>
+		                <field name="line_ids">
+		                	<tree create="false" editable="bottom" >
+		                		<field name="select"/>
+	                			<field name="bill_id"  invisible="1" />
+	                			<!--<field name="invoice_number"/>-->
+	                			<field name="invoice_amount"/>
+	                		</tree>
+		                </field>
+		          </div>
+	           </group>
+                <footer>
+                    <button string='Add to Existing Bill' name="add_to_existing_bills" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+
+     <record id="add_existing_credit_view_form" model="ir.ui.view">
+        <field name="name">add.existing.bill.form</field>
+        <field name="model">add.existing.bill</field>
+        <field name="arch" type="xml">
+            <form string="Add to Existing Credit">
+                <group>
+                    <field name="partner_id"  placeholder="Select Vendor" domain="[('supplier','=',True)]"/>
+                                    
+                    <field name="from_date" />
+                    <field name="to_date" />
+                    <field name="bill_credit_type" invisible="1" />
+                    <field name="inbox_id" invisible="1" />
+                </group>
+                <group>
+                    <div>
+                        <field name="line_ids">
+                            <tree create="false" editable="bottom" >
+                                <field name="select"/>
+                                <field name="bill_id"  invisible="1" />
+                               <!-- <field name="invoice_number"/>-->
+                                <field name="invoice_amount"/>
+                            </tree>
+                        </field>
+                  </div>
+               </group>
+                <footer>
+                    <button string='Add to Existing Credit' name="add_to_existing_bills" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+</odoo>

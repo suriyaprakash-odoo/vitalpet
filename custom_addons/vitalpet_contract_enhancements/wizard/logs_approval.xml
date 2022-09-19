@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+	<record id="view_logs_approval" model="ir.ui.view">
+		<field name="name">logs.approval.form</field>
+		<field name="model">logs.approval</field>
+		<field name="arch" type="xml">
+			<form string="Logs Approval">
+				<group>
+					<field name="name" required="1" />
+					<field name="reason" required="1" />
+					<!-- <field name="html" string="Fields"/> -->
+				</group>
+				<footer>
+					<button name="confirm_approval" type="object" string="Confirm" class="oe_highlight" /> or
+	                    <button name="cancel" string="Close" special="cancel" class="oe_link" />
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_logs_approval" model="ir.actions.act_window">
+		<field name="name">Logs Approval</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">logs.approval</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="view_logs_approval" />
+		<field name="target">new</field>
+	</record>
+</odoo>

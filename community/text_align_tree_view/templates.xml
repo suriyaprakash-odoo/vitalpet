@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <template id="assets_common_numeric_inherited" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href='/text_align_tree_view/static/src/css/my_css.css'/>
+        </xpath>
+    </template>
+    </data>
+</openerp>

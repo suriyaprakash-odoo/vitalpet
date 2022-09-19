@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="billpay_inbox_kanban_view" model="ir.ui.view">
+		<field name="name">billpay.inbox.kanban</field>
+		<field name="model">billpay.inbox</field>
+		<field name="arch" type="xml">
+
+			<kanban class="oe_background_grey o_kanban_dashboard" create="0" js_class="billpay_inbox_upload">
+
+				<templates>
+					<field name="mimetype" />
+					<field name="partner_id" />
+					<field name="sender" />
+					<field name="state" />
+					<t t-name="kanban-box">
+						<div class="coe_kanban_card">
+							<div class="row">
+								<div class="col-md-12 ">
+									<div class="col-md-7">
+										<a type="delete">
+											<i class="fa fa-times" aria-hidden="true">
+											</i>
+										</a>
+										<t t-if="record.partner_id">
+											<span style=" font-weight:bold; font-size:14px;">
+												<field name="partner_id" />
+											</span>
+										</t>
+										<span style=" font-weight:bold; font-size:14px;">
+											<field name="sender" attrs="{'invisible': [('partner_id', '!=', False)]}" />
+										</span>
+									</div>
+									<div class="col-md-5">
+										<field name="submit_date" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-7">
+										<strong>
+
+											<!-- 	                                     	<t t-esc="{record.attachment.value}"></t>
+ -->
+											<t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)" />
+											<div t-if="!webimage" class="o_image" t-att-data-mimetype="record.mimetype.value" />
+											<div t-if="webimage">
+
+												<img class="img-responsive" t-att-src="kanban_image('billpay.inbox', 'attachment', record.id.raw_value)" />
+											</div>
+
+										</strong>
+										<div t-if="!webimage">
+											<button class="btn btn-info" type="object" name="view_file">View PDF</button>
+										</div>
+									</div>
+									<div class="col-md-5">
+										<ul>
+											<li>
+												<b>Create</b>
+											</li>
+											<li>
+												<a type="object" name="action_create_new_bill">Bill</a>
+											</li>
+											<li>
+												<a type="object" name="action_create_new_credit">Vendor Credit</a>
+											</li>
+										</ul>
+										Sub:<field name="subject" />
+										
+										
+																			
+										<ul style="margin-top: 28px;">
+											<li>
+												<b>Add to Existing</b>
+											</li>
+											<li>
+												<a type="object" name="action_create_existing_bill">Bill</a>
+											</li>
+											<li>
+												<a type="object" name="action_create_existing_credit">Vendor Credit</a>
+											</li>
+											<!-- <li><a type="object" name="action_create_vendor_doc" >Vendor Document</a></li>
+                                        <li><a type="object" name="action_create_vendor_contract" >Vendor Contract</a></li> -->
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
+
+	<record id="view_billpay_inbox_tree" model="ir.ui.view">
+		<field name="name">billpay.inbox.tree</field>
+		<field name="model">billpay.inbox</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+			<tree string="Bill Pay" create="false">
+				<field name="state" />
+				<field name="submit_date" />
+				<field name="name" />
+				<field name="partner_id" />
+				<field name="sender" />
+				<field name="billsource" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_billpay_inbox_calendar" model="ir.ui.view">
+		<field name="name">billpay.inbox.calendar</field>
+		<field name="model">billpay.inbox</field>
+		<field name="arch" type="xml">
+			<calendar string="Inbox" color="state" date_start="submit_date">
+				<field name="partner_id" />
+				<field name="sender" />
+			</calendar>
+		</field>
+	</record>
+
+	<record id="view_billpay_inbox_filter" model="ir.ui.view">
+		<field name="name">billpay.inbox.select</field>
+		<field name="model">billpay.inbox</field>
+		<field name="arch" type="xml">
+			<search string="Search Inbox">
+				<field name="partner_id" string="Vendor" domain="[('partner_id','ilike', self)]" />
+				<field name="sender" string="Sender" domain="[('sender','ilike', self)]" />
+				<separator />
+
+				<filter domain="[('state','=','open')]" help="Open" name="Open" />
+				<filter domain="[('state','=','processed')]" help="Processed" />
+				<filter domain="['|', ('billsource','=','email'), ('billsource','=','fax')]" help="Email\Fax" />
+				<filter domain="[('billsource','=','upload')]" help="Upload" />
+				<filter string="Today" domain="[('state','=','open'),('submit_date', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" />
+				<group expand="0" string="Group By">
+					<filter name="state" string="Status" context="{'group_by':'state'}" />
+					<filter name="partner_id" string="Vendor" context="{'group_by':'partner_id'}" />
+					<filter name="submit_date" string="Submit Date" context="{'group_by':'submit_date'}" />
+					<filter name="sender" string="Sender" context="{'group_by':'sender'}" />
+					<filter name="billsource" string="Source" context="{'group_by':'billsource'}" />
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record id="action_billpay_inbox" model="ir.actions.server">
+		<field name="name">Duplicate</field>
+		<field name="model_id" ref="model_billpay_inbox" />
+		<field name="state">code</field>
+		<field name="code">
+                if record:
+                record.action_duplicate()
+            </field>
+	</record>
+
+	<record id="ir_action_billpay_inbox" model="ir.values">
+		<field eval="'client_action_multi'" name="key2" />
+		<field eval="'billpay.inbox'" name="model" />
+		<field name="name">Duplicate</field>
+		<field eval="'ir.actions.server,%d'%action_billpay_inbox" name="value" />
+	</record>
+
+
+
+	<record id="view_billpay_inbox_form" model="ir.ui.view">
+		<field name="name">billpay.inbox.form</field>
+		<field name="model">billpay.inbox</field>
+		<field name="arch" type="xml">
+			<form string="Bill Pay" create="false">
+				<!-- <style>
+                      div.o_hidden_input_file {width:100%;}
+                       form.o_form_binary_form{width: 661px;height: 206px;margin-right:10px;float: left;  background:url('/bill_pay/static/img/drag-drop-file.gif') no-repeat;}
+                       .o_form_input_file[name=ufile]{width: 100%;height: 250px;opacity:0;}
+                       .o_form_field_image img{margin-top: 185px;}
+                       .o_form_input_file[name=ufile]{display:block !important;}
+                       .o_form_view .o_form_field_image .o_form_image_controls {opacity:1 !important;}
+                       .o_form_view .o_form_field_image .o_form_image_controls{width: 329px; height: 22px; right:auto;left:0;}
+                       .o_form_field_image img{max-width:127px;}
+                </style> -->
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="open,posted" />
+				</header>
+				<sheet>
+					<div class="oe_title">
+						<h1>
+							<field name="name" />
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="billsource" />
+							<field name="sender" />
+						</group>
+						<group>
+							<field name="submit_date" />
+							<field name="partner_id" domain="[('supplier', '=', True)]" />
+							<field name="state" />
+						</group>
+					</group>
+					<group>
+						<field name="attachment" widget="image" class="image_file" />
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_ids" widget="mail_thread" />
+				</div>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_billpay_inbox" model="ir.actions.act_window">
+		<field name="name">Inbox</field>
+		<field name="res_model">billpay.inbox</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">kanban,tree,form,calendar</field>
+		<field name="view_id" ref="billpay_inbox_kanban_view" />
+		<field name="domain">[]</field>
+		<field name="context">{"search_default_Open": 1}</field>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+                Click to add an account.
+            </p>
+		</field>
+	</record>
+
+	<record id="action_billpay_inbox_today" model="ir.actions.act_window">
+		<field name="name">Inbox</field>
+		<field name="res_model">billpay.inbox</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">kanban,tree,form,calendar</field>
+		<field name="view_id" ref="billpay_inbox_kanban_view" />
+		<field name="domain">[]</field>
+		<field name="context">{"search_default_today": 1}</field>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+                Click to add an account.
+            </p>
+		</field>
+	</record>
+
+	<!--Maintain bill pay sync with log-->
+	<!-- <record id="view_billpay_log_tree" model="ir.ui.view">
+        <field name="name">billpay.log.tree</field>
+        <field name="model">billpay.log</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="Bill Pay Log">
+                <field name="sync_date"/>
+                <field name="lastsync"/>
+            </tree>
+        </field>
+    </record>
+ -->
+	<!--  <record id="view_billpay_log_form" model="ir.ui.view">
+        <field name="name">billpay.log.form</field>
+        <field name="model">billpay.log</field>
+        <field name="arch" type="xml">
+            <form string="Bill Pay Log">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sync_date" />
+                        </group>
+                        <group>
+                            <field name="lastsync" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Bill Pay Mails">
+                            <field name="incoming_mail_ids" widget="one2many_list" mode="tree" nolabel="1" readonly="1">
+		                    	<tree>
+                                    <field name="author_id"/>
+                                    <field name="email_from"/>
+		                    		<field name="date" />
+			                        <field name="subject"/>
+			                    </tree>
+		                    </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+	<!-- <record id="action_billpay_log" model="ir.actions.act_window">
+        <field name="name">Bill Pay Log</field>
+        <field name="res_model">billpay.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_log_tree"/>
+    </record> -->
+	
+	
+	<record id="view_pdf_files" model="ir.actions.act_window">
+		<field name="name">View all files</field>
+		<field name="res_model">view.file</field>
+		<field name="src_model">view.file</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+	
+	
+    <record id="view_pdf_files_form" model="ir.ui.view">
+        <field name="name">view.file.form</field>
+        <field name="model">view.file</field>
+        <field name="arch" type="xml">
+        
+            <form string="View PDF">
+            
+            <script>
+                          $( function() {
+                                            
+                            	$(".embed2").attr("src","data:application/pdf;base64,"+$("input[name='attachment']").val());
+                                            
+                            
+                          } );
+                          </script>
+                          
+            <iframe src="" class="embed2" style="height:400px;width: 100%;border: none;" >
+                                </iframe>
+		                <field name="attachment" invisible="True" />
+               <footer>
+                  
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+	
+	
+</odoo>

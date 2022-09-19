@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+	<record id="gl_payroll_import_sequence" model="ir.sequence">
+		<field name="name">GL Payroll Import</field>
+		<field name="prefix">PI</field>
+		<field name="padding">4</field>
+		<field name="code">gl.payroll.import</field>
+		<field name="seq_order" eval="False" />
+	</record>	
+	
+	<record id="gl_payroll_import_tree" model="ir.ui.view">
+		<field name="name">gl.payroll.import.tree</field>
+		<field name="model">gl.payroll.import</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+			<tree colors="red:issue_record != 0" >
+				<field name="sequence" />
+				<field name="name" />
+				<field name="total_record" />
+				<field name="pass_record" />
+				<field name="issue_record" />
+				<field name="inter_company_balance" string="Balance" />
+				<field name="create_date" widget="date" string="Date Imported" />
+				<field name="write_date" widget="date" string="Date Modified" />
+				<field name="create_uid" string="Imported By" />
+				<field name="write_uid" string="Last Modified By" />
+				<field name="state" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="gl_payroll_import_form" model="ir.ui.view">
+		<field name="name">gl.payroll.import.form</field>
+		<field name="model">gl.payroll.import</field>
+		<field name="arch" type="xml">
+			<form create="false" >
+				<header>
+					 <button name="compute" string="Compute" states="draft" type="object" class="oe_highlight" />
+					 <button name="temp_journal" states="processing" string="Create Temp Journals" type="object" class="oe_highlight" />
+					 <button name="check_intercompany_balance" states="temp_journal" string="Validate" type="object" class="oe_highlight" />
+					 <button name="reset_draft" states="processing,temp_journal,validated" string="Reset to Draft" type="object" class="oe_highlight" />
+					<field name="state" widget="statusbar" statusbar_visible="draft,processing,temp_journal,validated" />
+				</header>
+				<sheet>
+					<div class="oe_button_box">
+                    	<button name="open_journal_entries" class="oe_stat_button" icon="fa-bars" type="object" string="Journal Entries">
+                        </button>
+                    </div>
+                    <h1><field name="sequence" /></h1>    
+					<group>
+						<group>
+							<field name="name" />
+							<field name="create_date" widget="date" string="Date Imported" />
+						    <field name="inter_company_balance" readonly="1" />							
+						</group>
+						<group>
+							<field name="total_record" readonly="1" />
+							<field name="pass_record" readonly="1" />
+							<field name="issue_record" readonly="1" />
+						</group>
+					</group>
+					<notebook>
+                        <page string="Record">
+                            <field name="record_ids" widget="one2many" >
+                                <tree create="false" colors="red:status == 'Error'">
+                                    <field name="department_code"/>
+                                    <field name="costcenter_code"/>
+                                    <field name="costcenter_descr" />
+                                    <field name="job_code"/>
+                                    <field name="code_type"/>
+                                    <field name="code"/>
+                                    <field name="code_descr"/>
+                                    <field name="namount" sum="Amount" />
+                                    <field name="date_start"/>
+                                    <field name="date_end"/>
+                                    <field name="status"/>
+                                    <field name="reason"/>
+                                </tree>
+                                <form string="Expenses Details">
+                                	<group>
+	                                	<group>
+	                                    	<field name="row_num"/>
+	                                    	<field name="department_code"/>
+	                                    	<field name="gl_account_no"/>
+	                                    	<field name="company_id"/>
+	                                    	<field name="department"/>
+	                                    	<field name="costcenter_code"/>
+	                                    	<field name="costcenter_descr"/>
+	                                    	<field name="job_code"/>
+	                                    	<field name="debit_account_id"/>
+	                                    	<field name="credit_account_id"/>
+	                                    	<field name="mapping_based_company_id"/>
+	                                    	<field name="journal_type"/>
+	                                    </group>
+	                                    <group>
+	                                    	<field name="job_title"/>
+	                                    	<field name="code_type"/>
+	                                    	<field name="code"/>
+	                                    	<field name="code_descr"/>
+	                                    	<field name="namount"/>
+	                                    	<field name="date_start"/>
+	                                    	<field name="date_end"/>
+	                                    	<field name="processed"/>
+	                                    	<field name="debit_product"/>
+	                                    	<field name="credit_product"/>
+	                                    	<field name="reference"/>
+	                                    </group>
+	                                </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="TEMPORARY JE">
+                            <field name="temp_journal_ids" widget="one2many" >
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date_journal"/>
+                                    <field name="account_id"/>
+                                    <field name="partner"/>
+                                    <field name="product_id"/>
+                                    <field name="debit" sum="Debit"/>
+                                    <field name="credit" sum="Credit"/>
+                                </tree>
+                                <form string="TEMPORARY JE">
+                                	<group>
+	                                	<group>
+	                                    	<field name="name"/>
+	                                    	<field name="account_id"/>
+	                                    	<field name="product_id"/>
+	                                    	<field name="journal_id"/>
+	                                    	<field name="date_journal"/>
+	                                    </group>
+	                                    <group>
+	                                    	<field name="debit"/>
+	                                    	<field name="credit"/>
+	                                    	<field name="import_id"/>
+	                                    	<field name="company_id"/>
+	                                    </group>
+	                                </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_gl_payroll_import_menu" model="ir.actions.act_window">
+		<field name="name">GL Payroll Import</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gl.payroll.import</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem
+            action="action_gl_payroll_import_menu"
+            id="menu_gl_payroll_import"
+            name="Payroll Import"
+            parent="account.menu_finance_entries"/>
+
+	<record id="gl_payroll_mapping_sequence" model="ir.sequence">
+		<field name="name">GL Payroll Mapping</field>
+		<field name="prefix">PM</field>
+		<field name="padding">4</field>
+		<field name="code">gl.payroll.mapping</field>
+		<field name="seq_order" eval="False" />
+	</record>
+	
+	<record id="gl_payroll_mapping_tree" model="ir.ui.view">
+		<field name="name">gl.payroll.mapping.tree</field>
+		<field name="model">gl.payroll.mapping</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="parent"/>
+			    <field name="group_code"/>   
+			    <field name="job_code"/>
+			    <field name="code_type"/>
+			    <field name="code"/>
+			    <field name="code_descr"/>
+			    <field name="debit_account_number"/> 
+			    <field name="debit_account_name"/>
+			    <field name="credit_account_number"/>
+			    <field name="credit_account_name"/>
+			    <field name="debit_product"/>
+			    <field name="credit_product"/>
+			    <field name="journal_type"/>
+			    <field name="partner_is_practice"/>
+			    <field name="partner"/>
+			    <field name="reference"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="gl_payroll_mapping_form" model="ir.ui.view">
+		<field name="name">gl.payroll.mapping.form</field>
+		<field name="model">gl.payroll.mapping</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<h1><field name="sequence" /></h1> 
+					<group>
+						<group>
+							<field name="parent"/>
+						    <field name="group_code"/>   
+						    <field name="job_code"/>
+						    <field name="code_type"/>
+						    <field name="code"/>
+						    <field name="code_descr"/>
+						    <field name="debit_account_number"/> 
+						    <field name="debit_account_name"/>
+						</group>
+						<group>
+						    
+						    <field name="debit_product"/>
+						    <field name="credit_account_number"/>
+						    <field name="credit_account_name"/>
+						    <field name="credit_product"/>
+						    <field name="journal_type"/>
+						    <field name="partner_is_practice"/>
+						    <field name="partner"/>
+						    <field name="reference"/>
+						</group>
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+			</form>
+		</field>
+	</record>
+
+
+        <record id="view_gl_payroll_mapping_filter" model="ir.ui.view">
+            <field name="name">gl.payroll.mapping.filter</field>
+            <field name="model">gl.payroll.mapping</field>
+            <field name="arch" type="xml">
+                <search string="Search Mapping">
+                    <field name="job_code"/>
+                    <field name="code_type"/>
+                    <field name="code"/>
+                    <field name="code_descr"/>
+                    <separator/>
+                    <field name="debit_account_number"/>
+                    <field name="credit_account_number"/>
+                    <field name="debit_product"/>
+                    <field name="credit_product"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter name="group_job_code" string="Job Code" domain="[]" context="{'group_by':'job_code'}"/>
+                        <filter name="group_code_type" string="Code Type" domain="[]" context="{'group_by':'code_type'}"/>
+                        <filter name="group_code" string="Code" domain="[]" context="{'group_by':'code'}"/>
+                        <filter name="group_code_descr" string="Codedescr" domain="[]" context="{'group_by':'code_descr'}"/>                       
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+	<record id="action_gl_payroll_mapping_menu" model="ir.actions.act_window">
+		<field name="name">GL Payroll Mapping</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gl.payroll.mapping</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem
+            id="menu_gl_payroll_mapping"
+            name="Payroll Mapping"
+            parent="account.account_account_menu"
+            action="action_gl_payroll_mapping_menu"/>
+            
+    <record id="view_account_move_form_inherited" model="ir.ui.view">
+	    <field name="name">account.move.form</field>
+	    <field name="model">account.move</field>
+	    <field name="inherit_id" ref="account.view_move_form" />
+	    <field name="arch" type="xml">
+	        <field name="company_id" position="after">
+	            <field name="gl_import_id" invisible = "1"/>
+	        </field>
+	    </field>
+	</record>
+	</data>
+</odoo>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!-- Record Rules for hr.employee -->
+        <record id="payroll_inputs_employee_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs hr</field>
+            <field name="model_id" ref="hr.model_hr_employee" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+    <!-- Record Rules for hr.contract -->
+        <record id="payroll_inputs_contract_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs contract</field>
+            <field name="model_id" ref="model_hr_contract" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|',('employee_id.company_id','=',False),('employee_id.company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+    <!-- Record Rules for hr.holidays -->
+        <record id="payroll_inputs_holidays_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs holidays</field>
+            <field name="model_id" ref="model_hr_holidays" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|',('employee_id.company_id','=',False),('employee_id.company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+        <!-- Record Rules for account.asset.asset -->
+        <record id="payroll_inputs_account_asset_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs account</field>
+            <field name="model_id" ref="vitalpet_additional_fiscal_periods.model_account_asset_asset" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+        <!-- Record Rules for hr.work.hours -->
+        <record id="payroll_inputs_hr_work_hours_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs hr hours</field>
+            <field name="model_id" ref="model_hr_work_hours" />
+            <field eval="True" name="global" />
+            <field name="domain_force"> ['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+        <!-- Record Rules for hr.production.line -->
+        <record id="payroll_inputs_hr_production_line_record_rule" model="ir.rule">
+            <field name="name">Payroll Inputs production</field>
+            <field name="model_id" ref="model_hr_production_line" />
+            <field eval="True" name="global" />
+            <field name="domain_force"> ['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+        <!-- Record Rules for hr.payroll.inputs -->
+        <record id="hr_payroll_inputs_record_rule" model="ir.rule">
+            <field name="name">Hr Payroll Inputs</field>
+            <field name="model_id" ref="model_hr_payroll_inputs" />
+            <field eval="True" name="global" />
+            <field name="domain_force"> ['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+            <field eval="True" name="active" />
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+       <!-- Care Category Action and tree view -->
+
+       <record id="promote_carecategory_tree" model="ir.ui.view">
+            <field name="name">promote.carecategory.tree</field>
+            <field name="model">promote.carecategory</field>
+            <field name="arch" type="xml">
+                <tree string="Care Categories" editable='bottom'>
+                    <field name="display_name"/>
+                    <field name="name"/>
+                    <field name="next_category_id" attrs="{'required':[('age_maximum','!=',0)]}"/>
+                    <field name="age_minimum"/>
+                    <field name="age_maximum"/>
+                    <field name="species_id"/>
+                    <field name="include_in_RC"/>
+                    <field name="sequence"/>
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="promote_carecategory_action">
+            <field name="name">Care Categories</field>
+            <field name="res_model">promote.carecategory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <!-- field name="search_view_id" ref="promote_ca_filter"/> -->
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('promote_carecategory_tree')}),]"/>
+            <field name="help" type="html">
+                <p>
+                    No Care Categories for now. To create new Care Categories, click on create Button.
+                </p>
+            </field>
+    	</record>
+
+      <!-- Care Category Conditions Action and tree view -->
+
+       <record id="promote_carecategory_conditions_tree" model="ir.ui.view">
+            <field name="name">promote.carecategory.conditions.tree</field>
+            <field name="model">promote.carecategory.conditions</field>
+            <field name="arch" type="xml">
+                <tree string="Care Categories Conditions" editable='bottom'>
+                    <field name="care_category_id"/>
+                    <field name="Indicator"/>
+                    <field name="condition"/>
+                    <field name="null_condition"/>
+                    <field name="message" widget='html'/>
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="promote_carecategory_conditions_action">
+            <field name="name">Care Categories Conditions</field>
+            <field name="res_model">promote.carecategory.conditions</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <!-- field name="search_view_id" ref="promote_ca_filter"/> -->
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('promote_carecategory_conditions_tree')}),]"/>
+            <field name="help" type="html">
+                <p>
+                    No Care Categories Conditions for now. To create new Care Categories Conditions, click on create Button.
+                </p>
+            </field>
+    	</record>
+
+    	<!-- New Product Form view -->
+
+       <record id="product_product_carecategory_form" model="ir.ui.view">
+            <field name="name">promote.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                    <xpath expr="//form//sheet//notebook//page[@name='notes']" position="after">
+                    	<page name="care_standard" string="CARE STANDARD">
+	                    	<field name="care_standard_ids" mode="tree" context="{'default_product_id': active_id}">
+	                    		<tree string="Report Cards" editable='bottom'>
+			                    	<field name="care_category_id"/>
+			                    	<field name="species_id"/>
+				                    <field name="company_id"/>
+		                            <field name="min_age"/>
+		                            <field name="max_age"/>
+				                    <field name="frequency"/>
+				                </tree>
+				             </field>
+	                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Report Card Action and tree view -->
+
+       <record id="promote_reportcard_tree" model="ir.ui.view">
+            <field name="name">promote.campaigns.reportcard.tree</field>
+            <field name="model">promote.campaigns.reportcard</field>
+            <field name="arch" type="xml">
+                <tree string="Report Cards">
+                    <field name="company_id"/>
+                    <field name="petowner_id"/>
+                    <field name="pet_id"/>
+                    <field name="species_id"/>
+                    <field name="breed_id"/>
+                    <field name="pet_age"/>
+                    <field name="pet_lastvisit_date"/>
+                    <field name="html_reportcard_link" readonly='1'/>
+                    <field name="write_date" string='Last Refresh'/>
+                    <field name="planned_refresh_date" string='Next Refresh'/>
+                    <field name="last_view"/>
+                    <field name="days_since_viewed" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="promote_reportcard_form" model="ir.ui.view">
+            <field name="name">promote.campaigns.reportcard.form</field>
+            <field name="model">promote.campaigns.reportcard</field>
+            <field name="arch" type="xml">
+                <form string="Report Cards">
+                	<sheet>
+	                    <div class="oe_button_box" name="button_box" groups="vitalpet_promote.group_promote_manager">
+	                        <button name="toggle_editable" type="object" class="oe_stat_button" icon="fa-wrench">
+	                            <field name="editable" widget="boolean_button" options="{&quot;terminology&quot;: &quot;editable&quot;}"/>
+	                        </button>
+	                    </div>
+
+	                    <div class="oe_title">
+	                        <h1>
+	                            <field name="pet_id" default_focus="1" placeholder="Name" readonly="True"/>
+	                        </h1>
+								<field name="company_id"  readonly="True"/>
+	                    </div>
+
+						<group>
+		                    <field name="species_id" readonly="True"/>
+		                    <field name="breed_id" readonly="True"/>
+		                    <field name="pet_age" readonly="True"/>
+		                    <field name="pet_lastvisit_date" readonly="True"/>
+	                    </group>
+
+		                <group>
+		                    <field name="html_reportcard_link" widget='url' readonly="True"/>
+		                    <field name="write_date" string='Last Refresh' readonly="True"/>
+		                    <field name="planned_refresh_date" readonly="True" attrs="{'readonly':[('editable','=',False)]}"/>
+		                    <field name="rating" readonly="True"/>
+		                    <field name="days_since_viewed" readonly="True" />
+	                    </group>
+
+	                    <notebook colspan="4">
+                        	<page string="Report Card Lines" autofocus="autofocus">
+                        		<field name="reportcard_lines" mode="tree" attrs="{'readonly':[('editable','=',False)]}">
+	                        		<tree string="Report Card Lines" editable='bottom'>
+					                    <field name="status"/>
+					                    <field name="care_category_id"/>
+					                    <field name="message"/>
+					                    <field name="sequence"/>
+					                </tree>
+					            </field>
+                        	</page>
+                        </notebook>
+                        </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="promote_reportcard_filter" model="ir.ui.view">
+            <field name="name">promote.campaigns.reportcard.search</field>
+            <field name="model">promote.campaigns.reportcard</field>
+            <field name="arch" type="xml">
+                <search string="Search Report Cards">
+                    <!-- field name="name" string="Report Cards" filter_domain="[('name','ilike',self)]"/>  -->
+                    <field name="petowner_id"/>
+                    <field name="pet_id"/>
+                    <separator/>
+                    <filter string="Not Viewed" domain="[('last_view','=',False)]" name="no_view_filter"/>
+                    <filter string="Viewed Within 3 months" domain="[('last_view','!=',False),('days_since_viewed','&lt;=',91)]" name="view_3months_filter"/>
+                    <filter string="Viewed 3 to 6 Months" domain="[('days_since_viewed','&gt;=',92),('days_since_viewed','&lt;=',183)]" name="view_6months_filter"/>
+                    <filter string="Viewed 6 to 12 Months" domain="[('days_since_viewed','&gt;=',184),('days_since_viewed','&lt;=',366)]" name="view_12months_filter"/>
+                    <group expand="0" string="Group By">
+                    	<filter string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <filter string="Species" domain="[]" context="{'group_by':'species_id'}"/>
+                        <filter string="Breed" domain="[]" context="{'group_by':'breed_id'}"/>
+                        <filter string="Pet Owner" domain="[]" context="{'group_by':'petowner_id'}"/>
+                        <filter string="Pet Age" domain="[]" context="{'group_by':'pet_age'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="promote_reportcard_action">
+            <field name="name">Report Cards</field>
+            <field name="res_model">promote.campaigns.reportcard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="promote_reportcard_filter"/>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('promote_reportcard_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('promote_reportcard_form')}),]"/>
+            <field name="help" type="html">
+                <p>
+                    No Report Cards for now. To create new Report Cards, click on create Button.
+                </p>
+            </field>
+    	</record>
+
+</odoo>

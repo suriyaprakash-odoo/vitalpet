@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_hr_expense_mail_attachment_form" model="ir.ui.view">
+			<field name="name">hr.expense.mail.attachment.form</field>
+			<field name="model">hr.expense.mail.attachment</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" />
+						</group>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="view_hr_expense_mail_attachment_tree" model="ir.ui.view">
+			<field name="name">hr.expense.mail.attachment.tree</field>
+			<field name="model">hr.expense.mail.attachment</field>
+			<field name="arch" type="xml">
+				<tree>
+
+					<field name="name" />
+
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="action_hr_expense_mail_attachment" model="ir.actions.act_window">
+			<field name="name">Expense Attachment</field>
+			<field name="res_model">hr.expense.mail.attachment</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_hr_expense_mail_attachment_tree">
+			</field>
+
+		</record>
+
+
+		<!--        <menuitem id="menu_hr_expense_mail_attachment" action="action_hr_expense_mail_attachment" name="Email Attachments" parent="hr_expense.menu_hr_expense_reports" sequence="100"/>
+ -->
+
+
+
+	</data>
+</odoo>

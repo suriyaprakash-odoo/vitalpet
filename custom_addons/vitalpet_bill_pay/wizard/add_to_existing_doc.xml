@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_existing_doc_view_form" model="ir.ui.view">
+        <field name="name">add.existing.doc.form</field>
+        <field name="model">add.existing.doc</field>
+        <field name="arch" type="xml">
+            <form string="Add to Existing Document">
+            	<group>
+	                <field name="partner_id"  placeholder="Select Vendor" domain="[('supplier','=',True)]"/>
+                    <field name="bill_credit_type" invisible="1" />	               
+	            </group>
+	          
+                <footer>                    
+                        <button string='Add to Existing Document' name="add_to_existing_doc" type="object" class="oe_highlight"/>                   
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+    <record id="add_existing_cont_view_form" model="ir.ui.view">
+        <field name="name">add.existing.doc.form</field>
+        <field name="model">add.existing.doc</field>
+        <field name="arch" type="xml">
+            <form string="Add to Existing Contract">
+                <group>
+                    <field name="partner_id"  placeholder="Select Vendor" domain="[('supplier','=',True)]"/>
+                    <field name="bill_credit_type" invisible="1" />                
+                </group>
+              
+                <footer>                    
+                        <button string='Add to Existing Contract' name="add_to_existing_doc" type="object" class="oe_highlight"/>                   
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+</odoo>

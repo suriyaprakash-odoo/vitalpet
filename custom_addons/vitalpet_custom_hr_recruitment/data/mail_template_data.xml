@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+	
+		<!--default alias for billpay-->
+        <record id="mail_alias_recruitment" model="mail.alias">
+            <field name="alias_name">odoorecruiter</field>
+            <field name="alias_model_id" ref="model_hr_applicant"/>
+            <field name="alias_user_id" ref="base.user_root"/>
+            <field name="alias_contact">everyone</field>
+        </record>
+		<!--Email template -->
+
+		<record id="email_offer_letter_template" model="mail.template">
+			<field name="name">Offer Letter Template</field>
+			<field name="email_from">${object.get_from_email()}</field>
+			<field name="subject">Offer Letter[APP${object.id}]</field>
+			<field name="email_to">${object.email_from}</field>
+			
+			<field name="model_id" ref="vitalpet_custom_hr_recruitment.model_hr_applicant" />
+			<field name="auto_delete" eval="True" />
+			<!--<field name="report_template" ref="report_hr_recruitment"/> -->
+			<!--<field name="report_name">Offer Letter</field> -->
+			<field name="body_html">
+            	<![CDATA[
+					<p>Dear ${object.name}</p>
+					<p>
+						I’m very pleased to announce that ${object.partner_name} will be joining us as a ${object.job_id.name}.
+						Please welcome him/her and help him/her finding his/her marks.
+					</p>
+				]]>
+			</field>
+		</record>
+
+        <record id="email_hr_recruitment_welcome" model="mail.template">
+            <field name="name">Welcome Mail</field>
+            <field name="email_from">${object.get_from_email()}</field>
+            <field name="subject">Welcome Mail[APP${object.id}]</field>
+            <field name="email_to">${object.email_from}</field>
+            <field name="model_id" ref="vitalpet_custom_hr_recruitment.model_hr_applicant" />
+            
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.name}</p>
+                    <p>
+                        Welcome...
+                    </p>
+                ]]>
+            </field>
+        </record>
+
+        <record id="applicant_acknowledgement_mail_template" model="mail.template">
+            <field name="name">Application Acknowledgement Email Template</field>
+            <field name="email_from">admin@vitalpet.com</field>
+            <field name="subject">Thank you for your application at ${object.company_id.name}</field>
+            <field name="email_to">${object.email_from}</field>
+            <field name="model_id" ref="vitalpet_custom_hr_recruitment.model_hr_applicant" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hi ${object.name},</p>
+                    <p>Thank you for applying to the ${object.job_id.job_template.name} position at ${object.company_id.name}.</p>
+                    <p>We’d like to inform you that we received your application. Our hiring team is currently reviewing all applications and If you are among qualified candidates, we will reach out to you via information provided. In any case, we will keep you posted on the status of your application.</p>
+                    <p>Thank you, again, for taking the time to apply to this role at ${object.company_id.name}.</p>
+                    <p><b>Kind regards,</b></p>
+                    <p><b>Your VitalPet and ${object.company_id.name} Team</b></p>
+                    <i><p>"Celebrating and Protecting the Lifelong Love of pets"<i></p>
+                ]]>
+            </field>
+        </record>
+
+		<record id="email_template_data_applicant_refuse" model="mail.template">
+			<field name="name">Applicant: Refused</field>
+			<field name="email_from">${object.get_from_email()}</field>
+			<field name="subject">Application refused [APP${object.id}]</field>
+			<field name="email_to">${object.email_from}</field>
+			<field name="model_id" ref="hr_recruitment.model_hr_applicant" />
+
+			<field name="user_signature" eval="False" />
+			<field name="body_html"><![CDATA[
+<p>Dear ${object.name or 'applicant'},</p>
+<p>Thank you for your enquiry.<br />
+Unfortunately, your profile does not match with our needs</p>
+<p>If you have any questions, please let us know.</p>
+<p>Best regards,</p>]]></field>
+		</record>
+
+		<record id="email_template_data_applicant_interest" model="mail.template">
+			<field name="name">Applicant: Interest</field>
+			<field name="email_from">${object.get_from_email()}</field>
+			<field name="subject">Application approved [APP${object.id}]</field>
+			<field name="email_to">${object.email_from}</field>
+			<field name="model_id" ref="hr_recruitment.model_hr_applicant" />
+			<field name="user_signature" eval="False" />
+
+			<field name="body_html"><![CDATA[
+<p>Dear ${object.name or 'applicant'},</p>
+<p>Thank you for your enquiry.<br />
+Your resume got our interest. I will contact you as soon as possible to plan
+next steps of the recruitment process.</p>
+<p>If you have any questions, please let us know.</p>
+<p>Best regards,</p>]]></field>
+		</record>
+
+		<record id="email_template_data_applicant_employee" model="mail.template">
+			<field name="name">Applicant: Welcome new employee</field>
+			<field name="email_from">${object.get_from_email()}</field>
+			<field name="subject">Welcome ${object.name} [APP${object.id}]</field>
+			<field name="model_id" ref="hr.model_hr_employee" />
+
+			<field name="body_html"><![CDATA[
+<p>Dear all,</p>
+<p>I’m very pleased to announce that <strong> ${object.name} </strong> will be
+joining us as a ${object.job_id.name}
+%if object.department_id:
+    in ${object.department_id.name}.
+%endif
+.</p>
+<p>Please welcome him/her and help him/her finding his/her marks.</p>]]></field>
+		</record>
+
+
+		<record id="email_template_hr_recruitment" model="mail.template">
+			<field name="name">Applicant: appointed</field>
+			<!--Fixme Get from mail server configuration -->
+			<field name="email_from">${object.get_from_email()}</field>
+			<field name="subject">Letter for Appointment [APP${object.id}]</field>
+			<field name="email_to">${object.email_from}</field>
+			<field name="model_id" ref="vitalpet_custom_hr_recruitment.model_hr_applicant" />
+			<field name="auto_delete" eval="False" />
+
+			<field name="body_html"><![CDATA[
+                <p>Dear ${object.name or 'applicant'},</p>
+                <p>This letter is to inform you that we have received your application for the job for the ________ (post applied for) post in our company and hence we’d like to appoint you for the interview on __________(date of the interview) at ________ (time of the interview) in the morning. You are required to bring with yourself, all the documents and other necessities that have been mentioned to you earlier also.
+
+                </p><br/><p>We expect your presence on the given date. If you have any kind of problem with the given date, you have to contact our official and write another application in order to get a new date. Any kind of delays in your processes will lead to cancellation of your appointment.</p>
+                <p>Best regards,</p>]]>
+			</field>
+		</record>
+
+
+		<record id="mail_template_data_module_install_website_mail"
+			model="mail.template">
+			<field name="name">website module install then send email</field>
+			<field name="subject">Your business is reachable from anywhere, anytime !
+			</field>
+			<field name="email_from">help@odoo.com</field>
+			<field name="email_to">${user.email|safe}</field>
+
+			<field name="model_id" ref="base.model_ir_module_module" />
+			<field name="auto_delete" eval="True" />
+			<field name="scheduled_date">${(datetime.datetime.now() +
+				relativedelta(days=1)).strftime('%Y-%m-%d %H:%M')}</field>
+			<field name="body_html"><![CDATA[
+            <div style="margin: 10px auto;">
+            <table cellspacing="0" cellpadding="0" style="width:100%;">
+                <tbody>
+                    <tr>
+                        <td style="padding:2px;width:30%;">
+                            <img src="web/static/src/img/logo.png"/>
+                        </td>
+                        <td style="vertical-align: top; padding: 8px 10px;text-align: left;font-size: 14px;">
+                            <a href="web/login" style="float:right ;margin:15px auto;background: #875A7B;border-radius: 5px;color: #ffffff;font-size: 16px;padding: 10px 20px 10px 20px;text-decoration: none;">Auto Login</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;text-align:justify;margin:0 auto;border-collapse:collapse;border-top:1px solid lightgray"">
+                <tbody>
+                    <tr>
+                        <td style="padding:15px 10px;font-size:20px">
+                            <p style="color:#875A7B;margin:0" >Awesome!</p><br>
+                            <p dir="ltr" style="font-size:15px;margin-top:0pt;margin-bottom:0pt;">
+                                <span>Your website is now online!</span></p><br>
+                            <p dir="ltr" style="margin-top:0pt;margin-bottom:8pt;">
+                                <span style="font-size:13px;font-weight:bold; ">Did you know?</span></p>
+                            <ul style="margin-top:0pt;margin-bottom:0pt;font-size:13px;list-style-type:disc;">
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:0pt;">
+                                        <span>From the Customize / Install Apps menu, you can install new features (forum, blog, eCommerce, jobs, ...)</span>
+                                    </p>
+                                </li>
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:8pt;">
+                                        <span>Customize the look of your website with the Customize menu.</span>
+                                    </p>
+                                </li>
+                            </ul> <br>
+                            <p dir="ltr" style="font-size:13px;margin-top:0pt;margin-bottom:8pt;">
+                                <span style="font-weight:bold;">Discover the </span>
+                                <span><a href="/web#view_type=kanban&model=project.project&action=project.open_view_project_all">
+                                    <span style="font-weight:bold; text-decoration:underline;">Website planner</span></a></span>
+                                <span> to activate extra features</span>
+                                <span style="color:#875A7B;margin:0;font-weight:bold">(${user.env['web.planner'].get_planner_progress('planner_website')}% done)</span>
+                            </p>
+                            <ul style="margin-top:0pt;margin-bottom:0pt;font-size:13px;list-style-type:disc;">
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:0pt;">
+                                        <span>Grow your traffic by optimizing your referencing with our SEO tool,</span>
+                                    </p>
+                                </li>
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:0pt;">
+                                        <span>Improve your conversion from visitor to customer with the Website Live support,</span>
+                                    </p>
+                                </li>
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:0pt;">
+                                        <span>Broaden your audience with the multi-language support,</span>
+                                    </p>
+                                </li>
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:0pt;">
+                                        <span>Go further into the customization with our advanced HTML editor,</span>
+                                    </p>
+                                </li>
+                                <li dir="ltr">
+                                    <p dir="ltr" style="margin-top:0pt;margin-bottom:8pt;">
+                                        <span>And much more...</span>
+                                    </p>
+                                </li>
+                            </ul>
+                            <br>
+                            <p dir="ltr" style="font-size:13px;line-height:1.3;margin-top:0pt;margin-bottom:8pt;">
+                                <span style="font-weight:bold;">Need Help?</span>
+                                <span style="font-style:italic;">You’re not alone</span>
+                            </p>
+                            <p dir="ltr" style="font-size:13px;margin-top:0pt;margin-bottom:8pt;">
+                                <span>We would be delighted to assist you along the way. Contact us through our
+                                <a href="https://www.odoo.com/help">support form</a> if you have any question.
+                                You can also discover how to get the best out of Odoo with our </span>
+                                <a href="https://www.odoo.com/documentation/user">
+                                <span style="text-decoration:underline;">User Documentation</span></a>
+                                </span><span> or with our </span>
+                                <a href="https://www.odoo.com/documentation">
+                                <span style="text-decoration:underline;">API Documentation</span></a>
+                            </p>
+                            <p dir="ltr" style="font-size:13px;margin-top:0pt;margin-bottom:8pt;"><span>Enjoy your Odoo experience,</span></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div dir="ltr" style="font-size:13px;margin-top:0pt;margin-bottom:8pt;color:grey">
+                <span><br/>-- <br/>The Odoo Team<br/>PS: People love Odoo, check </span><a href="https://twitter.com/odoo/favorites"><span style="text-decoration:underline;">what they say about it.</span></a></span>
+            </div>
+        </div>]]></field>
+		</record>
+
+
+	</data>
+</odoo>

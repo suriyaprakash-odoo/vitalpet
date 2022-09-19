@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   
+    <data> 
+        <record id="mypractice_tag_data_0" model="project.tags">
+            <field name="name">Daily Summary</field>
+            <field name='color'>3</field>
+        </record>
+    </data>
+
+</odoo>

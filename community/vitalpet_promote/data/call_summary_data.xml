@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<odoo>
+   <data noupdate="1">
+
+  <record id="call_summary_01" model="call.summary">
+      <field name="is_lead" eval="True"/>
+      <field name="name">P : New Client - Emergency</field>
+  </record>
+
+  <record id="call_summary_02" model="call.summary">
+      <field name="is_lead" eval="True"/>
+      <field name="name">P : New Client - Non-Emergency \ Price Shopper</field>
+  </record>
+
+  <!--record id="call_summary_03" model="call.summary">
+      <field name="is_lead" eval="False"/>
+      <field name="name">Shopper Caller</field>
+  </record-->
+
+  <record id="call_summary_04" model="call.summary">
+      <field name="is_lead" eval="True"/>
+      <field name="name">P : Existing - Appointment Cancellation</field>
+  </record>
+
+  <record id="call_summary_05" model="call.summary">
+      <field name="is_lead" eval="True"/>
+      <field name="name">P : Existing - Clinical Question or Medical Problem</field>
+  </record>
+
+  <record id="call_summary_06" model="call.summary">
+      <field name="is_lead" eval="True"/>
+      <field name="name">P : Other: Lead</field>
+  </record>
+
+  <record id="call_summary_08" model="call.summary">
+      <field name="is_lead" eval="False"/>
+      <field name="name">Existing - Question on pet in hospital or about upcoming appointment</field>
+  </record>
+
+  <record id="call_summary_09" model="call.summary">
+      <field name="is_lead" eval="False"/>
+      <field name="name">Existing - Financial Question or to get records (billing, etc)</field>
+  </record>
+
+  <record id="call_summary_07" model="call.summary">
+      <field name="is_lead" eval="False"/>
+      <field name="name">Other - Wrong Number, Disconnect, lost pet info</field>
+  </record>
+</data>
+</odoo>

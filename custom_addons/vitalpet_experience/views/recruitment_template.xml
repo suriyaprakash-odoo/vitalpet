@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="apply_experience_inherit" inherit_id='vitalpet_custom_hr_recruitment.apply_inherit'>
+		<!-- <xpath expr='//div[5]' position='after'> -->
+		<xpath expr='//div[@data_exp="exp"]' position='after'>
+			<style>
+				.input_box{
+				    font-family: inherit;
+				    font-size: inherit;
+				    line-height: inherit;
+				    width: 100%;
+				    display: inline-block;
+				    margin-bottom: 5px;
+				    border: 1px solid #cfcfcf !important;
+				    border-top-style: none !important;
+				    border-right-style: none !important;
+				    border-left-style: none !important;
+				    outline: none;
+				}
+				.table-borderless tr,.table-borderless td{ 
+					border: 0 !important;
+				}
+				@media only screen and (max-width: 760px) {
+	 				.s_website_form  .text-right label{
+	 				    float:left;
+	 				    text-align:left;
+	 				}
+	 				.g-recaptcha{
+	 					margin-top: 580px;
+	 				}
+ 				
+				}
+			</style>
+			<div class="form-group form-field o_website_form_required_custom">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <label class="control-label" for="is_internal">Are you an internal candidate?</label>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                	<select name="is_internal" class="form-control o_website_form_input">
+						<option value=""></option>
+						<option value="yes">Yes</option>
+						<option value="no">No</option>
+					</select>
+                </div>
+            </div>
+            <div class="col-xs-12">
+				<h4><strong><i>Academic Experiences</i></strong></h4>						
+					<table class="table table-borderless academic_exp" >
+						<tr>
+							<th style= 'display:none'>Tree Id</th>
+							<th>Academic Experiences</th>
+							<th>Institution</th>
+							<th>Diploma</th>
+							<th>Field of study</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td style= 'display:none'>
+								<input class="input_box form_academic_exp_tree_id"  value="0"  type="text"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_exp"  value=""  type="text" placeholder="Academic Experiences" style="border:none" required="required"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_institution"  value=""  type="text" placeholder="Institution" style="border:none" required="required"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_diploma"  value=""  type="text" placeholder="Diploma" style="border:none" required="required"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_fos"  value=""  type="text" placeholder="Field of study" style="border:none" required="required"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_start_date datepicker_custom"  value=""  type="text" style="border:none" required="required"/>
+							</td>
+							<td>
+								<input class="input_box form_academic_end_date datepicker_custom"  value=""  type="text" style="border:none" required="required"/>
+							</td>
+							<td class="website_trash"><i class="fa fa-trash"></i></td>
+						</tr>
+					</table>
+				<a class="btn btn-info col-xs-1 add_more_academic" style="display:block;width:3%;color: #000;background-color: #e3e3e3;border-color: #e3e3e3;">
+                    <i class="fa fa-plus"></i>
+                </a>	
+            </div>
+            <div class="col-xs-12" style="display:none">
+            	<div class="col-xs-2">
+            		<span>Academic dict</span>
+            	</div>
+            	<div class="col-xs-10">
+            		<textarea class="input_box academic_info_arr" name="academic_info_dict" value="" type="text" style="border:none" />
+            	</div>
+            </div>
+            <div class="col-xs-12">
+				<h4><strong><i>Professional Experiences</i></strong></h4>						
+					<table class="table table-borderless professional_exp" >
+						<tr>
+							<th style= 'display:none'>Tree Id</th>
+							<th>Position</th>
+							<th>Employer</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td style= 'display:none'>
+								<input class="input_box form_professional_exp_tree_id"  value="0"  type="text"/>
+							</td>
+							<td>
+								<input class="input_box form_professional_exp_position"  value=""  type="text" placeholder="Position" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_professional_exp_employer"  value=""  type="text" placeholder="Employer" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_professional_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_professional_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" />
+							</td>
+							<td class="website_trash"><i class="fa fa-trash"></i></td>
+						</tr>
+					</table>
+				<a class="btn btn-info col-xs-1 add_more_professional" style="display:block;width:3%;color: #000;background-color: #e3e3e3;border-color: #e3e3e3;">
+                    <i class="fa fa-plus"></i>
+                </a>	
+            </div>
+            <div class="col-xs-12" style="display:none">
+            	<div class="col-xs-2">
+            		<span>Professional dict</span>
+            	</div>
+            	<div class="col-xs-10">
+	            	<textarea class="input_box professional_info_arr" name="professional_info_dict" value="" type="text" style="border:none" />
+	            </div>
+            </div>
+            <div class="col-xs-12">
+				<h4><strong><i>Certifications</i></strong></h4>						
+					<table class="table table-borderless certification_exp" >
+						<tr>
+							<th style= 'display:none'>Tree Id</th>
+							<th>Certifications</th>
+							<th>Certification #</th>
+							<th>Issued By</th>
+							<th>Professional License</th>
+							<th>State Issued</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td style= 'display:none'>
+								<input class="input_box form_certification_exp_tree_id"  value="0"  type="text"/>
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_certificate"  value=""  type="text" placeholder="Certifications" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_certificate_code"  value=""  type="text" placeholder="Certification #" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_issued_by"  value=""  type="text" placeholder="Issued By" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_professional_license"  value="1"  type="checkbox"/>
+							</td>
+							<td>
+								
+								<select class="input_box form_certification_exp_state_issued"  style="border:none" >	
+									<option value="">Select</option>								    
+		                           				<t t-foreach="states" t-as="state">
+										<option t-attf-value="#{ state.id }" t-field="state.name"></option>
+									</t>
+								</select>
+							
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" />
+							</td>
+							<td>
+								<input class="input_box form_certification_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" />
+							</td>
+							<td class="website_trash"><i class="fa fa-trash"></i></td>
+						</tr>
+					</table>
+				<a class="btn btn-info col-xs-1 add_more_certification" style="display:block;width:3%;color: #000;background-color: #e3e3e3;border-color: #e3e3e3;">
+                    <i class="fa fa-plus"></i>
+                </a>	
+            </div>
+            <div class="col-xs-12" style="display:none">
+            	<div class="col-xs-2">
+            		<span>Certification dict</span>
+            	</div>
+            	<div class="col-xs-10">
+	            	<textarea class="input_box certification_info_arr" name="certification_info_dict" value="" type="text" style="border:none" />
+	            </div>
+            </div>
+			<script>
+				$(document).ready(function(){
+
+					$('body').on('focus',".datepicker_custom", function(){
+					    $(this).datepicker({
+					      changeMonth: true,
+					      changeYear: true,
+					      yearRange: "1940:2100",
+					      dateFormat: "yy-mm-dd"
+					    });
+					});
+
+					$('body').delegate('.table input','blur',function() {
+						var n=1;
+						var academic_info = []
+						$('.academic_exp tr').each(function(){	
+							if(n>=2) {
+								academic_info.push([$(this).find(".form_academic_exp_tree_id").val(),
+								$(this).find(".form_academic_exp").val(),
+								$(this).find(".form_academic_institution").val(),
+								$(this).find(".form_academic_diploma").val(),
+								$(this).find(".form_academic_fos").val(),
+								$(this).find(".form_academic_start_date").val(),
+								$(this).find(".form_academic_end_date").val()]);				
+							}
+							n++;
+						});
+						$(".academic_info_arr").val(JSON.stringify(academic_info));
+					});
+					$('body').delegate('.table input','blur',function() {
+						var n=1;
+						var professional_info = []
+						$('.professional_exp tr').each(function(){	
+							if(n>=2) {
+								professional_info.push([$(this).find(".form_professional_exp_tree_id").val(),
+								$(this).find(".form_professional_exp_position").val(),
+								$(this).find(".form_professional_exp_employer").val(),
+								$(this).find(".form_professional_exp_start_date").val(),
+								$(this).find(".form_professional_exp_end_date").val()]);				
+							}
+							n++;
+						});
+						$(".professional_info_arr").val(JSON.stringify(professional_info));
+					});
+					$('body').delegate('.table input','blur',function() {
+						var n=1;
+						var certification_info = []
+						$('.certification_exp tr').each(function(){	
+							if(n>=2) {
+								var professional_license=0;
+								if($(this).find('input.form_certification_exp_professional_license').prop('checked')){
+									professional_license=$(this).find(".form_certification_exp_professional_license").val();
+								}
+								certification_info.push([$(this).find(".form_certification_exp_tree_id").val(),
+								$(this).find(".form_certification_exp_certificate").val(),
+								$(this).find(".form_certification_exp_certificate_code").val(),
+								$(this).find(".form_certification_exp_issued_by").val(),
+								professional_license,
+								$(this).find(".form_certification_exp_state_issued").val(),
+								$(this).find(".form_certification_exp_start_date").val(),
+								$(this).find(".form_certification_exp_end_date").val()]);				
+							}
+							n++;
+						});
+						$(".certification_info_arr").val(JSON.stringify(certification_info));
+					});
+					$('body').delegate('.table select','change',function() {
+						var n=1;
+						var certification_info = []
+						$('.certification_exp tr').each(function(){	
+							if(n>=2) {
+								var professional_license=0;
+								if($(this).find('input.form_certification_exp_professional_license').prop('checked')){
+									professional_license=$(this).find(".form_certification_exp_professional_license").val();
+								}
+								certification_info.push([$(this).find(".form_certification_exp_tree_id").val(),
+								$(this).find(".form_certification_exp_certificate").val(),
+								$(this).find(".form_certification_exp_certificate_code").val(),
+								$(this).find(".form_certification_exp_issued_by").val(),
+								professional_license,
+								$(this).find(".form_certification_exp_state_issued").val(),
+								$(this).find(".form_certification_exp_start_date").val(),
+								$(this).find(".form_certification_exp_end_date").val()]);				
+							}
+							n++;
+						});
+						$(".certification_info_arr").val(JSON.stringify(certification_info));
+					});
+					$('body').delegate('.add_more_academic','click',function() {
+						$(".academic_exp tbody").append('<tr>\
+							<td style= "display:none">\
+								<input class="input_box form_academic_exp_tree_id"  value="0"  type="text"/>\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_exp"  value=""  type="text" placeholder="Academic Experiences" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_institution"  value=""  type="text" placeholder="Institution" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_diploma"  value=""  type="text" placeholder="Diploma" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_fos"  value=""  type="text" placeholder="Field of study" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_start_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_academic_end_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td class="website_trash"><i class="fa fa-trash"></i></td>\
+						</tr>');
+						$(".academic_exp tbody").find("tr:last").find(".form_academic_exp_tree_id").val(0);
+					});
+					$('body').delegate('.add_more_professional','click',function() {
+						$(".professional_exp tbody").append('<tr>\
+							<td style="display:none">\
+								<input class="input_box form_professional_exp_tree_id"  value="0"  type="text"/>\
+							</td>\
+							<td>\
+								<input class="input_box form_professional_exp_position"  value=""  type="text" placeholder="Position" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_professional_exp_employer"  value=""  type="text" placeholder="Employer" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_professional_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_professional_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td class="website_trash"><i class="fa fa-trash"></i></td>\
+						</tr>');
+						$(".professional_exp tbody").find("tr:last").find(".professional_exp_offer_accepted").val(0);
+					});
+					$('body').delegate('.add_more_certification','click',function() {
+						$(".certification_exp tbody").append('<tr>\
+							<td style="display:none">\
+								<input class="input_box form_certification_exp_tree_id"  value="0"  type="text"/>\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_certificate"  value=""  type="text" placeholder="Certifications" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_certificate_code"  value=""  type="text" placeholder="Certification #" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_issued_by"  value=""  type="text" placeholder="Issued By" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_professional_license"  value="1"  type="checkbox" />\
+							</td>\
+							<td>\
+								<select class="input_box form_certification_exp_state_issued"  style="border:none" >'+$(".form_certification_exp_state_issued").eq(0).html()+'</select>\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td>\
+								<input class="input_box form_certification_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" />\
+							</td>\
+							<td class="website_trash"><i class="fa fa-trash"></i></td>\
+						</tr>');
+						$(".certification_exp tbody").find("tr:last").find(".certification_exp_offer_accepted").val(0);
+					});
+					$('body').delegate('.website_trash','click',function() {
+						if($(this).parent().parent().find('tr').length>2){
+							$(this).parent().remove();
+						}
+					});
+				});
+			</script>
+		</xpath>
+	</template>
+</odoo>

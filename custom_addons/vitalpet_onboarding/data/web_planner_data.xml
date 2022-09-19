@@ -1,0 +1,3228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="assets_common" name="planner common assets"
+		inherit_id="web.assets_common">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/vitalpet_onboarding/static/src/js/web_planner_backend.js"></script>
+			<script src="/vitalpet_onboarding/static/src/js/raphael-2.1.4.min.js"></script>
+			<script src="/vitalpet_onboarding/static/src/js/justgage.js"></script>
+		</xpath>
+	</template> 
+	
+	<template id="onboarding_planner">
+		<style>
+			.input_box{
+			    font-family: inherit;
+			    font-size: inherit;
+			    line-height: inherit;
+			    width: 100%;
+			    display: inline-block;
+			    margin-bottom: 5px;
+			    border: 1px solid #cfcfcf !important;
+			    border-top-style: none !important;
+			    border-right-style: none !important;
+			    border-left-style: none !important;
+			    outline: none;
+			}
+			.table-borderless tr,.table-borderless td{ 
+				border: 0 !important;
+			
+			}
+			.input_box:-moz-read-only { /* For Firefox */
+		        border: 1px solid #fff !important;
+			}
+
+			.input_box:read-only { 
+			    border: 1px solid #fff !important;
+			}
+			.required_cls{
+			    border-bottom: 2px solid #616161  !important;
+			 }
+			.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+			    padding: 4px 8px;
+			}
+			.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+			    border: 1px solid #9a9a9a;
+			}
+			.smart_buttons_list{
+			    margin-top: 20px;
+			    margin-bottom: 12px;
+			}
+			@media (min-width: 992px){
+				.modal-lg {
+				    width: 90%;
+				}
+			}
+			#PlannerDialog{
+				z-index: 1049;
+			}
+			#PlannerDialog .modal-dialog {
+			    padding: 1px 0;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_menu > ul > h4{
+				padding-top: 0px;
+				margin-left: -20px;
+				margin-bottom: 1px;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_menu > ul > li > a{
+			    font-size: 12px;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-header{
+			    padding: 0px 15px;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-footer,
+			.o_planner_progress_block{
+				display: none !important;
+			}
+			.o_planner_close_block{
+				float:right;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_page > h1{
+				display: none;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_menu > ul > h4{
+			    border-top: none;
+			    border-bottom: 1px solid #e6e6e6;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_menu{
+				-ms-flex: 0 0 19%;
+			    -moz-flex: 0 0 19%;
+			    -webkit-flex: 0 0 19%;
+			    flex: 0 0 19%;
+			}
+			#PlannerDialog .modal-dialog .modal-content .modal-body .o_planner_content_wrapper .o_planner_page{	
+			    -ms-flex: 0 0 81%;
+			    -moz-flex: 0 0 81%;
+			    -webkit-flex: 0 0 81%;
+			    flex: 0 0 81%;
+			}
+			
+			.ui-datepicker-month{
+				float: left;
+			}
+			.ui-datepicker-year{
+				float: right;
+			}
+
+			.gauge {
+			    width: 315px;
+			    height: 220px;
+			}
+		</style>
+		<t t-call="web_planner.pages">
+			<t t-set="hide_mark_as_done" t-value="True" />
+			<t t-call="web_planner.category">
+				<t t-set="menu_categorytitle">Offer Accepted</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title" t-class="sdsdsds">Get Started</t>
+					<div class="smart_buttons pull-right" style="display:none;">
+						<button type="button" class="btn btn-sm oe_stat_button" data-original-title="" title="" style="width:19.5%;height: 48px;">
+            				<div class="fa fa-fw fa-check-square-o o_button_icon"></div>
+            				<span class="o_stat_info"><b><span class="o_form_field o_form_field_number" data-original-title="" title="">0.00</span><br/></b>Score</span>
+        				</button>
+        				<button type="button" class="btn btn-sm oe_stat_button" data-original-title="" title="" style="width:19.5%;height: 48px;">
+            				<div class="fa fa-fw fa-calendar o_button_icon"></div>
+        					<div class="o_form_field o_stat_info"><span class="o_stat_text">Meetings</span></div>
+    					</button>
+        				<button type="button" class="btn btn-sm oe_stat_button" data-original-title="" title="" style="width:19.5%;height: 48px;">
+        					<div class="fa fa-fw fa-print o_button_icon"></div>
+        					<div class="o_form_field o_stat_info"><span class="o_stat_text">Print </span><span class="o_stat_text">Interview</span></div>
+        				</button>
+        				<button type="button" class="btn btn-sm oe_stat_button" data-original-title="" title="" style="width:19.5%;height: 48px;">
+        					<div class="fa fa-fw fa-book o_button_icon"></div>
+        					<div class="o_form_field o_stat_info" data-original-title="" title="">
+        						<span class="o_stat_value">0</span>
+        						<span class="o_stat_text">Documents</span>
+        					</div>
+        				</button>
+        				<button type="button" class="btn btn-sm oe_stat_button" data-original-title="" title="" style="width:19.5%;height: 48px;">
+        					<div class="o_priority o_form_field" style="color: #666666;">
+        						<a id="good" class="o_priority_star fa fa-star priority_good good" href="#" data-value="1" title="Good" style="color: #666666;"></a>
+        						<a id="very_good" class="o_priority_star fa fa-star priority_very_good very_good" href="#" data-value="2" title="Very Good" style="color: #666666;"></a>
+        						<a id="excellent" class="o_priority_star fa fa-star priority_excellent excellent" href="#" data-value="3" title="Excellent" style="color: #666666;"></a>
+        					</div>
+        					<div><span class="o_stat_text">Appreciation</span></div>
+        				</button>
+					</div>
+					<div>
+				  
+						<input type="hidden" class="hidden_value"/>
+						<input type="hidden" class="hidden_model"/>
+						<input type="hidden" class="everify_value"/>
+						<input type="hidden" class="image_value"/>
+						<table class="table table-bordered top_section_main">
+							<tr>
+								<td colspan="4">
+									<span class="form_name" style="font-size: 26px;text-transform: capitalize;"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Phone</strong>
+								</td>
+								<td>
+									<span class="form_phone"></span>
+								</td>
+								<td>
+									<strong>Email</strong>
+								</td>
+								<td>
+									<span class="form_email"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Applied Job</strong>
+								</td>
+								<td>
+									<span class="form_applied_job"></span>
+								</td>
+								<td>
+									<strong>Applicant ID</strong>
+								</td>
+								<td>
+									<span class="form_applicant_id"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Company</strong>
+								</td>
+								<td>
+									<span class="form_company"></span>
+								</td>
+								<td>
+									<strong>Responsible</strong>
+								</td>
+								<td>
+									<span class="form_responsible"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Expected Salary</strong>
+								</td>
+								<td>
+									<span class="form_expected_salary"></span>
+								</td>
+								<td>
+									<strong>Proposed Salary</strong>
+								</td>
+								<td>
+									<span class="form_proposed_salary"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong>Availability</strong>
+								</td>
+								<td colspan = "3">
+									<span class="form_availability"></span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="get_started">
+							<div class="col-xs-3">
+								<span>
+									<strong>Contract Type</strong>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<span>
+									<select name="Contract Type" class="form_contract_type required_cls">
+										<option value="" selected="selected"></option>
+									</select>
+								</span>
+						</div>
+						<br/><br/>
+							<div class="col-xs-12"></div>
+							<div class="col-xs-3">
+								<span>
+									<strong>Pay Type</strong>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<span>
+									<select name="Pay Type" class="form_pay_type required_cls">
+										<option value="yearly">Annual Wage</option>
+										<option value="monthly">Monthly Wage</option>
+										<option value="hourly">Hourly Wage</option>
+									</select>
+								</span>
+						</div>
+						<br/><br/><br/>
+						<div class="col-xs-5">
+							<button class="btn btn-info btn_welcome_package">Send Personal Information Document</button>
+						</div>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="1">Next Step</button>
+					</div>					
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Personal Information</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div class="personal_info">
+						<h4><strong><i>Onboarding/Personal Information</i></strong></h4>
+						<div class="col-xs-6" style="float:left">
+							<h4><strong><i>Citizenship and Other Informations</i></strong></h4>
+							<div class="col-xs-6">
+								<p><strong>Nationality</strong></p>
+								<p><strong>Identification No</strong></p>
+								<p><strong>Passport No</strong></p>
+								<p><strong>Driving License No</strong></p>
+							</div>
+							<div class="col-xs-6">
+								<select name="Nationality" class="form_nationality required_cls">
+									<option value="" selected="selected"></option>
+								</select>
+								<input class="input_box form_id_no required_cls"  value=""  type="char"
+											placeholder="Identification No" style="border:none" />
+								<input class="input_box form_passport_no"  value=""  type="char"
+											placeholder="Passport No" style="border:none" />
+								<input class="input_box form_driving_license_no"  value=""  type="char"
+											placeholder="Driving License No" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-6" style="float:left">
+							<h4><strong><i>Contact Information</i></strong></h4>.
+							<div class="col-xs-5" style="float:left">
+								<p><strong>Home Address</strong></p>
+							</div>
+							<div class="col-xs-6" style="float:left;width: 172px;">
+								<input class="input_box form_street required_cls"  value=""  type="char" placeholder="Street" style="border:none" />
+								<input class="input_box form_street2"  value=""  type="char" placeholder="Street2" style="border:none" />
+								<input class="input_box form_city required_cls"  value=""  type="char" placeholder="City" style="border:none" />
+								<select name="State" class="form_state required_cls">										<option value="" selected="selected"></option>
+								</select>
+								<select name="Country" class="form_country required_cls">
+									<option value="" selected="selected"></option>
+								</select>
+								<input class="input_box form_zip required_cls"  value=""  type="char" placeholder="Zip" style="border:none" />
+							</div>
+						</div>
+						<br/><br/>
+						<div class="col-xs-6">
+							<h4><strong><i>Alias Name(if any)</i></strong></h4>
+							<div class="col-xs-6">
+								<p><strong>First Name</strong></p>
+								<p><strong>Middle Name</strong></p>
+								<p><strong>Last Name</strong></p>
+							</div>
+							<div class="col-xs-6">
+								<input class="input_box form_first_name_alias"  value=""  type="char" placeholder="First Name" style="border:none" />
+								<input class="input_box form_middle_name_alias"  value=""  type="char" placeholder="Middle Name" style="border:none" />
+								<input class="input_box form_last_name_alias"  value=""  type="char" placeholder="Last Name" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<h4><strong><i>Emergency Contact Information</i></strong></h4>
+							<div class="col-xs-6">
+								<p><strong>Emergency Contact Name</strong></p>
+								<p><strong>Relationship</strong></p>
+								<p><strong>Phone Number</strong></p>
+							</div>
+							<div class="col-xs-6" style="float:left;width: 172px;margin-left: -40px;">
+								<input class="input_box form_emergency_name"  value=""  type="char" placeholder="Emergency Contact Name" style="border:none" />
+								<input class="input_box form_relationship"  value=""  type="char" placeholder="Relationship" style="border:none" />
+								<input class="input_box form_emergency_phone"  value=""  type="char" placeholder="Phone Number" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-6" style="float:left">
+							<h4><strong><i>Status</i></strong></h4>
+							<div class="col-xs-6">
+								<p><strong>Gender</strong></p>
+								<p><strong>Marital Status</strong></p>
+								<p><strong>Filing Status</strong></p>
+								<p><strong>Number of Allowances</strong></p>
+								<p><strong>Ethnic ID</strong></p>
+								<p><strong>Smoker</strong></p>
+							</div>
+							<div class="col-xs-6">
+								<span>
+									<select name="gender" class="form_gender required_cls">
+										<option value="male">Male</option>
+										<option value="female">Female</option>
+									</select>
+								</span>
+								<span>
+									<select name="marital status" class="form_marital_status required_cls" style='margin-top:5px;'>
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Widower</option>
+										<option value="divorced">Divorced</option>
+									</select>
+								</span>
+								<span>
+									<select name="filing status" class="form_filing_status" style='margin-top:5px;'>
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Married, but withhold at higher Single rate</option>
+									</select>
+								</span>
+								<input class="input_box form_children"  value=""  type="number" placeholder="Number of Allowances" style="border:none" />
+								<input class="input_box form_ethnic_id"  value=""  type="char" placeholder="Ethnic ID" style="border:none" />
+								<input class="input_box form_smoker"  value=""  type="char" placeholder="Smoker" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-6" style="float:left">
+							<h4><strong><i>Birth</i></strong></h4>
+							<div class="col-xs-5" style="float:left">
+								<p><strong>Date of Birth</strong></p>
+								<p><strong>Place of Birth</strong></p>
+								<p><strong>Birth Country</strong></p>
+								<p><strong>Age</strong></p>
+							</div>
+							<div class="col-xs-6" style="float:left;width: 172px;">
+								<input class="input_box form_dob required_cls datepicker_custom"  type="text" />
+								<input class="input_box form_pob  "  value=""  type="char"
+										placeholder="Place of Birth" style="border:none" readonly="readonly" />
+								<select name="Birth Country" class="form_birth_country ">
+									<option value="" selected="selected"></option>
+								</select>
+								<input class="input_box form_age required_cls"  value=""  type="number"
+										placeholder="Age" style="border:none" readonly="readonly" />
+							</div>
+						</div>
+						<!-- <div class="col-xs-12" style="float:left">
+							<h4><strong><i>Bio</i></strong></h4>
+							<div class="col-xs-12" style="float:left">
+								<input class="input_box form_bio required_cls"  value="" type="text" placeholder="Bio" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-12" style="float:left">
+							<h4><strong><i>Image</i></strong></h4>
+							<input id="inputFileToLoad" class="required_cls" type="file" name="Image" accept="image/*" />
+   							<div id="imgTest"></div>
+						</div> -->
+					</div>
+					<br/>
+					<div class="text-right col-xs-12">
+						<button class="btn btn-primary btn_onboarding_next" data_page_id="2">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Experience and Certification</t>
+					<div>
+						<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+						</div>
+						<div>
+						<h4><strong><i>Onboarding/ Experiences and Certifications</i></strong></h4>
+							<div>
+								<h4><strong><i>Academic Experiences</i></strong></h4>						
+									<table class="table table-borderless academic_exp_offer_accepted" >
+										<tr>
+											<th style= 'display:none'>Tree Id</th>
+											<th>Academic Experiences</th>
+											<th>Institution</th>
+											<th>Diploma</th>
+											<th>Field of study</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th></th>
+										</tr>
+										<tr>
+											<td style= 'display:none'>
+												<input class="input_box form_tree_id form_academic_exp_tree_id" data-model="academic.experience" value="0"  type="text"/>
+											</td>
+											<td>
+												<input class="input_box form_academic_exp required_cls" value=""  type="text" placeholder="Academic Experiences" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_academic_institution required_cls"  value="" type="text" placeholder="Institution" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_academic_diploma required_cls"  value="" type="text" placeholder="Diploma" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_academic_fos required_cls"  value="" type="text" placeholder="Field of study" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_academic_start_date datepicker_custom required_cls" value="" type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td>
+												<input class="input_box form_academic_end_date datepicker_custom required_cls" value="" type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+										</tr>
+									</table>
+								<button class="btn btn-primary add_more_academic" style="display: block;">
+		                            <i class="fa fa-plus"></i>
+		                            <span>Add More</span>
+		                        </button>	
+	                        </div>
+	                        <div>
+								<h4><strong><i>Professional Experiences</i></strong></h4>						
+									<table class="table table-borderless professional_exp_offer_accepted" >
+										<tr>
+											<th style= 'display:none'>Tree Id</th>
+											<th>Position</th>
+											<th>Employer</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th></th>
+										</tr>
+										<tr>
+											<td style= 'display:none'>
+												<input class="input_box form_tree_id form_professional_exp_tree_id" data-model="professional.experience" value="0"  type="text"/>
+											</td>
+											<td>
+												<input class="input_box form_professional_exp_position"  value=""  type="text" placeholder="Position" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_professional_exp_employer"  value=""  type="text" placeholder="Employer" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_professional_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td>
+												<input class="input_box form_professional_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+										</tr>
+									</table>
+								<button class="btn btn-primary add_more_professional" style="display: block;">
+		                            <i class="fa fa-plus"></i>
+		                            <span>Add More</span>
+		                        </button>	
+	                        </div>
+	                        <div>
+								<h4><strong><i>Certifications</i></strong></h4>						
+									<table class="table table-borderless certification_exp_offer_accepted" >
+										<tr>
+											<th style= 'display:none'>Tree Id</th>
+											<th>Certifications</th>
+											<th>Certification #</th>
+											<th>Issued By</th>
+											<th>Professional License</th>
+											<th>State Issued</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th></th>
+										</tr>
+										<tr>
+											<td style= 'display:none'>
+												<input class="input_box form_tree_id form_certification_exp_tree_id" data-model="certification.details" value="0"  type="text"/>
+											</td>
+											<td>
+												<input class="input_box form_certification_exp_certificate"  value=""  type="text" placeholder="Certifications" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_certification_exp_certificate_code"  value=""  type="text" placeholder="Certification #" style="border:none" />
+											</td>
+											<td>
+												<input class="input_box form_certification_exp_issued_by"  value=""  type="text" placeholder="Issued By" style="border:none" />
+											</td>
+											<td>
+												<input class="form_certification_exp_professional_license"  value="" type="checkbox" />
+											</td>
+											<td>
+												<select name="State Issued" class="form_certification_exp_state_issued ">
+													<option value="" selected="selected"></option>
+												</select>
+											</td>
+											<td>
+												<input class="input_box form_certification_exp_start_date datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td>
+												<input class="input_box form_certification_exp_end_date datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+											</td>
+											<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+										</tr>
+									</table>
+								<button class="btn btn-primary add_more_certification" style="display: block;">
+		                            <i class="fa fa-plus"></i>
+		                            <span>Add More</span>
+		                        </button>	
+	                        </div>
+						</div>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="3">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Employment Information</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+						<div class="employement_info">
+						<h4><strong><i>Onboarding/ Employment Information</i></strong></h4>
+							<div class="col-xs-6" style="float:left">
+								<span>
+									<strong>Contract Type</strong>
+								</span>
+							</div>
+							<div class="col-xs-6" style="float:left">
+								<span>
+								<select name="Contract Type" class="form_contract_type required_cls">
+									<option value="" selected="selected"></option>
+								</select>
+							</span>
+							</div>
+							<br/><br/>
+							<div class="col-xs-6" style="float:left">
+								<span>
+									<strong>Job Seniority Title</strong>
+								</span>
+							</div>
+							<div class="col-xs-6" style="float:left">
+								<span>
+									<select name="Job Seniority Title" class="form_job_seniority_title required_cls">
+										<option value="" selected="selected"></option>
+									</select>
+								</span>
+							</div>
+							<br/><br/>
+							<div class="col-xs-6" style="float:left">
+								<span>
+									<strong>Start Date</strong>
+								</span>
+							</div>
+							<div class="col-xs-6" style="float:left">
+								<input class="input_box form_start_date required_cls datepicker_custom"  value=""  type="text"
+										placeholder="Start Date" style="border:none" readonly="readonly"/>
+							</div>
+							<br/><br/>
+							<div class="col-xs-6" style="float:left">
+								<span>
+									<strong>Benefits Seniority Date</strong>
+								</span>
+							</div>
+							<div class="col-xs-6" style="float:left">
+								<input class="input_box form_benefits_seniority_date datepicker_custom"  value="" type="text" readonly="readonly"/>
+							</div>
+							<br/><br/>
+						</div>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="4">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t id="offer_accepted_summary" t-set="page_title">Summary </t>
+					<div class="offer_summary_info">
+						<h5 class="col-xs-6"><strong><input class="input_box form_summary_name" value=""  type="char" placeholder="Name" style="border:none;text-transform: capitalize;" readonly="readonly" /></strong></h5><br/>
+						<div class="col-xs-12">
+							<div class="col-xs-3">
+								<p><strong>Phone</strong></p>
+								<p><strong>Applied Job</strong></p>
+								<p><strong>Start Date</strong></p>
+								<p><strong>Employment Status</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_phone"  value=""  type="char" placeholder="Phone" style="border:none" readonly="readonly"/>
+								<input class="input_box form_summary_applied_job"  value=""  type="char" placeholder="Applied Job" style="border:none" readonly="readonly"/>
+								<input class="input_box form_summary_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								<span>
+									<select name="Employment Status" class="form_summary_employment_status" disabled="disabled" >
+										<option value="" selected="selected"></option>
+									</select>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<p><strong>Email</strong></p>
+								<p><strong>Applicant ID</strong></p>
+								<p><strong>Company</strong></p>
+								<p><strong>Responsible</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_mail"  value=""  type="char" placeholder="Email" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_applicant_id"  value=""  type="char" placeholder="Applicant ID" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_company"  value=""  type="char" placeholder="Company" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_responsible"  value=""  type="char" placeholder="Responsible" style="border:none" readonly="readonly" />
+							</div>
+						</div>
+						<div class="col-xs-12">
+						<h4><strong><i>Applicant Personal Details</i></strong></h4>
+							<div class="col-xs-3">
+								<p><strong>Nationality</strong></p>
+								<p><strong>Identification Number</strong></p>
+								<p><strong>Home Address</strong></p><br/><br/><br/><br/><br/><br/><br/><br/>
+								<p><strong>Passport Number</strong></p>
+								<p><strong>Birth Country</strong></p>
+								<p><strong>Age</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_nationality"  value=""  type="char" placeholder="Nationality" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_id_number"  value=""  type="char" placeholder="Identification Number" style="border:none" readonly="readonly" />
+								<input class="input_box form_street"  value=""  type="char" placeholder="Street" style="border:none" readonly="readonly" />
+								<input class="input_box form_street2"  value=""  type="char" placeholder="Street2" style="border:none" readonly="readonly" />
+								<input class="input_box form_city"  value=""  type="char" placeholder="City" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_state"  value=""  type="char" placeholder="State" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_country"  value=""  type="char" placeholder="Country" style="border:none" readonly="readonly" />
+								<input class="input_box form_zip"  value=""  type="char" placeholder="Zip" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_passport_number"  value=""  type="char" placeholder="Passport Number" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_birth_country"  value=""  type="char" placeholder="Birth Country" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_age"  value=""  type="char" placeholder="Age" style="border:none" readonly="readonly" />
+							</div>
+							<div class="col-xs-3">
+								<p><strong>Gender</strong></p>
+								<p><strong>Marital Status</strong></p>
+								<p><strong>Filing Status</strong></p>
+								<p><strong>Number of Allowances</strong></p>
+								<p><strong>Date of Birth</strong></p>
+								<p><strong>Place of Birth</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<span>
+									<select name="gender" class="form_summary_gender" disabled="disabled">
+										<option value="male">Male</option>
+										<option value="female">Female</option>
+									</select>
+								</span><br/>
+								<span>
+									<select name="marital status" class="form_summary_marital_status" disabled="disabled">
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Widower</option>
+										<option value="divorced">Divorced</option>
+									</select>
+								</span>
+								<span>
+									<select name="filing status" class="form_summary_filing_status" style='margin-top:5px;'>
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Married, but withhold at higher Single rate</option>
+									</select>
+								</span>
+								<input class="input_box form_summary_noc"  value=""  type="char" placeholder="Number of Allowances" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_dob"  value=""  type="text" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_pob"  value=""  type="char" placeholder="Place of Birth" style="border:none" readonly="readonly" />
+							</div>
+							<div>
+								<h4 class="col-xs-12"><strong><i>Academic Experiences</i></strong></h4>	
+								<table class="table table-borderless academic_exp_offer_accepted_summary" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Academic Experiences</th>
+										<th>Institution</th>
+										<th>Diploma</th>
+										<th>Field of study</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<!-- <th></th> -->
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box form_academic_exp_tree_id"  value="0"  type="text" readonly="readonly"/>
+										</td>
+										<td>
+											<input class="input_box form_academic_exp"  value=""  type="text" placeholder="Academic Experiences" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_academic_institution"  value=""  type="text" placeholder="Institution" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_academic_diploma"  value=""  type="text" placeholder="Diploma" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_academic_fos"  value=""  type="text" placeholder="Field of study" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_academic_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_academic_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+									</tr>
+								</table>
+	                        </div>
+	                        <div>
+								<h4><strong><i>Professional Experiences</i></strong></h4>						
+								<table class="table table-borderless professional_exp_offer_accepted_summary" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Position</th>
+										<th>Employer</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box form_professional_exp_tree_id"  value="0"  type="text" readonly="readonly"/>
+										</td>
+										<td>
+											<input class="input_box form_professional_exp_position"  value=""  type="text" placeholder="Position" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_professional_exp_employer"  value=""  type="text" placeholder="Employer" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_professional_exp_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_professional_exp_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+									</tr>
+								</table>
+	                        </div>
+	                        <div>
+								<h4><strong><i>Certifications</i></strong></h4>						
+								<table class="table table-borderless certification_exp_offer_accepted_summary" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Certifications</th>
+										<th>Certification #</th>
+										<th>Issued By</th>
+										<th>Professional License</th>
+										<th>State Issued</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box form_certification_exp_tree_id"  value="0"  type="text" readonly="readonly"/>
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_certificate"  value=""  type="text" placeholder="Certifications" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_certificate_code"  value=""  type="text" placeholder="Certification #" style="border:none" readonly="readonly" /> 
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_issued_by"  value=""  type="text" placeholder="Issued By" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="form_certification_exp_professional_license" value="" type="checkbox" onclick="return false;"  />
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_state_issued"  value=""  type="text" placeholder="State Issued" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_certification_exp_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+										</td>
+									</tr>
+								</table>
+	                        </div>
+	                        <div class="col-xs-12">
+							<h4><strong><i>Employment Informations</i></strong></h4>
+								<div class="col-xs-3">
+									<p><strong>Start Date</strong></p>
+									<p><strong>Benefits Seniority Date</strong></p>
+									<p><strong>Job Seniority Title</strong></p>
+								</div>
+								<div class="col-xs-3">
+									<input class="input_box form_summary_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									<input class="input_box form_summary_ben_sen_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									<input class="input_box form_job_seniority_title"  value=""  type="text" style="border:none" readonly="readonly" />
+								</div>
+								<div class="col-xs-3">
+									<p><strong>Scheduled Hours</strong></p>
+									<p><strong>Pay Rate</strong></p>
+								</div>
+								<div class="col-xs-3">
+									<input class="input_box form_summary_scheduled_hours required_cls"  value=""  type="char" placeholder="Scheduled Hours" style="border:none" />
+									<input class="input_box form_summary_pay_rate required_cls" value="" type="char" placeholder="Pay Rate" style="border:none" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="5">Next Step</button>
+					</div>
+				</t>
+			</t>
+			<t t-call="web_planner.category">
+				<t t-set="menu_categorytitle">Background Information</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Background Check Consent</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/Background Check Consent Form</i></strong></h4>	
+						<button class="btn btn-primary consent_send_all" style="display: block;">
+                            <span>Send All</span>
+                        </button>					
+						<table class="table table-borderless background_check_consent_form_table" >
+							<tr>
+								<th style="display:none">Id</th>
+								<th>Consent Form</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style="display:none">
+									<input class="input_box form_tree_id consent_form_tree_id" data-model="consent.form" value="0"  type="text" placeholder="ID" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<select name="Document" class="form_consent_documents">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box background_check_consent_form_link" href="" target="_blank">Link</a>
+
+								</td>
+								<td>
+									<select name="Status" class="background_check_consent_form_status" disabled="disabled">
+										<option value=""></option>
+										<option value="draft">Open</option>
+										<option value="sent">Signatures in Progress</option>
+										<option value="signed">Fully Signed</option>
+										<option value="canceled">Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box background_check_consent_form_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<input class="input_box background_check_consent_form_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+								<td class="btn_sent btn_consent"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+						<button class="btn btn-primary add_more_background_check_consent_form" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="6">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Background Check</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/ Background Check</i></strong></h4>
+                    </div>
+                    <div class="col-xs-6">
+						<h4><strong><i>Background Check</i></strong></h4>	
+						<h4><strong><i>Packages</i></strong></h4>	
+						<table class="table table-borderless background_check_package_table" >
+							<tr >
+								<th style= 'display:none'>Tree Id</th>
+								<th>Package</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_tree_id background_check_package_tree_id" value="0" type="text" data-model="background.check.package"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_package_items">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+							</tr>
+						</table>
+						<button class="btn btn-primary add_more_background_check_package" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+						<h4><strong><i>Services</i></strong></h4>						
+						<table class="table table-borderless background_check_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Item</th>
+								<th>Status</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_tree_id background_check_tree_id" data-model="background.check" value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_items">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<select name="Status" class="background_check_status" disabled="disabled">
+										<option value=""></option>
+										<option value="open">Open</option>
+										<option value="record">Record</option>
+										<option value="norecord">No Record</option>
+										<option value="completed">Completed</option>
+									</select>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+							</tr>
+						</table>
+						<button class="btn btn-primary add_more_background_check" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+                    <div class="col-xs-6">
+                    	<button class="btn btn-primary btn_background_check_initiate">Initiate</button>
+                    </div>
+					<br/>
+					<div class="text-right col-xs-12">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="7">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t id="background_check_summary" t-set="page_title">Summary  </t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/Summary</i></strong></h4>
+					</div>
+                    <h4><strong><i>Background Check</i></strong></h4>
+                    <div class="col-xs-12">	
+                    	<h4><strong><i>Packages</i></strong></h4>	
+						<table class="table table-borderless background_check_summary_package_table" >
+							<tr style= 'display:none'>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Package</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_summary_package_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_summary_package_items" disabled="disabled" >
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<h4><strong><i>Services</i></strong></h4>
+						<table class="table table-borderless background_check_summary_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Item</th>
+								<th>Status</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_items"  disabled="disabled">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<select name="Status" class="background_check_status"  disabled="disabled">
+										<option value=""></option>
+										<option value="open">Open</option>
+										<option value="record">Record</option>
+										<option value="norecord">No Record</option>
+										<option value="completed">Completed</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+                    </div>
+                    <h4><strong><i>Full Report</i></strong></h4>
+                    <div class="col-xs-12">	
+						<table class="table table-borderless background_check_download_summary_table" >
+							<tr style= 'display:none'>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Item</th>
+								<th>Status</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_download_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_download_items" disabled="disabled" >
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="background_check_download_url" href="#" target="_blank">Download</a>
+								</td>
+							</tr>
+						</table>
+                    </div>
+					<br/>
+					<div class="text-right col-xs-12">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="8">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Adverse Action</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/Adverse Action</i></strong></h4>						
+							<table class="table table-borderless adverse_action_table" >
+								<tr>
+									<th style="display:none">Id</th>
+									<th>Action Form</th>
+									<th>Link</th>
+									<th>Status</th>
+									<th>Date Sent</th>
+									<th>Expiration</th>
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<td style="display:none">
+										<input class="input_box form_tree_id adverse_action_tree_id" data-model="adverse.action" value="0"  type="text" placeholder="ID" style="border:none" />
+									</td>
+									<td>
+										<select name="Document" class="form_adverse_documents">
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<a class="input_box adverse_action_link" href="" target="_blank">Link</a>
+									</td>
+									<td>
+										<select name="Status" class="adverse_action_status" disabled="disabled">
+											<option value=""></option>
+											<option value="draft">Open</option>
+											<option value="sent">Signatures in Progress</option>
+											<option value="signed">Fully Signed</option>
+											<option value="canceled">Cancelled</option>
+										</select>
+									</td>
+									<td>
+										<input class="input_box adverse_action_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td>
+										<input class="input_box adverse_action_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+									<td class="btn_sent btn_adverse"><button class="btn btn-primary">Send</button></td>
+								</tr>
+							</table>
+						<button class="btn btn-primary add_more_adverse_action" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+					<br/>
+					<div class="col-xs-12">
+						<div class="text-left col-xs-6">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="9">Skip</button>
+						</div>
+						<div class="text-right col-xs-6">
+							<button class="btn btn-primary btn_onboarding_reject">Reject Applicant</button>
+						</div> 
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+				<t t-set="page_title">i9</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/i9</i></strong></h4>
+						<button class="btn btn-primary i9_send_all" style="display: block;">
+                            <span>Send All</span>
+                        </button>
+					</div>
+					<div>
+						<h4><strong><i>Applicant</i></strong></h4>						
+							<table class="table table-borderless i9_applicant_table" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Documents</th>
+									<th>Link</th>
+									<th>Status</th>
+									<th>Date Sent</th>
+									<th>Expiration</th>
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box form_tree_id applicant_tree_id" data-model="applicant.background" value="0"  type="text"/>
+									</td>
+									<td>
+										<select name="Document" class="form_applicant_documents">
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<a class="input_box applicant_link" href="" target="_blank">Link</a>
+									</td>
+									<td>
+										<select name="Status" class="applicant_status" disabled="disabled">
+											<option value=""></option>
+											<option value="draft">Open</option>
+											<option value="sent">Signatures in Progress</option>
+											<option value="signed">Fully Signed</option>
+											<option value="canceled">Cancelled</option>
+										</select>
+									</td>
+									<td>
+										<input class="input_box applicant_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td>
+										<input class="input_box applicant_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+									<td class="btn_sent btn_applicant"><button class="btn btn-primary">Send</button></td>
+								</tr>
+							</table>
+						<button class="btn btn-primary add_more_i9_applicant" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+					<div>
+						<h4><strong><i>Employer</i></strong></h4>						
+							<table class="table table-borderless i9_employer_table" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Documents</th>
+									<th>Link</th>
+									<th>Status</th>
+									<th>Date Sent</th>
+									<th>Expiration</th>
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box form_tree_id employer_tree_id" data-model="employer.background" value="0"  type="text"/>
+									</td>
+									<td>
+										<select name="Document" class="form_employer_documents">
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<a class="input_box employer_link" href="" target="_blank">Link</a>
+									</td>
+									<td>
+										<select name="Status" class="employer_status" disabled="disabled">
+											<option value=""></option>
+											<option value="draft">Open</option>
+											<option value="sent">Signatures in Progress</option>
+											<option value="signed">Fully Signed</option>
+											<option value="canceled">Cancelled</option>
+										</select>
+									</td>
+									<td>
+										<input class="input_box employer_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td>
+										<input class="input_box employer_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+									<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+									<td class="btn_sent btn_employer"><button class="btn btn-primary">Send</button></td>
+								</tr>
+							</table>
+						<button class="btn btn-primary add_more_i9_employer" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+                    <br/>
+                    <br/>
+                    <!-- <div>
+						<button class="btn btn-primary btn_initiate_everify" style="display: block;">
+                            <span>Initiate Everify</span>
+                        </button>
+					</div>
+					<br/>
+					<div>					
+						<table class="table table-borderless everify_case_result" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Case Number</th>
+								<th>Status</th>
+								<th>Message Code</th>
+								<th>Eligiblity Statement</th>
+								<th>Statement Details</th>
+								<th>Date Sent</th>
+								<th>Date Received</th>
+								<th>Closure Reason</th>
+								<th style= 'display:none'>Everify Download URL</th>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_tree_id everify_case_result_tree_id" value="0" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_case_number" value="" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_status" value="" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_message_code" value="" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_eligiblity_statement" value="" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_statement_details" value="" readonly='readonly' type="text"/>
+								</td>
+								<td>
+									<input class="input_box everify_case_result_date_sent datepicker_custom" readonly='readonly' value=""  type="text" style="border:none" />
+								</td>
+								<td>
+									<input class="input_box everify_case_result_date_received datepicker_custom" readonly='readonly' value=""  type="text" style="border:none" />
+								</td>
+								<td>
+									<select name="Closure Reason" class="everify_case_result_case_status" disabled="disabled">
+										<option value=""></option>
+										<option value="eelig">EELIG - The employee continues to work for the employer after receiving an Employement Authorization results</option>
+										<option value="efnc">EFNC - The employee continues to work for the employer after receiving an Final Nonconfirmation results</option>
+										<option value="enoact">ENOACT - The employee continues to work for the employer after receiving an No Show results.Employer retains Employee</option>
+										<option value="euncnt">EUNCNT - The employee continues to work for the employer after choosing not to consent a tentative Nonconfirmation</option>
+										<option value="trmfnc">TRMFNC - The employee was teerminated by the employer for receiving Final Nonconfirmation results</option>
+										<option value="equit">EQUIT - The employee voluntarily quit working for the employer</option>
+										<option value="trem">TERM - The employee was terminated by the employer for reason other than E-Verify</option>
+										<option value="noact">NOACT - The employee was terminated by the employer for receiving an No Show results</option>
+										<option value="uncnt">UNCNT - The employee was terminated by the employer for choosing not to consent a tentative Nonconfirmation</option>
+										<option value="dup">DUP - The case is invalid because another case with the same data already exists</option>
+										<option value="incdat">INCDAT - The case is invalid because the data entered is incorrect</option>
+										<option value="teciss">TECISS - The case is being closed because of technical issues with E-Verify</option>
+										<option value="isdp">ISDP - The case is duplicate because the employer created a case with the same data within the pase 30 days</option>
+									</select>
+								</td>
+								<td style= 'display:none'>
+									<input class="input_box everify_case_result_download_URL" value="" type="text"/>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+								<td class=""><button class="btn btn-primary" data-toggle="modal" data-target="#myModal_close">Close Case</button></td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<button class="btn btn-primary add_more_everify_case_result" style="display: none;">
+	                        <i class="fa fa-plus"></i>
+	                        <span>Add More</span>
+	                    </button>	
+	                </div>
+	                <div>
+	                	<table class="everify_case_result_download_table">
+	                		<tr>
+	                			<td class="col-xs-6 text-left">
+	                				<span style="font-size:20px;">Further Action Notice Letter</span>
+	                			</td>
+	                			<td class="col-xs-6 text-right">
+	                				<a class="everify_download_url" href="#" style="font-size:20px;" target="_blank">Download</a>
+	                			</td>
+	                		</tr>
+	                	</table>
+	                </div>
+					<div>
+						<button class="btn btn-primary btn_add_more_everify_case_result_download" style="display: none;">
+	                        <i class="fa fa-plus"></i>
+	                        <span>Add More</span>
+	                    </button>	
+	                </div>
+					<div class="modal fade" id="myModal_close" role="dialog">
+					    <div class="modal-dialog" style = "height:200px;width:750px">
+					      <div class="modal-content">
+					        <div class="modal-body">
+					        	<p style="font-size:20px"><b>Please select the reason to close the case.</b></p>
+					        	<select name="Closure Reason" class="everify_case_result_case_status_dialogue">
+									<option value=""></option>
+									<option value="eelig">EELIG - The employee continues to work for the employer after receiving an Employement Authorization results</option>
+									<option value="efnc">EFNC - The employee continues to work for the employer after receiving an Final Nonconfirmation results</option>
+									<option value="enoact">ENOACT - The employee continues to work for the employer after receiving an No Show results.Employer retains Employee</option>
+									<option value="euncnt">EUNCNT - The employee continues to work for the employer after choosing not to consent a tentative Nonconfirmation</option>
+									<option value="trmfnc">TRMFNC - The employee was teerminated by the employer for receiving Final Nonconfirmation results</option>
+									<option value="equit">EQUIT - The employee voluntarily quit working for the employer</option>
+									<option value="trem">TERM - The employee was terminated by the employer for reason other than E-Verify</option>
+									<option value="noact">NOACT - The employee was terminated by the employer for receiving an No Show results</option>
+									<option value="uncnt">UNCNT - The employee was terminated by the employer for choosing not to consent a tentative Nonconfirmation</option>
+									<option value="dup">DUP - The case is invalid because another case with the same data already exists</option>
+									<option value="incdat">INCDAT - The case is invalid because the data entered is incorrect</option>
+									<option value="teciss">TECISS - The case is being closed because of technical issues with E-Verify</option>
+									<option value="isdp">ISDP - The case is duplicate because the employer created a case with the same data within the pase 30 days</option>
+								</select>
+								<br/>
+								<br/>
+								<a class="btn btn-primary pull-right everify_case_result_reason">Submit</a>
+					        </div>
+					      </div>					      
+					    </div>
+					</div> -->
+				<br/>
+				<div class="text-right">
+					<button class="btn btn-primary btn_onboarding_next" data_page_id="10">Next Step</button>
+				</div>
+				</t>
+			</t>
+			<t t-call="web_planner.category">
+				<t t-set="menu_categorytitle">To Approve/Hire</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">E-Verify</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/E-Verify</i></strong></h4>
+					</div>
+					<div class="col-xs-6">
+						<h4><strong><i>Background Check</i></strong></h4>	
+                    	<h4><strong><i>Packages</i></strong></h4>	
+						<table class="table table-borderless background_check_everify_package_table" >
+							<tr style= 'display:none'>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Package</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_everify_package_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_everify_package_items" disabled="disabled">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<h4><strong><i>Services</i></strong></h4>					
+						<table class="table table-borderless e_verify_background_check_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Item</th>
+								<th>Status</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_items">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<select name="Status" class="background_check_status">
+										<option value=""></option>
+										<option value="open">Open</option>
+										<option value="record">Record</option>
+										<option value="norecord">No Record</option>
+										<option value="completed">Completed</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+                    </div>
+					<div>
+						<h4 class="col-xs-12"><strong><i>Applicant</i></strong></h4>						
+						<table class="table table-borderless e_verify_applicant_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Documents</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box applicant_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_applicant_documents">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box applicant_link" href="" target="_blank">Link</a>
+								</td>
+								<td>
+									<select name="Status" class="applicant_status" disabled="disabled">
+										<option value=""></option>
+										<option value="draft">Open</option>
+										<option value="sent">Signatures in Progress</option>
+										<option value="signed">Fully Signed</option>
+										<option value="canceled">Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box applicant_date_sent"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<input class="input_box applicant_expiration"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td class="btn_sent btn_applicant"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+                    </div>
+					<div>
+						<h4 class="col-xs-12"><strong><i>Employer</i></strong></h4>						
+						<table class="table table-borderless e_verify_employer_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Documents</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box employer_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_employer_documents">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box employer_link" href="" target="_blank">Link</a>
+								</td>
+								<td>
+									<select name="Status" class="employer_status" disabled="disabled">
+										<option value=""></option>
+										<option value="draft">Open</option>
+										<option value="sent">Signatures in Progress</option>
+										<option value="signed">Fully Signed</option>
+										<option value="canceled">Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box employer_date_sent"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<input class="input_box employer_expiration"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td class="btn_sent btn_employer"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+                    </div>
+                    <div class="col-xs-12" style="margin-top:10px">
+                   		<div class="col-xs-3">
+                   			<span><strong>E-Verify</strong></span>
+                   		</div>
+                   		<div class="col-xs-3">
+                   			<a class="btn btn-primary btn_everify" href="https://e-verify.uscis.gov/web/Login.aspx" target='_blank' style="color:#ffffff">Initiate</a>
+                   		</div>
+                    </div>
+					<br/>
+					<div class="text-right col-xs-12">
+						<button class="btn btn-primary btn_onboarding_next" data_page_id="11">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Applicant Summary/Hire</t>
+					<div class='hire_applicant_form'>
+						<h5 class="col-xs-6"><strong><input class="input_box form_summary_name" value=""  type="char" placeholder="Name" style="border:none;text-transform: capitalize;" readonly="readonly" /></strong></h5><br/>
+						<div class="col-xs-12">
+							<div class="col-xs-3">
+								<p><strong>Phone</strong></p>
+								<p><strong>Applied Job</strong></p>
+								<p><strong>Start Date</strong></p>
+								<p><strong>Employment Status</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_phone"  value=""  type="char" placeholder="Phone" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_applied_job"  value=""  type="char" placeholder="Applied Job" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								<select name="Employment Status" class="form_summary_employment_status" disabled="disabled">
+									<option value="" selected="selected"></option>
+								</select>
+							</div>
+							<div class="col-xs-3">
+								<p><strong>Email</strong></p>
+								<p><strong>Applicant ID</strong></p>
+								<p><strong>Company</strong></p>
+								<p><strong>Responsible</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_mail"  value=""  type="char" placeholder="Email" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_applicant_id"  value=""  type="char" placeholder="Applicant ID" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_company"  value=""  type="char" placeholder="Company" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_responsible"  value=""  type="char" placeholder="Responsible" style="border:none" readonly="readonly" />
+							</div>
+						</div>
+						<div class="col-xs-12">
+						<h4><strong><i>Applicant Personal Details</i></strong></h4>
+							<div class="col-xs-3">
+								<p><strong>Nationality</strong></p>
+								<p><strong>Identification Number</strong></p>
+								<p><strong>Home Address</strong></p><br/><br/><br/><br/><br/><br/><br/><br/>
+								<p><strong>Passport Number</strong></p>
+								<p><strong>Birth Country</strong></p>
+								<p><strong>Age</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_nationality"  value=""  type="char" placeholder="Nationality" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_id_number"  value=""  type="char" placeholder="Identification Number" style="border:none" readonly="readonly" />
+								<input class="input_box form_street"  value=""  type="char" placeholder="Street" style="border:none" readonly="readonly" />
+								<input class="input_box form_street2"  value=""  type="char" placeholder="Street2" style="border:none" readonly="readonly" />
+								<input class="input_box form_city"  value=""  type="char" placeholder="City" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_state"  value=""  type="char" placeholder="State" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_country"  value=""  type="char" placeholder="Country" style="border:none" readonly="readonly" />
+								<input class="input_box form_zip"  value=""  type="char" placeholder="Zip" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_passport_number"  value=""  type="char" placeholder="Passport Number" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_birth_country"  value=""  type="char" placeholder="Birth Country" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_age"  value=""  type="char" placeholder="Age" style="border:none" readonly="readonly" />
+							</div>
+							<div class="col-xs-3">
+								<p><strong>Gender</strong></p>
+								<p><strong>Marital Status</strong></p>
+								<p><strong>Filing Status</strong></p>
+								<p><strong>Number of Allowances</strong></p>
+								<p><strong>Date of Birth</strong></p>
+								<p><strong>Place of Birth</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<span>
+									<select name="gender" class="form_summary_gender" disabled="disabled">
+										<option value="male">Male</option>
+										<option value="female">Female</option>
+									</select>
+								</span><br/>
+								<span>
+									<select name="marital status" class="form_summary_marital_status" disabled="disabled">
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Widower</option>
+										<option value="divorced">Divorced</option>
+									</select>
+								</span>
+								<span>
+									<select name="filing status" class="form_summary_filing_status" style='margin-top:5px;'>
+										<option value="single">Single</option>
+										<option value="married">Married</option>
+										<option value="widower">Married, but withhold at higher Single rate</option>
+									</select>
+								</span>
+								<input class="input_box form_summary_noc"  value=""  type="char" placeholder="Number of Allowances" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_dob"  value=""  type="text" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_pob"  value=""  type="char" placeholder="Place of Birth" style="border:none" readonly="readonly" />
+							</div>
+						</div>
+						<div>
+							<h4><strong><i>Academic Experiences</i></strong></h4>						
+							<table class="table table-borderless academic_exp_e_verify_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Academic Experiences</th>
+									<th>Institution</th>
+									<th>Diploma</th>
+									<th>Field of study</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box form_academic_exp_tree_id"  value="0"  type="text" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_exp"  value=""  type="text" placeholder="Academic Experiences" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_institution"  value=""  type="text" placeholder="Institution" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_diploma"  value=""  type="text" placeholder="Diploma" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_fos"  value=""  type="text" placeholder="Field of study" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_academic_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+								</tr>
+							</table>
+                        </div>
+                        <div>
+							<h4><strong><i>Professional Experiences</i></strong></h4>						
+							<table class="table table-borderless professional_exp_e_verify_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Position</th>
+									<th>Employer</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box form_professional_exp_tree_id"  value="0"  type="text" readonly="readonly"/>
+									</td>
+									<td>
+										<input class="input_box form_professional_exp_position"  value=""  type="text" placeholder="Position" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_professional_exp_employer"  value=""  type="text" placeholder="Employer" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_professional_exp_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_professional_exp_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+								</tr>
+							</table>
+                        </div>
+                        <div>
+							<h4><strong><i>Certifications</i></strong></h4>						
+							<table class="table table-borderless certification_exp_e_verify_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Certifications</th>
+									<th>Certification #</th>
+									<th>Issued By</th>
+									<th>Professional License</th>
+									<th>State Issued</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box form_certification_exp_tree_id" value="0"  type="text" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_certificate" value=""  type="text" placeholder="Certifications" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_certificate_code" value=""  type="text" placeholder="Certification #" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_issued_by" value=""  type="text" placeholder="Issued By" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="form_certification_exp_professional_license" value="" type="checkbox" onclick="return false;" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_state_issued"  value=""  type="text" placeholder="State Issued" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box form_certification_exp_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+								</tr>
+							</table>	
+                        </div>
+                        <div class="col-xs-12">
+						<h4><strong><i>Employment Informations</i></strong></h4>
+							<div class="col-xs-3">
+								<p><strong>Start Date</strong></p>
+								<p><strong>Benefits Seniority Date</strong></p>
+								<p><strong>Job Seniority Title</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_ben_sen_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_job_sen_title"  value=""  type="text" style="border:none" readonly="readonly" />
+							</div>
+							<div class="col-xs-3">
+								<p><strong>Scheduled Hours</strong></p>
+								<p><strong>Pay Rate</strong></p>
+							</div>
+							<div class="col-xs-3">
+								<input class="input_box form_summary_scheduled_hours"  value=""  type="char" placeholder="Scheduled Hours" style="border:none" readonly="readonly" />
+								<input class="input_box form_summary_pay_rate"  value=""  type="char" placeholder="Pay Rate" style="border:none" readonly="readonly" />
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<h4><strong><i>Background Check</i></strong></h4>	
+                    	<h4><strong><i>Packages</i></strong></h4>	
+						<table class="table table-borderless background_check_everify_summary_package_table" >
+							<tr style= 'display:none'>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Package</th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box background_check_everify_summary_package_tree_id"  value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_background_check_everify_summary_package_items" disabled="disabled" >
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<h4><strong><i>Services</i></strong></h4>					
+							<table class="table table-borderless e_verify_table_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Item</th>
+									<th>Status</th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box background_check_tree_id"  value="0"  type="text" readonly="readonly" />
+									</td>
+									<td>
+										<select name="Document" class="form_background_check_items" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<select name="Status" class="background_check_status">
+											<option value=""></option>
+											<option value="open">Open</option>
+											<option value="record">Record</option>
+											<option value="norecord">No Record</option>
+											<option value="completed">Completed</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+	                    </div>
+	                    <div class="col-xs-12" style="margin-top:10px">
+	                   		
+		                    <h4><strong><i>Full Report</i></strong></h4>
+		                    <div class="col-xs-6">	
+								<table class="table table-borderless everify_download_summary_table" >
+									<tr style= 'display:none'>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Item</th>
+										<th>Status</th>
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box everify_download_tree_id"  value="0"  type="text"/>
+										</td>
+										<td>
+											<select name="Document" class="form_everify_download_items" disabled="disabled" >
+												<option value="" selected="selected"></option>
+											</select>
+										</td>
+										<td>
+											<a class="everify_download_url" href="#" target="_blank">Download</a>
+										</td>
+									</tr>
+								</table>
+		                    </div>
+	                    </div>
+						<div>
+							<h4 class="col-xs-12"><strong><i>Applicant</i></strong></h4>						
+							<table class="table table-borderless e_verify_applicant_table_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Documents</th>
+									<th>Link</th>
+									<th>Status</th>
+									<th>Date Sent</th>
+									<th>Expiration</th>
+									<th></th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box applicant_tree_id"  value="0"  type="text" readonly="readonly" />
+									</td>
+									<td>
+										<select name="Document" class="form_applicant_documents" disabled="disabled" >
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<a class="input_box applicant_link" href="" target="_blank">Link</a>
+									</td>
+									<td>
+										<select name="Status" class="applicant_status" disabled="disabled" >
+											<option value=""></option>
+											<option value="draft">Open</option>
+											<option value="sent">Signatures in Progress</option>
+											<option value="signed">Fully Signed</option>
+											<option value="canceled">Cancelled</option>
+										</select>
+									</td>
+									<td>
+										<input class="input_box applicant_date_sent"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+									<td>
+										<input class="input_box applicant_expiration"  value=""  type="text" style="border:none" readonly="readonly" />
+									</td>
+									<td class="btn_sent btn_applicant"><button class="btn btn-primary">Send</button></td>
+								</tr>
+							</table>
+	                    </div>
+						<div>
+						<h4 class="col-xs-12"><strong><i>Employer</i></strong></h4>						
+						<table class="table table-borderless e_verify_employer_table_summary" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Documents</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box employer_tree_id"  value="0"  type="text" readonly="readonly" />
+								</td>
+								<td>
+									<select name="Document" class="form_employer_documents" disabled="disabled" >
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box employer_link" href="" target="_blank">Link</a>
+								</td>
+								<td>
+									<select name="Status" class="employer_status" disabled="disabled">
+										<option value=""></option>
+										<option value="draft">Open</option>
+										<option value="sent">Signatures in Progress</option>
+										<option value="signed">Fully Signed</option>
+										<option value="canceled">Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box employer_date_sent"  value=""  type="text" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box employer_expiration"  value=""  type="text" style="border:none" readonly="readonly" />
+								</td>
+								<td class="btn_sent btn_employer"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+                    </div>
+                    <div class="col-xs-12" style="margin-top:10px">
+                   		<div class="col-xs-3">
+                   			<span><strong>E-Verify</strong></span>
+                   		</div>
+                   		<div class="col-xs-3">
+                   			<span>
+								<select name="e_verify" class="form_drug_test" disabled="disabled">
+									<option value="initiate">Initiate</option>
+									<option value="in_progress">In Progress</option>
+									<option value="positive">Positive</option>
+									<option value="negative">Negative</option>
+								</select>
+							</span>
+                   		</div>
+                    </div>
+                    <div class="col-xs-12" style="float:left">
+							<h4><strong><i>Bio</i></strong></h4>
+							<div class="col-xs-12" style="float:left">
+								<input class="input_box form_bio required_cls"  value="" type="text" placeholder="Bio" style="border:none" />
+							</div>
+						</div>
+						<div class="col-xs-12" style="float:left">
+							<h4><strong><i>Image</i></strong></h4>
+							<input id="inputFileToLoad" class="required_cls" type="file" name="Image" accept="image/*" />
+   							<div id="imgTest"></div>
+						</div>
+					</div>
+					<br/> 
+					<div class="text-right col-xs-12">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="12">Hire Me</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Benefits Eligibility</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Benefits Eligibility</i></strong></h4>
+						<div class="col-xs-12">
+							<div class="col-xs-1">
+								<input type="checkbox" class="eligible_for_benefits" value="true" />
+							</div>
+							<div class="col-xs-11">
+								<span>Eligible-Initiate Enrollment</span>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="col-xs-12">
+							<div class="col-xs-3">
+								<span>Enrollment Delay</span>
+							</div>
+							<div class="col-xs-1">
+								<input class="form_enrollment_delay"  value=""  type="char" readonly="readonly"/>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="text-right col-xs-12">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="13">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Welcome Email</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div>
+						<h4><strong><i>Onboarding/Welcome Email</i></strong></h4>
+						<button class="btn btn-primary welcome_mail_send_all" style="display: block;">
+                            <span>Send All</span>
+                        </button>
+					</div>
+					<div>
+						<h4><strong><i>Employee</i></strong></h4>						
+						<table class="table table-borderless welcome_mail_applicant_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Documents</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_tree_id welcome_applicant_tree_id" data-model="welcome.mail" value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Document" class="form_welcome_applicant_documents">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box welcome_applicant_link" href="" target="_blank">Link</a>
+								</td>
+								<td>
+									<select name="Status" class="welcome_applicant_status" disabled="disabled">
+										<option value=""></option>
+										<option value="draft">Open</option>
+										<option value="sent">Signatures in Progress</option>
+										<option value="signed">Fully Signed</option>
+										<option value="canceled">Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box welcome_applicant_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<input class="input_box welcome_applicant_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+								<td class="btn_sent btn_welcome"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+						<button class="btn btn-primary add_more_welcome_mail_applicant" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+					<div>
+						<h4><strong><i>Survey</i></strong></h4>						
+						<table class="table table-borderless welcome_mail_survey_table" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Survey</th>
+								<th>Link</th>
+								<th>Status</th>
+								<th>Date Sent</th>
+								<th>Expiration</th>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_tree_id welcome_survey_tree_id" data-model="welcome.survey" value="0"  type="text"/>
+								</td>
+								<td>
+									<select name="Survey" class="form_welcome_survey">
+										<option value="" selected="selected"></option>
+									</select>
+								</td>
+								<td>
+									<a class="input_box welcome_survey_link" href="" target="_blank">Link</a>
+								</td>
+								<td>
+									<select name="Status" class="welcome_survey_status" disabled="disabled">
+										<option value=""></option>
+										<option value="new">Not Yet Started</option>
+										<option value="skip">Partially Completed</option>
+										<option value="done">Completed</option>
+									</select>
+								</td>
+								<td>
+									<input class="input_box welcome_survey_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td>
+									<input class="input_box welcome_survey_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+								</td>
+								<td class="onboard_trash"><i class="fa fa-trash"></i></td>
+								<td class="btn_sent btn_survey"><button class="btn btn-primary">Send</button></td>
+							</tr>
+						</table>
+						<button class="btn btn-primary add_more_welcome_mail_survey" style="display: block;">
+                            <i class="fa fa-plus"></i>
+                            <span>Add More</span>
+                        </button>	
+                    </div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="14">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Appraisal Plan</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div class="col-xs-12">
+						<h4><strong><i>Onboarding/Welcome Email</i></strong></h4>
+						<div class = "col-xs-3">
+							<span>90 Days Appraisal</span>
+						</div>
+						<div class = "col-xs-2">
+							<input class="days_appraisal" type="checkbox" value="1" />
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<h4><strong><i>Send Appraisal Form To</i></strong></h4>
+						<div class = "col-xs-3">
+							<span>Manager</span>
+						</div>
+						<div class = "col-xs-2">
+							<input class="manager" type="checkbox" value="2" />
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class = "col-xs-3">
+							<span>Employee</span>
+						</div>
+						<div class = "col-xs-2">
+							<input class="employee" type="checkbox" value="3" />
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class = "col-xs-3">
+							<span>Direct Report</span>
+						</div>
+						<div class = "col-xs-1">
+							<input class="direct_report" type="checkbox" value="4" />
+							<input class="direct_report_anonymous" type="checkbox" value="5" data-toggle="tooltip" title="Check to make the answers anonymous"/>
+						</div>
+						<div class = "col-xs-3">
+							<span style="margin-left:-35px;" data-toggle="tooltip" title="Check to make the answers anonymous">Anonymous</span>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class = "col-xs-3">
+							<span>Colleagues</span>
+						</div>
+						<div class = "col-xs-1">
+							<input class="colleagues" type="checkbox" value="6" />
+							<input class="colleagues_anonymous" type="checkbox" value="7" data-toggle="tooltip" title="Check to make the answers anonymous" />
+						</div>
+						<div class = "col-xs-3">
+							<span style="margin-left:-35px;" data-toggle="tooltip" title="Check to make the answers anonymous">Anonymous</span>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class = "col-xs-3">
+							<span>Coach</span>
+						</div>
+						<div class = "col-xs-2">
+							<input class="coach" type="checkbox" value="8" />
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<h4><strong><i>Periodicity</i></strong></h4>
+						<div class="col-xs-3">
+							<span>Periodic Appraisal</span>
+						</div>
+						<div class = "col-xs-1">
+							<input class="periodic_appraisal" type="checkbox" value="9" />
+						</div>
+						<div class="col-xs-3">
+							<span>Repeat Every</span>
+						</div>
+						<div class="col-xs-1">
+							<input class="input_box repeat_period" value=""  type="char" style="border:none" />
+						</div>
+						<div class = "col-xs-3">
+							<select name="type" class="period">
+								<option value="year">Year</option>
+								<option value="month">Month</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="col-xs-3">
+							<span>Next Appraisal Date</span>
+						</div>
+						<div class="col-xs-3">
+							<input class="input_box next_appraisal_date datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="col-xs-3">
+							<span>Auto Send Appraisals</span>
+						</div>
+						<div class = "col-xs-1">
+							<input class="auto_send_appraisal" type="checkbox" value="10" />
+						</div>
+					</div>
+					<br/>
+					<div class="text-right col-xs-12">
+						<button class="btn btn-primary btn_onboarding_next" data_page_id="15">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t id="to_approve_summary" t-set="page_title">Summary   </t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<div class="col-xs-8">
+						<div>
+							<h4><strong><i>Onboarding/Hire Summary</i></strong></h4>
+							<div class="col-xs-12" style="margin-top:10px">
+			               		<div class="col-xs-3">
+			               			<span><strong>E-Verify</strong></span>
+			               		</div>
+			               		<div class="col-xs-3">
+			               			<span>
+										<select name="e_verify" class="form_drug_test" disabled="disabled">
+											<option value="initiate">Initiate</option>
+											<option value="in_progress">In Progress</option>
+											<option value="positive">Positive</option>
+											<option value="negative">Negative</option>
+										</select>
+									</span>
+			               		</div>
+			                </div>
+							<div>
+								<h4><strong><i>Employee Action</i></strong></h4>						
+								<table class="table table-borderless welcome_mail_everify_table" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Documents</th>
+										<th>Link</th>
+										<th>Status</th>
+										<th>Date Sent</th>
+										<th>Expiration</th>
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box welcome_everify_tree_id"  value="0"  type="text"/>
+										</td>
+										<td>
+											<select name="Document" class="form_welcome_everify_documents">
+												<option value="" selected="selected"></option>
+											</select>
+										</td>
+										<td>
+											<a class="input_box welcome_everify_link" href="" target="_blank">Link</a>
+										</td>
+										<td>
+											<select name="Status" class="welcome_everify_status" disabled="disabled">
+												<option value=""></option>
+												<option value="draft">Open</option>
+												<option value="sent">Signatures in Progress</option>
+												<option value="signed">Fully Signed</option>
+												<option value="canceled">Cancelled</option>
+											</select>
+										</td>
+										<td>
+											<input class="input_box welcome_everify_date_sent datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+										</td>
+										<td>
+											<input class="input_box welcome_everify_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+										</td>
+									</tr>
+								</table>
+		                    </div>
+							<div>
+								<h4><strong><i>Survey</i></strong></h4>						
+								<table class="table table-borderless welcome_mail_everify_table_summary" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Survey</th>
+										<th>Link</th>
+										<th>Status</th>
+										<th>Date Sent</th>
+										<th>Expiration</th>
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box welcome_everify_survey_tree_id" readonly="readonly" value="0"  type="text"/>
+										</td>
+										<td>
+											<select name="Survey" class="form_everify_welcome_survey">
+												<option value="" selected="selected"></option>
+											</select>
+										</td>
+										<td>
+											<a class="input_box welcome_everify_survey_link" href="" target="_blank">Link</a>
+										</td>
+										<td>
+											<select name="Status" class="welcome_everify_survey_status" disabled="disabled">
+												<option value=""></option>
+												<option value="new">Not Yet Started</option>
+												<option value="skip">Partially Completed</option>
+												<option value="done">Completed</option>
+											</select>
+										</td>
+										<td>
+											<input class="input_box welcome_everify_survey_date_sent datepicker_custom" readonly="readonly" value="" type="text" style="border:noneborder-bottom:1px solid red !important;" />
+										</td>
+										<td>
+											<input class="input_box welcome_everify_survey_expiration datepicker_custom" value="" type="text" style="border:none" readonly="readonly"/>
+										</td>
+									</tr>
+								</table>
+		                    </div>
+		                </div>
+	                    <div>
+							<h4><strong><i>Employer Action</i></strong></h4>						
+							<table class="table table-borderless e_verify_employer_table_summary" >
+								<tr>
+									<th style= 'display:none'>Tree Id</th>
+									<th>Documents</th>
+									<th>Link</th>
+									<th>Status</th>
+									<th>Date Sent</th>
+									<th>Expiration</th>
+								</tr>
+								<tr>
+									<td style= 'display:none'>
+										<input class="input_box employer_tree_id" readonly="readonly" value="0"  type="text"/>
+									</td>
+									<td>
+										<select name="Document" class="form_employer_documents">
+											<option value="" selected="selected"></option>
+										</select>
+									</td>
+									<td>
+										<a class="input_box employer_link" href="" target="_blank">Link</a>
+									</td>
+									<td>
+										<select name="Status" class="employer_status" disabled="disabled">
+											<option value=""></option>
+											<option value="draft">Open</option>
+											<option value="sent">Signatures in Progress</option>
+											<option value="signed">Fully Signed</option>
+											<option value="canceled">Cancelled</option>
+										</select>
+									</td>
+									<td>
+										<input class="input_box employer_date_sent datepicker_custom"  value=""  type="text" style="border:none;" readonly="readonly"/>
+									</td>
+									<td>
+										<input class="input_box employer_expiration datepicker_custom"  value=""  type="text" style="border:none" readonly="readonly"/>
+									</td>
+								</tr>
+							</table>
+	                    </div>
+	                </div>
+					<div class="col-xs-2">
+						<strong><h3 style="margin-left:120px;margin-top:50px;">Integrity</h3></strong>
+						<div id="g1" class="gauge"></div>
+					</div>
+					<br/>
+					<div class="text-right col-xs-12">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="16">Next Step</button>
+					</div>
+				</t>
+			</t>
+			<t t-call="web_planner.category">
+				<t t-set="menu_categorytitle">Benefits</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Benefits Survey Results</t>
+					<div>
+						<table class="table table-bordered top_section">
+							
+						</table>
+					</div>
+					<h4><strong><i>Benefits Survey Results</i></strong></h4>
+					<div class="text-center eligible" style="margin-top:100px;">
+						<p><span style="font-size:19px">Please <a class="benefits_survey_link" href="" target="_blank" >Click Here</a> to navigate to the Benefits Survey Elections</span></p>
+						<p><button class="btn btn-primary btn_send_approval text-left">Send to Provider</button>
+						<button class="btn btn-primary btn_enrolled text-left">Enrolled</button></p>
+					</div>
+					<div class="text-center not_eligible" style="margin-top:100px;">
+						<span style="font-size:19px;">You are not Eligible for this Benefits Survey Elections</span>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="17">Next Step</button>
+					</div>
+				</t>
+			</t>
+			<t t-call="web_planner.category">
+				<t t-set="menu_categorytitle">Contracts</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Employee Summary</t>
+					<h4><strong><i>Employee Summary</i></strong></h4>
+					<div>
+						<h1><input class="form_employee_summary_name" value=""  type="char"
+						placeholder="Name" style="border:none;text-transform: capitalize;" readonly="readonly" /></h1>
+					</div>
+					<div class="custom_tab">
+						<ul class="nav nav-tabs" >
+						    <li class="public"><a >Public Information</a></li>
+						    <li class="appraisal"><a >Appraisal</a></li>
+						    <li class="personal"><a>Personal Information</a></li>
+						    <li class="hr"><a>HR Settings</a></li>
+						</ul>
+						<div class="tab-content">
+						    <div  class="tab-pane active" id="public">
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Contact Information</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Working Address</p>
+						    				<p><br/><br/><br/><br/><br/>Work Mobile</p>
+						    				<p>Work Email</p>
+						    				<p>Work Phone</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="work_address" value=""  type="char" placeholder="Work Address" style="border:none" readonly="readonly" /><br/>
+						    				<input class="work_street2" value=""  type="char" placeholder="Work Address" style="border:none" readonly="readonly" /><br/>
+						    				<input class="work_city" value=""  type="char" placeholder="Work Address" style="border:none" readonly="readonly" /><br/>
+						    				<input class="work_state" value=""  type="char" placeholder="Work Address" style="border:none" readonly="readonly" /><br/>
+						    				<input class="work_country" value=""  type="char" placeholder="Work Address" style="border:none" readonly="readonly" /><br/>
+						    				</p>
+						    				<p><input class="work_mobile" value=""  type="char" placeholder="Work Mobile" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="work_email" value=""  type="char" placeholder="Work Email" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="work_phone" value=""  type="char" placeholder="Work Phone" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Position</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Primary Job</p>
+						    				<p>Job Seniority Title</p>
+						    				<p>Contract Type</p>
+						    				<p>Manager</p>
+						    				<p>Coach</p>
+						    				<p>Is a Manager</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="primary_job" value=""  type="char" placeholder="Primary Job" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="job_seniority_title" value=""  type="char" placeholder="Job Seniority Title" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="contract_type" value=""  type="char" placeholder="Contract Type" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="manager" value=""  type="char" placeholder="Manager" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="coach" value=""  type="char" placeholder="Coach" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="is_a_manager" type="checkbox" value="11" onclick="return false;" /></p>
+						    			</div>
+						    		</div>
+						    	</div>
+						    </div>
+						    <div  class="tab-pane" id="appraisal">
+						    	<br/>
+						    	<div class="col-xs-12">
+									<div class = "col-xs-3">
+										<span>90 Days Appraisal</span>
+									</div>
+									<div class = "col-xs-2">
+										<input class="days_appraisal" type="checkbox" value="1" onclick="return false;" />
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_90" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_90" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<h4><strong><i>Send Appraisal Form To</i></strong></h4>
+									<div class = "col-xs-3">
+										<span>Manager</span>
+									</div>
+									<div class = "col-xs-2">
+										<input class="manager" type="checkbox" value="2" onclick="return false;" />
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_reviewer_manager" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_manager" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<div class = "col-xs-3">
+										<span>Employee</span>
+									</div>
+									<div class = "col-xs-2">
+										<input class="employee" type="checkbox" value="3" onclick="return false;" />
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_reviewer_employee" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_employee" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<div class = "col-xs-3">
+										<span>Direct Report</span>
+									</div>
+									<div class = "col-xs-1">
+										<input class="direct_report" type="checkbox" value="4" />
+										<input class="direct_report_anonymous" type="checkbox" value="5" />
+									</div>
+									<div class = "col-xs-3">
+										<span style="margin-left:-35px;">Anonymous</span>
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_reviewer_direct">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_direct">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<div class = "col-xs-3">
+										<span>Colleagues</span>
+									</div>
+									<div class = "col-xs-1">
+										<input class="colleagues" type="checkbox" value="6" />
+										<input class="colleagues_anonymous" type="checkbox" value="7" />
+									</div>
+									<div class = "col-xs-3">
+										<span style="margin-left:-35px;">Anonymous</span>
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_reviewer_colleagues">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_colleagues">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<div class = "col-xs-3">
+										<span>Coach</span>
+									</div>
+									<div class = "col-xs-2">
+										<input class="coach" type="checkbox" value="8" onclick="return false;" />
+									</div>
+									<!-- <div class = "col-xs-3">
+										<select name="" class="select_appraisal_reviewer_coach" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div>
+									<div class = "col-xs-3">
+										<select name="" class="appraisal_form_coach" disabled="disabled">
+											<option value="" selected="selected"></option>
+										</select>
+									</div> -->
+								</div>
+								<div class="col-xs-12">
+									<h4><strong><i>Periodicity</i></strong></h4>
+									<div class="col-xs-3">
+										<span>Periodic Appraisal</span>
+									</div>
+									<div class = "col-xs-1">
+										<input class="periodic_appraisal" type="checkbox" value="9" onclick="return false;" />
+									</div>
+									<div class="col-xs-3">
+										<span>Repeat Every</span>
+									</div>
+									<div class="col-xs-1">
+										<input class="input_box repeat_period" value=""  type="char" style="border:none" readonly="readonly" />
+									</div>
+									<div class = "col-xs-3">
+										<select name="type" class="period" disabled="disabled">
+											<option value="year">Year</option>
+											<option value="month">Month</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<div class="col-xs-3">
+										<span>Next Appraisal Date</span>
+									</div>
+									<div class="col-xs-3">
+										<input class="input_box next_appraisal_date"  value=""  type="text" style="border:none" readonly="readonly" />
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<div class="col-xs-3">
+										<span>Auto Send Appraisals</span>
+									</div>
+									<div class = "col-xs-1">
+										<input class="auto_send_appraisal" type="checkbox" value="10" onclick="return false;" />
+									</div>
+								</div>
+						    </div>
+						    <div  class="tab-pane" id="personal">
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Citizenship and Other Information</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Nationality(Country)</p>
+						    				<p>Identification No</p>
+						    				<p>Passport No</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="nationality" value=""  type="char" placeholder="Nationality" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="identification_no" value=""  type="password" placeholder="Identification No" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="passport_no" value=""  type="password" placeholder="Passport No" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Contact Information</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Home Address</p>
+						    				<p>Location ID</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="input_box home_address"  value=""  type="char" placeholder="Street" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="location_id" value=""  type="char" placeholder="Location ID" style="border:none" readonly="readonly" /></p>
+						    			</div>	
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Status</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Gender</p>
+						    				<p>Marital Status</p>
+						    				<p>Number of Allowances</p>
+						    				<p>Ethnic ID</p>
+						    				<p>Smoker</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="gender" value=""  type="char" placeholder="Gender" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="marital_status" value=""  type="char" placeholder="Marital Status" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="no_of_child" value=""  type="char" placeholder="Number of Allowances" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="ethnic_id" value=""  type="char" placeholder="Ethnic ID" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="smoker" value=""  type="char" placeholder="Smoker" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Birth</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Date of Birth</p>
+						    				<p>Place of Birth</p>
+						    				<p>Birth Country</p>
+						    				<p>Age</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="date_of_birth" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="place_of_birth" value=""  type="char" placeholder="Place of Birth" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="birth_country" value=""  type="char" placeholder="Birth Country" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="age" value=""  type="char" placeholder="Age" style="border:none" readonly="readonly" /></p>
+						    			</div>	
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>I-9</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Verified</p>
+						    				<p>Work Authorization</p>
+						    				<p>Document Number</p>
+						    				<p>Expiration Date</p>
+						    				<p>Document A</p>
+						    				<p>Document B</p>
+						    				<p>Document C</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="verified" type="checkbox" value="12" onclick="return false;" /></p>
+						    				<p><input class="work_authorization" value=""  type="char" placeholder="Work Authorization" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="document_no" value=""  type="char" placeholder="Document Number" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="expiration_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="document_a" value=""  type="char" placeholder="Document A" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="document_b" value=""  type="char" placeholder="Document B" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="document_c" value=""  type="char" placeholder="Document C" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Work Permit\Visa</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Visa Type</p>
+						    				<p>Visa Expiration</p>
+						    				<p>Country</p>
+						    				<p>Reference ID</p>
+						    				<p>Application Date</p>
+						    				<p>Approval Date</p>
+						    				<p>Expiration Date</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="visa_type" value=""  type="char" placeholder="Visa Type" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="visa_expiration" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="visa_country" value=""  type="char" placeholder="Country" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="ref_id" value=""  type="char" placeholder="Reference ID" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="application_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="approval_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="expiration_date_visa" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    			</div>	
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Veteran</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Veteran</p>
+						    				<p>Veteran Of</p>
+						    				<p>Branch ID</p>
+						    				<p>Seperation Date</p>
+						    				<p>Armed Forces Service Medal</p>
+						    				<p>Special Disable Veteran</p>
+						    				<p>Actv Wartime or Campagain Badge VET</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="veteran" value=""  type="char" placeholder="Veteran" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="veteran_of" value=""  type="char" placeholder="Veteran of" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="branch" value=""  type="char" placeholder="Branch" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="seperation_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="armed_medal" value=""  type="char" placeholder="Armed Forces Service Medal" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="special_veteran" value=""  type="char" placeholder="Special Disable Veteran" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="wartime" value=""  type="char" placeholder="Actv Wartime or Campagain Badge VET" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Disablity</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Disable</p>
+						    				<p>Disable Type</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="disable" value=""  type="char" placeholder="Disable" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="disable_type" value=""  type="char" placeholder="Disable Type" style="border:none" readonly="readonly" /></p>
+						    			</div>	
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+					    			<div class="col-xs-6">
+						    			<h4><strong><i>Emergency Contact Information</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Name</p>
+						    				<p>Phone</p>
+						    				<p>Relationship</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="emergency_name" value=""  type="char" placeholder="Name" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="emergency_phone" value=""  type="char" placeholder="Phone" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="emergency_relationship" value=""  type="char" placeholder="Relationship" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+					    			<div class="col-xs-6">
+						    			<h4><strong><i>Alias(If Any)</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>First Name</p>
+						    				<p>Middle Name</p>
+						    				<p>Last Name</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="alias_first_name" value=""  type="char" placeholder="First Name" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="alias_middle_name" value=""  type="char" placeholder="Middle Name" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="alias_last_name" value=""  type="char" placeholder="Last Name" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    	</div>
+						    </div>
+						    <div class="tab-pane" id="hr">
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Timesheets</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Timesheet Cost</p>
+						    				<p>Account</p>
+						    				<p>Product</p>
+						    				<p>Analytic Journal</p>
+						    				<p>Task</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="timesheet_cost" value=""  type="char" placeholder="Timesheet Cost" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="account" value=""  type="char" placeholder="Account" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="product" value=""  type="char" placeholder="Product" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="analytic_journal" value=""  type="char" placeholder="Analytic Journal" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="task" value=""  type="char" placeholder="Task" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Status</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Company</p>
+						    				<p>Related User</p>
+						    				<p>Benefits Status</p>
+						    				<p>Scheduled Hours</p>
+						    				<p>Enrollment Deadline</p>
+						    				<p>Badge ID</p>
+						    				<p>PIN</p>
+						    				<p>Manual Attendance</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="company_id" value=""  type="char" placeholder="Company" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="related_user" value=""  type="char" placeholder="Related User" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="benefits_status" value=""  type="char" placeholder="Benefits Status" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="scheduled_hours" value=""  type="char" placeholder="Scheduled Hours" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="enrollment_deadline" value=""  type="char" placeholder="Enrollment Deadline" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="badge_id" value=""  type="char" placeholder="Badge ID" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="pin" value=""  type="char" placeholder="PIN" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="manual_attendance" type="checkbox" value="13" onclick="return false;" /></p>
+						    			</div>
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Current Contract</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Medical Exam</p>
+						    				<p>Company Vehicel</p>
+						    				<p>Home-Work Dist</p>
+						    				<p>Pay Type</p>
+						    				<p>Exempt from Overtime Pay</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="medical_exam" value=""  type="char" placeholder="Medical Exam" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="company_vehicel" value=""  type="char" placeholder="Company Vehicel" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="home_work_dist" value=""  type="char" placeholder="Home-Work Dist" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="pay_type" value=""  type="char" placeholder="Pay Type" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="exempt_overtime" value=""  type="char" placeholder="Exempt from Overtime Pay" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Key Dates</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Start Date</p>
+						    				<p>Benefits Seniority Date</p>
+						    				<p>Hire Date</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="start_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="ben_sen_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="hire_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>Termination</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Termination Date</p>
+						    				<p>Termination Type</p>
+						    				<p>Termination Reason</p>
+						    				<p>Eligible for Rehire?</p>
+						    				<p>Cobra Eligible?</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="termination_date" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="termination_type" value=""  type="char" placeholder="Termination Type" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="termination_reason" value=""  type="char" placeholder="Termination Reason" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="eligible_rehire" type="checkbox" value="14" onclick="return false;"/></p>
+						    				<p><input class="cobra_eligible" type="checkbox" value="15" onclick="return false;"/></p>
+						    			</div>
+						    		</div>
+						    		<div class="col-xs-6">
+						    			<h4><strong><i>External HR System</i></strong></h4>
+						    			<div class="col-xs-6">
+						    				<p>Employee ID</p>
+						    				<p>Timeclock</p>
+						    				<p>HR Status</p>
+						    				<p>Direct Deposit Status</p>
+						    				<p>Date Added</p>
+						    				<p>Date Modified</p>
+						    			</div>
+						    			<div class="col-xs-6">
+						    				<p><input class="emp_id" value=""  type="char" placeholder="Employee ID" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="timeclock" value=""  type="char" placeholder="Timeclock" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="hr_ststus" value=""  type="char" placeholder="HR Status" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="direct_deposit_status" value=""  type="char" placeholder="Direct Deposit Status" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="date_added" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    				<p><input class="date_modified" value=""  type="text" style="border:none" readonly="readonly" /></p>
+						    			</div>
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<h4><strong><i>Leaves</i></strong></h4>
+						    		<div class="col-xs-3">
+						    			<p>Remaining Legal leave</p>
+						    			<p>Timesheet Validation Limit</p>
+						    		</div>
+						    		<div class="col-xs-3">
+						    			<p><input class="rem_legal_leave" value=""  type="char" placeholder="Remaining Legal leave" style="border:none" readonly="readonly" /></p>
+						    			<p><input class="timesheet_valid_limit" value=""  type="char" placeholder="Timesheet Validation Limit" style="border:none" readonly="readonly" /></p>
+						    		</div>
+						    	</div>
+						    	<div class="col-xs-12">
+						    		<h4><strong><i>Expenses</i></strong></h4>
+						    		<div class="col-xs-3">
+						    			<p>Corporater Credit Card</p>
+						    		</div>
+						    		<div class="col-xs-3">
+						    			<p><input class="corporate_credit_card" value=""  type="char" placeholder="Corporater Credit Card" style="border:none" readonly="readonly" /></p>
+						    		</div>
+						    	</div>
+						    </div>
+						</div>
+					</div>
+					<div class="text-left" style="text-size:19px;">
+					<h2><strong><i>
+                     	<a class="edit_employee_info_redirect" t-attf-test="web#view_type=form&amp;model=hr.employee&amp;action=hr.open_view_employee_list_my&amp;menu_id=hr.menu_open_view_employee_list_my" style="cursor:pointer">View More</a>
+                  	</i></strong></h2>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="18">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Create Contract</t>
+					<div class="text-center" style="margin-top:100px;">
+					<strong>
+                     	<!-- <a class="create_contract_link" >Click here to create Contrace</a> -->
+                     	<a class="create_contract_link_redirect" t-attf-test="web#view_type=form&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=hr_contract.hr_menu_contract" target="_blank" style="color:#865a7a;font-size: 19px;margin-top:150px;cursor:pointer">Click here to create Contract</a>
+                  	</strong>
+					</div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="19">Next Step</button>
+					</div>
+				</t>
+				<t t-call="web_planner.page">
+					<t t-set="page_title">Contract Summary</t>
+					<div class="col-xs-12">
+						<h2><strong><input class="contract_name" value=""  type="char" placeholder="Contract Name" style="border:none" readonly="readonly" /></strong></h2>
+					</div>
+					<table class="table table-borderless">
+						<tr>
+							<td>
+								<strong>Employee</strong>
+							</td>
+							<td>
+								<input class="input_box form_employee_name" value=""  type="char"
+									placeholder="Employee Name" style="border:none" readonly="readonly" />
+							</td>
+							<td>
+								<strong>Contract Type</strong>
+							</td>
+							<td>
+								<input class="input_box contract_form_contract_type"  value=""  type="char" placeholder="Contract Type" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Primary Job</strong>
+							</td>
+							<td>
+								<input class="input_box form_primary_job" value=""  type="char"
+									placeholder="Primary Job" style="border:none" readonly="readonly" />
+							</td>
+							<td>
+								<strong>Trial Period Start Date</strong>
+							</td>
+							<td>
+								<input class="input_box form_trial_start"  value=""  type="text" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Scheduled Pay</strong>
+							</td>
+							<td>
+								<input  class="input_box form_scheduled_pay"  value=""  type="char" placeholder="Scheduled Pay" style="border:none" readonly="readonly" />
+							</td>
+							<td>
+								<strong>Trial Period End Date</strong>
+							</td>
+							<td>
+								<input  class="input_box form_trial_end"  value=""  type="text" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Job Seniority Title</strong>
+							</td>
+							<td>
+								<input  class="input_box contract_form_job_sen_title"  value=""  type="char" placeholder="Job Seniority Title" style="border:none" readonly="readonly" />
+							</td>
+							<td>
+								<strong>Duration Start</strong>
+							</td>
+							<td>
+								<input class="input_box form_duration_start"  value=""  type="char" placeholder="Duration Start" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Leave and Holiday Plan</strong>
+							</td>
+							<td>
+								<input class="input_box form_leave_plan"  value=""  type="char"
+									placeholder="Leave and Holiday Plan" style="border:none" readonly="readonly" />
+							</td>
+							<td>
+								<strong>Duration End</strong>
+							</td>
+							<td>
+								<input class="input_box form_duration_end"  value=""  type="char" placeholder="Duration End" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<strong>Notice(days)</strong>
+							</td>
+							<td>
+								<input class="input_box form_notice"  value=""  type="Number" placeholder="Notice(days)" style="border:none" readonly="readonly" />
+							</td>
+						</tr>
+					</table>
+					<div class="col-xs-12">
+						<div class="col-xs-6">
+							<h4><strong><i>Salary and Advantages</i></strong></h4>
+							<div class="col-xs-6">
+								<p><span><strong>Pay Type</strong></span></p>
+								<p><span><strong>Wage</strong></span></p>
+							</div>
+							<div class="col-xs-6">
+								<p><span><input class="input_box contract_form_pay_type"  value=""  type="text" placeholder="Pay Type" style="border:none" readonly="readonly" /></span></p>
+								<p><span><input class="input_box contract_form_wage"  value=""  type="Number" placeholder="Wage" style="border:none" readonly="readonly" /></span></p>
+							</div>
+							<br/>
+                        <div class="col-xs-6">
+							<span><strong>Salary Structure</strong></span>
+						</div>
+						<div class="col-xs-6">
+							<span><input class="input_box contract_form_salary_structure"  value=""  type="text" placeholder="Salary Structure" style="border:none" readonly="readonly" /></span>
+						</div>
+						<br/>
+						<div>
+							<h4><strong><i>Job position</i></strong></h4>						
+								<table class="table table-borderless job_position" style="margin-left:-30px;margin-top:13px;">
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Job</th>
+										<th>Job Seniority Title</th>
+										<th>Hourly Rate Class</th>
+										<th>Hourly Rate</th>
+										<th>Main Job Position</th>
+										<th>Bonus</th>
+										<!-- <th></th> -->
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box form_job_position_tree_id"  value="0"  type="text" readonly="readonly"/>
+										</td>
+										<td>
+											<input class="input_box form_job_contract"  value=""  type="text" placeholder="Job" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_job_seniority_title_contract"  value=""  type="text" placeholder="Job Seniority Title" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_hourly_rate_class"  value=""  type="text" placeholder="Hourly Rate Class" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_hourly_rate"  value=""  type="text" placeholder="Hourly Rate" style="border:none" readonly="readonly" />
+										</td>
+										<td><input class="main_job_position" type="checkbox" onclick="return false;"/></td>
+										<td><input class="contract_bonus" type="checkbox" onclick="return false;"/></td>
+										<!-- <td class="onboard_trash"><i class="fa fa-trash"></i></td> -->
+									</tr>
+								</table>
+                        </div>
+						</div>
+						<div class="col-xs-6">
+							<h4><strong><i>Production Contract</i></strong></h4>
+							<div class="col-xs-6">
+								<p><strong>Draw Type</strong></p>
+								<p><strong>Production Basic</strong></p>
+								<p><strong>Production Rate</strong></p>
+								<p><strong>Discount Rate</strong></p>
+								<p><strong>Est.Annual Draw</strong></p>
+								<p><strong>Payout Delay</strong></p>
+							</div>
+							<div class="col-xs-6">
+								<p><input class="input_box form_draw_type"  value=""  type="text" placeholder="Draw Type" style="border:none" readonly="readonly" /></p>
+								<p><input class="input_box form_production_basics"  value=""  type="text" placeholder="Production Basic" style="border:none" readonly="readonly" /></p>
+								<p><input class="input_box form_production_rate"  value=""  type="text" placeholder="Production Rate" style="border:none" readonly="readonly" /></p>
+								<p><input class="input_box form_discount_rate"  value=""  type="text" placeholder="Discount Rate" style="border:none" readonly="readonly" /></p>
+								<p><input class="input_box form_annual_draw"  value=""  type="text" placeholder="Est.Annual Draw" style="border:none" readonly="readonly" /></p>
+								<p><input class="input_box form_payout_delay"  value=""  type="text" placeholder="Payout Delay" style="border:none" readonly="readonly" /></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<h4><strong><i>Production</i></strong></h4>
+						<table class="table table-borderless contract_production_table" >
+									<tr>
+										<th style= 'display:none'>Tree Id</th>
+										<th>Job</th>
+										<th>Code</th>
+										<th>Tag</th>
+										<th>Type</th>
+										<th>Include</th>
+										<th>Rate</th>
+										<th>Subtract Amount</th>
+										<th>Payout Period</th>
+										<th>Salary Rule</th>
+										<th>Double Validation</th>
+										<th>Deduct Draw</th>
+										<!-- <th></th> -->
+									</tr>
+									<tr>
+										<td style= 'display:none'>
+											<input class="input_box form_production_tree_id"  value="0"  type="text" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_job"  value=""  type="text" placeholder="Job" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_code"  value=""  type="text" placeholder="Code" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_tag"  value=""  type="text" placeholder="Tag" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_type"  value=""  type="text" placeholder="Type" style="border:none" readonly="readonly" />
+										</td>
+										<td><input class="form_include" type="checkbox" value="30" onclick="return false;"/></td>
+										<td>
+											<input class="input_box form_rate"  value=""  type="text" placeholder="Rate" style="border:none" readonly="readonly" />
+										</td>
+										<td><input class="form_subtract_amount" type="checkbox" onclick="return false;"/></td>
+										<td>
+											<input class="input_box form_payout_period"  value=""  type="text" placeholder="Payout Period" style="border:none" readonly="readonly" />
+										</td>
+										<td>
+											<input class="input_box form_salary_rule"  value=""  type="text" placeholder="Salary Rule" style="border:none" readonly="readonly" />
+										</td>
+										<td><input class="form_double_validation" type="checkbox" onclick="return false;"/></td>
+										<td><input class="form_deduce_draw" type="checkbox" onclick="return false;"/></td>
+										<!-- <td class="onboard_trash"><i class="fa fa-trash"></i></td> -->
+									</tr>
+								</table>
+					</div>
+					<div>
+						<h4><strong><i>Employee Benefits</i></strong></h4>						
+						<table class="table table-borderless contract_employee_benefits" >
+							<tr>
+								<th style= 'display:none'>Tree Id</th>
+								<th>Benefits</th>
+								<th>Rate</th>
+								<th>Employee Amount</th>
+								<th>Employer Amount</th>
+								<th>Amount Type</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+								<!-- <th></th> -->
+							</tr>
+							<tr>
+								<td style= 'display:none'>
+									<input class="input_box form_employee_benefits_tree_id"  value="0"  type="text" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_benefits"  value=""  type="text" placeholder="Benefits" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_benefits_rate"  value=""  type="text" placeholder="Rate" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_employee_amount"  value=""  type="text" placeholder="Employee Amount" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_employer_amount"  value=""  type="text" placeholder="Employer Amount" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_amount_type"  value=""  type="text" placeholder="Amount Type" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_ben_start_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								</td>
+								<td>
+									<input class="input_box form_ben_end_date"  value=""  type="text" style="border:none" readonly="readonly" />
+								</td>
+								<!-- <td class="onboard_trash"><i class="fa fa-trash"></i></td> -->
+							</tr>
+						</table>
+                    </div>
+                    <div class="col-xs-12">
+                    	<p><strong>Notes</strong></p>
+                    	<p><input class="input_box form_notes" value=""  type="text" placeholder="Notes" style="border:none" readonly="readonly" /></p>
+                    </div>
+					<br/>
+					<div class="text-right">
+							<button class="btn btn-primary btn_onboarding_next" data_page_id="20">Next Step</button>
+					</div>
+				</t>
+			</t>
+		</t>
+		<t t-call="web_planner.category">
+			<t t-set="menu_categorytitle">Complete</t>
+			<t t-call="web_planner.page">
+				<t t-set="page_title">Complete</t>
+				<t t-set="hide_mark_as_done" t-value="True" />
+				<h2 class="text-center o_planner_trophy" data-icon=""></h2>
+				<div class="text-center">
+					<h1>Congratulations, you're done!</h1>
+					<h2 class="emp_name"></h2>
+				</div>
+			</t>
+		</t>
+	</template>
+	 
+
+	<!--Planner Data -->
+	<record id="planner_onboarding" model="web.planner">
+		<field name="name">Onboarding planner</field>
+		<field name="view_id" ref="onboarding_planner" />
+		<field name="menu_id" ref="menu_onboarding" />
+		<field name="planner_application">planner_onboarding</field>
+		<field name="tooltip_planner"><![CDATA[
+            Plan your Recruiting strategy: Background Verification,Onboarding and much more!
+            ]]>
+		</field>
+	</record>
+
+</odoo>
+

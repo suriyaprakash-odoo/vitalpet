@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_public_holidays_inherit" model="ir.ui.view">
+		<field name="name">hr.holidays.public.form</field>
+		<field name="model">hr.holidays.public</field>
+		<field name="inherit_id" ref="hr_public_holidays.view_public_holidays_form" />
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//field[@name='country_id']" position="after">
+					<field name="company_id" />
+				</xpath>
+				<xpath expr="//field[@name='country_id']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+			</data>
+		</field>
+	</record>
+	
+	<record id="view_public_holidays_tree_inherit" model="ir.ui.view">
+		<field name="name">hr.holidays.public.tree</field>
+		<field name="model">hr.holidays.public</field>
+		<field name="inherit_id" ref="hr_public_holidays.view_public_holidays_tree" />
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//field[@name='year']" position="before">
+					<field name="company_id" />
+				</xpath>
+			</data>
+		</field>
+	</record>
+	
+</odoo>

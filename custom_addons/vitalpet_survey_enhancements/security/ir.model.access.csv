@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_x_survey_description_employee,access_x_survey_description,model_x_survey_description,base.group_user,1,0,0,0
+access_x_survey_description_manager,access_x_survey_description,model_x_survey_description,survey.group_survey_manager,1,1,1,1
+access_x_survey_description_user,access_x_survey_description,model_x_survey_description,survey.group_survey_user,1,1,1,0
+access_survey_question_user,access_survey_question,model_survey_question,survey.group_survey_user,1,1,1,0
+access_survey_label_user,access_survey_label,model_survey_label,survey.group_survey_user,1,1,1,0

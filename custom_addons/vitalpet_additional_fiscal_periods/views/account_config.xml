@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="account_fiscal_periods_view_account_config_settings" model="ir.ui.view">
+            <field name="name">account.config.settings.form</field>
+            <field name="model">account.config.settings</field>
+            <field name="inherit_id" ref="account.view_account_config_settings"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form//group[@groups='account.group_account_user']//label[1]" position="before">
+                    <!-- <label for="id" string="445 52-53"/> -->
+                        <label for="custom_calendar"/>
+                        <div>
+                            <field name="custom_calendar" style="width:13.5% !important" />
+                        </div>
+                        <label for="calendar_type" attrs="{'invisible': [('custom_calendar','!=',True)]}"/>
+                        <div>
+                            <field name="calendar_type" style="width:13.5% !important" attrs="{'invisible': [('custom_calendar','!=',True)]}"/>
+                        </div>
+                            
+            	</xpath>
+            	
+            	<xpath expr="//form//group[3]/label[3]" position="attributes">
+	                <attribute  name="attrs">{'invisible': [('custom_calendar','=',True)]}</attribute>
+	            </xpath>
+	            <xpath expr="//form//group[3]/div[3]" position="attributes">
+	                <attribute  name="attrs">{'invisible': [('custom_calendar','=',True)]}</attribute>
+	            </xpath>
+	           <!--  <xpath expr="//form//group[3]/label[4]" position="attributes">
+	                <attribute  name="attrs">{'invisible': [('custom_calendar','=',True)]}</attribute>
+	            </xpath>
+	            <xpath expr="//form//group[3]/div[4]" position="attributes">
+	                <attribute  name="attrs">{'invisible': [('custom_calendar','=',True)]}</attribute>
+	            </xpath> -->
+	            
+            </field>
+        </record>
+        
+        
+        
+        
+	</data>
+</odoo>

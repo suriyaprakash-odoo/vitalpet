@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>  
+ 
+    <data>
+    	<record model="ir.cron" id="sale_summary_fiscal_cron">		
+             <field name="name">Sale Summary Fiscal Scheduler</field>		
+             <field name="interval_number">1</field>		
+             <field name="interval_type">days</field>		
+             <field name="numbercall">-1</field>		
+             <field name='active'>false</field>		
+             <field name="doall" eval="True"/>		
+             <field name="model" eval="'sales.summary'"/>		
+             <field name="function" eval="'action_update_fiscal'"/>		
+             <field name="args" eval="'()'" />		
+         </record>
+    
+        <record model="ir.cron" id="sale_summary_cron">
+            <field name="name">Sale Summary Scheduler</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'sales.summary'"/>
+            <field name="function" eval="'action_create_sale_summary'"/>
+            <field name="args" eval="'()'" />
+        </record>
+
+
+        <record model="ir.cron" id="sale_summary_feed_cron">
+            <field name="name">Sale Summary Feed Scheduler</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'sales.summary'"/>
+            <field name="function" eval="'action_sale_summary_feed'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+       <record model="ir.cron" id="delete_existing_data">
+            <field name="name">Delete Existing Data</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>false</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'sales.summary'"/>
+            <field name="function" eval="'action_delete_existing_data'"/>
+            <field name="args" eval="'()'" />
+        </record>
+
+
+
+        <record id="sales_summary_form" model="ir.ui.view">
+            <field name="name">sales</field>
+            <field name="model">sales.summary</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Sales Summary">
+
+                    <header>
+                        <button name="compute" string="Compute" states="draft" type="object" class="oe_highlight" groups='vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer'/>
+                        <button name="validate" string="Validate" states="valid" type="object" class="oe_highlight" 
+                            groups='vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_officer'/>
+                        <button name="set_to_draft" string="Set to Draft" states="posted,valid" type="object" 
+                        groups='vitalpet_mypractice.group_my_practice_manager'/>
+                        <button name="get_open_journal" string="Journals" style="margin-left:595px;position: absolute; margin-top: 0;color: white;" type="object" class="oe_highlight" groups='vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_user'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,valid,posted,'history'"
+                               statusbar_colors='{"proforma":"blue"}'/>
+                    </header>
+                    <sheet>
+                        <h2>
+                            <label for="sale_summary_seq_no" string="SEQ"/>
+                            <field name="sale_summary_seq_no" class="oe_inline" readonly="1"/>
+                            <label for="remaining_amount" string="Value" style="margin-left:770px;color:red" class="oe_inline"/>
+                            <field name="remaining_amount" nalabel='1' readonly="1"/>
+                        </h2>
+                        <group name="Basic">
+                            <group>                              
+                                <field name="company_id" widget="selection" string='Company'/>
+                                <field name="date"/>
+                                <field name="shift"/>
+                                <field name="source"/>
+                                <!-- <field name="fiscal_period"/> -->
+                                <field name="ishistory" invisible='1'/>
+                                <field name='fiscal_period_id' readonly='1'/>
+                                <field name='fiscal_quarter' invisible='1'/>
+                                <field name='fiscal_week' invisible='1'/>
+                                <field name='fiscal_year' invisible='1'/>
+                                <field name='account_fiscal_periods_year'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Imported Data">
+                                <group name="Basic">
+                                        <group name="income" string="Income">
+                                            <field name="iAdministrative" />
+                                            <field name="ihealth_plan_enroll"  />
+                                            <field name="ihealth_plan_due"  />
+                                            <field name="iOfficeVisit"  />
+                                            <field name="iVaccinations"  />
+                                            <field name="iParasiticides" />
+                                            <field name="iMedicalServices"  />
+                                            <field name="iDiagnosticTests"  />
+                                            <field name="iImaging"  />
+                                            <field name="iAnesthesia"  />
+                                            <field name="iSurgery"  />
+                                            <field name="iDentistry"  />
+                                            <field name="iNonMedicalServices"  />
+                                            <field name="iPharmacy"  />
+                                            <field name="iPrescriptionDiets"  />
+                                            <field name="iTaxableDiets"  />
+                                            <field name="iRetailSales"  />
+                                            <field name="iBoarding"  />
+                                            <field name="idaycamp"  />
+                                            <field name="iGrooming"  />
+                                            <label for="itotalnew" string="Gross" style="color:green"/>
+                                            <field name="itotalnew" nolabel="1" />
+                                            <label for="itotalproductionnew" string="Production" style="color: #005580"/>
+                                            <field name="itotalproductionnew" nolabel="1" />
+                                        </group>
+                                    <group name="adjustment" string="Adjustment">
+                                        <group>
+                                            <field name="iaSalesTax"  />
+                                            <field name="iaReturnsRefunds"  />
+                                            <field name="iaCreditsgift"  />
+                                            <field name="iaMiscellaneous"   /><!--hidden-->
+<!--                                             <field name="iaQBImport"  
+                                                   invisible="1"/>
+                                            <field name="iaQBReconcile" groups="sales_summary.group_sales_summary_rule_field" 
+                                                   invisible="1"/> -->
+                                        </group>
+                                        <newline/>
+                                        <group name="discounts" string="Discounts"> <!--invisible="1"-->
+                                            <field name="iaDiscountsGeneral"  /><!--hidden-->
+                                            <field name="iaDiscountsTeamMember" />
+                                            <field name="iaDiscountsApprovedSpecials" />
+                                            <field name="iaDiscountsHealthPlan" />
+                                            <field name='iaDiscountsHealthPlan_pos' invisible='1'/>
+                                            <field name="iaDiscountsDiscretionary" />
+                                            <field name="iaDiscountsNewClient"  string="New Client (Discounts)(-)"/>
+                                            <field name="iaRescue" />
+                                        </group>
+                                        <newline/>
+                                        <group name="accounts_receivable" string="Accounts Receivable">
+                                            <field name="iaARClientChargesNew"  />
+                                            <field name="iaARClientChargesPaydown"  />
+                                            <field name="iaARClientHeldChecksNew"  />
+                                            <field name="iaARClientHeldChecksDeposited"  />
+                                            <field name="ARClientWriteoff"  />
+                                            <label for="iaTotal" string="Net Accounts Receivable Change" style="color: #005580"/>
+                                            <field name="iaARClientNet" nolabel="1"/>
+                                            <label for="iaTotal" string="Total Adjustments"/>
+                                            <field name="iaTotal" nolabel="1" />
+                                            
+                                        </group>
+                                    </group>
+                                    <group name="payments" string="Payments">
+                                        <field name="payment_pay_later" invisible="1"/>
+                                        <field name="dCash" />
+                                        <field name="dChecks" />
+                                         <label for="dCashChecks" string="Cash and Checks" style="color: #005580"/>
+                                        <field name="dCashChecks" nolabel="1"/> 
+                                        <field name="dVisa" />
+                                        <field name="dMastercard" />
+                                        <label for="visa_mastercard" string='Visa and Mastercard' style="color: #005580"/>
+                                        <field name="visa_mastercard" nolabel="1"/>
+                                        <field name="dDiscover"  />
+                                        <field name="dAMEX"/>
+                                        <field name="dDebitCard"  />
+                                        <field name="dCareCredit" />
+                                        <field name="dScratchPay" />
+                                       <!--  <field name="dHealthPlan" /> -->
+                                        <label for="dMerchant" string='Merchant' style="color: #005580"/>
+                                        <field name="dMerchant" nolabel="1"/>
+                                        <label for="credit_total" string="Credit Total" style="color:green"/>
+                                        <field name="credit_total" nolabel="1"  help="Credit Total = VISA + Mastercard + Discover + Debit Card + Care Credit + American Express + Health Plan" />
+                                        <label for="dTotal" string="Total Deposits" style="color: #005580"/>
+                                        <field name="dTotal" nolabel="1" help="Total Deposits = Cash + Checks + VISA + Mastercard + Discover + Debit Card + Care Credit + American Express + Health Plan"/>
+                                     </group>
+                                    <group name="metrics" string="Metrics">
+                                        <field name="mClientsNew" string="New Clients (Metrics)"/>
+                                        <field name="mPatientsNew"/>
+                                        <field name="mVisitsBoarding"/>
+                                        <field name="mVisitsGroooming"/>
+                                        <field name="mDentalProphy"/>
+                                        <field name="mHealthPlanEnrolls"/>
+                                        <field name="mVisitsPatient"/>
+                                        <field name="mTransactions"/>
+                                        <field name="mDoctorDays"/>
+                                        <field name="day_campers"/>
+                                        <field name="type" invisible="1"/>
+
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Temporary JE">
+                                <field name="idmove_line_ids">
+                                    <tree string="ID Unbalanced Account Journal">
+                                        <field name="name"/>
+                                        <field name="company_id"/>
+                                        <field name="account_id"/>
+                                        <field name="incomedep_ref_id" invisible="1"/>
+                                        <field name="partner_id" invisible="1"/>
+                                        <field name="credit" sum="Credit"/>
+                                        <field name="debit" sum="Debit"/>
+                                        <field name="amount_currency" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <!-- <field name='product_id'/> -->
+                                        <field name='group_code'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                	</div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="sales_summary_tree" model="ir.ui.view">
+            <field name="name">sales</field>
+            <field name="model">sales.summary</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Summary"
+                      colors="red:state == 'history';blue:state == 'draft';green:state == 'valid';black:state == 'posted';">
+                    <field name="company_id"/>
+                    <field name="date"/>
+                    <field name="shift"/>
+                    <field name="source"/>
+                    <field name="mVisitsPatient" sum="Pet Visits" string="Pet Visits (LView)"/>
+                    <field name="mClientsNew" sum="New Clients" string="New Clients (LView)"/>
+                    <field name="gross_visit" sum="Gross Visit"/>
+                    <field name="clients_visits" sum="Client Average"/>
+                    <field name="itotalnew" sum="Total Amount"/>
+                    <field name="dTotal" sum="Total Amount"/>
+                    <field name="state"/>
+                    <field name='days_open'/><!-- 
+                    <field name='account_fiscal_periods_year'/>
+                    <field name='fiscal_quarter'/>
+                    <field name='fiscal_period_id'/>
+                    <field name='fiscal_week'/> -->
+                </tree>
+            </field>
+        </record>
+        
+
+         <record id="view_sales_summary_search" model="ir.ui.view">
+            <field name="name">sales.summary.search</field>
+            <field name="model">sales.summary</field>
+            <field name="arch" type="xml">
+                <search string="Picking Lists">
+                    <filter string="State" context="{'group_by':'state'}"/>
+                    <filter string="Company" context="{'group_by':'company_id'}"/>
+                    <filter string="Date" context="{'group_by': 'date:day'}" />
+                    <filter string="Month" context="{'group_by':'date'}"/>
+                    <filter string="Shift" context="{'group_by':'shift'}"/>
+                    <filter string="Source" context="{'group_by':'source'}"/>
+                    <filter string="Fiscal Year" context="{'group_by':'account_fiscal_periods_year'}"/>
+                    <filter string="Fiscal Quarter" context="{'group_by':'fiscal_quarter'}"/>
+                    <filter string="Fiscal Month" context="{'group_by':'fiscal_period_id'}"/>
+                    <filter string="Fiscal Week" context="{'group_by':'fiscal_week'}"/>
+<!--                     <filter string="ToDo" name='todo' domain="[('date','&lt;=', (datetime.date.today()).strftime('%Y-%m-%d')),('date','&gt;=',(datetime.date.today()).strftime('%Y-%m-%d'))]" help="Created today"/>  -->
+                </search>
+            </field>
+        </record>
+
+        
+        <record id="action_sales_summary" model="ir.actions.act_window">
+            <field name="name">Sales Summary</field>
+            <field name="res_model">sales.summary</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_sales_summary_search"/>
+        </record>
+
+        <menuitem sequence="3" id="menu_sales_summary_parent"
+                  name="Daily Summary" groups="base.group_user"/>
+
+       <!--  <menuitem sequence="3" id="menu_sales_summary_dashboard" parent="menu_sales_summary_parent"
+                  name="Summary Dashboard" groups="base.group_user"/> -->
+        <menuitem sequence="40" id="menu_sales_summary" action="action_sales_summary" parent="vitalpet_mypractice.menu_mypractice_financials" name="Daily Summary" groups="base.group_user"/>
+                  
+        <record id="ir_sales_summary_sequence" model="ir.cron">
+            <field name="name">Sales Summary Sequence Generation</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="priority">4</field>
+            <field eval="True" name="doall"/>
+            <field name="model">sales.summary</field>
+            <field name="function">set_sequence</field>
+            <field name="args"></field>
+        </record>
+        
+        <record id="seq_attendance_form" model="ir.sequence">
+            <field name="name">Sales Summary</field>
+            <field name="code">sales.summary</field>
+            <field name="prefix">SS/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    
+
+        
+        <record id="view_sales_receipt_inherit_tree" model="ir.ui.view">
+            <field name="name">sales.receipt.inherit.tree</field>
+            <field name="model">account.voucher</field>
+            <field eval="10" name="priority"/>
+            <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+            <field name="arch" type="xml">
+                 <field name="partner_id" position="after">
+                    <field name='reference'/>
+                    <field name="journal_id"/>
+                 </field>
+            </field>
+        </record>
+                  
+
+         <!-- Adding Field on Company Master-->
+        <!-- <record id="custom_company_field" model="ir.ui.view">
+            <field name="name">custom.company.field.form</field>
+            <field name="model">res.company</field>
+            <field eval="30" name="priority"/>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_registry']" position="after">
+                    <field name="code"/>
+                </xpath>
+            </field>
+        </record> -->
+
+   <!--   <template id="assets_backend" name="sales_summary assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+           <link rel="stylesheet" type="text/less" href="/web/static/src/less/datepicker.less"/>
+            <script type="text/javascript" src="/web/static/src/js/widgets/date_picker.js"></script>
+            <script type="text/javascript" src="/sales_summary/static/src/js/listview_extend.js"></script>
+        </xpath>
+    </template> -->
+    
+    
+  </data>
+</odoo>

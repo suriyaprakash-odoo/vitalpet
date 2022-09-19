@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     
+    <data>
+
+        <!-- <record id="mypractice_project_data_0" model="project.project">
+            <field name="name">My Practice</field>
+            <field name="privacy_visibility">employees</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="True"/>
+            <field name='mypractice'>True</field>
+            <field name="alias_model">project.task</field>
+            <field name="alias_name">discover</field>
+            <field name="alias_model_id" ref="project.model_project_task"/>
+            <field name="alias_contact">everyone</field>
+            <field name="alias_defaults">{'project_id': 1}</field>
+            <field name="alias_force_thread_id">0</field>
+            <field name="alias_parent_model_id" ref="project.model_project_project"/>
+        </record> -->
+
+		<record forcecreate="True" id="ir_cron_budget_daily" model="ir.cron">
+	        <field name="name">Task Overdue to Complete</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'project.task'" name="model" />
+	        <field eval="'action_all_overdue_complete'" name="function" />
+	        <field eval="'()'" name="args" />
+      	</record>
+
+
+        <record id="mypractice_stage_data_0" model="project.task.type">
+            <field name="sequence">1</field>
+            <field name="name">To Do</field>
+            <field name='fold'>False</field>
+        </record>
+
+        <record id="mypractice_stage_data_1" model="project.task.type">
+            <field name="sequence">2</field>
+            <field name="name">Next 14 Days</field>
+            <field name='fold'>False</field>
+        </record>
+
+        <record id="mypractice_stage_data_2" model="project.task.type">
+            <field name="sequence">3</field>
+            <field name="name">Overdue &lt; 1 Week</field>
+            <field name='fold'>False</field>
+        </record>
+
+
+        <record id="mypractice_stage_data_3" model="project.task.type">
+            <field name="sequence">4</field>
+            <field name="name">Overdue &gt; 1 Week</field>
+            <field name='fold'>False</field>
+        </record>
+
+
+
+        <record id="project_stage_data_4" model="project.task.type">
+            <field name="sequence">5</field>
+            <field name="name">Complete</field>
+            <field name='fold'>False</field>
+        </record>
+
+    </data>
+
+</odoo>

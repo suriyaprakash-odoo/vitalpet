@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- <template id="document_enhancement_assets_backend" inherit_id="web.assets_backend"> 
+		<xpath expr="script[last()]" position="after"> <script type="text/javascript" 
+		src="/vitalpet_document_enhancement/static/js/website_sign_backend.js"></script> 
+		</xpath> </template> <template id="document_enhancement_assets_common" inherit_id="web.assets_common"> 
+		<xpath expr="script[last()]" position="after"> <script type="text/javascript" 
+		src="/vitalpet_document_enhancement/static/js/website_sign_common.js"></script> 
+		</xpath> </template> -->
+
+	<template id="document_enhancement_js" inherit_id="web.assets_common">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/vitalpet_document_enhancement/static/src/js/document.js"></script>
+        </xpath>
+    </template>
+
+    <template id="document_enhancement_xml" inherit_id="website_sign.doc_sign">
+        <xpath expr="//script" position="replace">
+            <script type="text/javascript">
+                    odoo.define("website_sign.document_custom_page", function (require) {
+                        var ajax = require("web.ajax");
+                        var core = require("web.core");
+                        var document_signing = require("website_sign.document_signing");
+
+                        $.when(
+                            ajax.loadXML("/website_sign/static/src/xml/website_sign_common.xml", core.qweb),
+                            ajax.loadXML("/vitalpet_document_enhancement/static/src/xml/document.xml", core.qweb),
+                            ajax.loadXML("/web/static/src/xml/base_common.xml", core.qweb)
+                        ).then(function () {
+                            document_signing.initDocumentToSign();
+                        });
+                    });
+                </script>
+        </xpath>
+    </template>
+
+
+
+
+	<record id="tag_type_view_form" model="ir.ui.view">
+		<field name="name">document.tag.form</field>
+		<field name="model">document.tag</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="name" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="tag_type_view_tree" model="ir.ui.view">
+		<field name="name">document.tag.tree</field>
+		<field name="model">document.tag</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="tag_type_action" model="ir.actions.act_window">
+		<field name="name">Document Tag Type</field>
+		<field name="res_model">document.tag</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record id="document_form_type_view_form" model="ir.ui.view">
+		<field name="name">document.form.type</field>
+		<field name="model">document.form</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="name" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="document_form_type_view_tree" model="ir.ui.view">
+		<field name="name">document.form.tree</field>
+		<field name="model">document.form</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="document_form_action" model="ir.actions.act_window">
+		<field name="name">Template Types</field>
+		<field name="res_model">document.form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record id="document_template_type_view_form" model="ir.ui.view">
+		<field name="name">document.template.type</field>
+		<field name="model">document.template</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<div class="oe_title">
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" />
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="template_type" />
+							<field name="state" />
+							<field name="country_id" />
+							<field name="external_id" />
+						</group>
+						<group>
+							<field name="alternate_code" />
+							<field name="sequence" />
+						</group>
+						<field name="description" />
+					</group>
+					<notebook>
+						<page string="Lines">
+							<field name="document_template_ids" widget="one2many_list">
+								<tree editable="bottom">
+									<field name="field_name" />
+									<field name="field_type" />
+									<field name="display_name" />
+									<field name="description" />
+									<field name="parameter" />
+									<field name="sequence" />
+									<field name="is_required" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="document_template_type_view_tree" model="ir.ui.view">
+		<field name="name">document.template.tree</field>
+		<field name="model">document.template</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" />
+				<field name="template_type" />
+				<field name="sequence" />
+				<field name="external_id" />
+				<field name="alternate_code" />
+				<field name="state" />
+				<field name="country_id" />
+
+			</tree>
+		</field>
+	</record>
+
+	<record id="document_template_action" model="ir.actions.act_window">
+		<field name="name">Template</field>
+		<field name="res_model">document.template</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record id="document_template_type_search" model="ir.ui.view">
+		<field name="name">document.template.search</field>
+		<field name="model">document.template</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name" domain="[('name','ilike', self)]" />
+				<filter name="external_id" domain="[('external_id','ilike', self)]" />
+				<filter name="state" domain="[('state','ilike', self)]" />
+				<filter name="alternate_code" domain="[('alternate_code','ilike', self)]" />
+				<separator />
+				<group expand="0" string="Group By">
+					<filter string="Name" context="{'group_by' : 'name' }" />
+					<filter string="External ID" context="{'group_by': 'external_id'}" />
+					<filter string="State" context="{'group_by': 'state'}" />
+					<filter string="Alternate Code" context="{'group_by': 'alternate_code'}" />
+				</group>
+			</search>
+		</field>
+	</record>
+
+
+	<record id="document_template_line_view_form" model="ir.ui.view">
+		<field name="name">document.template.line.form</field>
+		<field name="model">document.template.lines</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="document_template_id" />
+							<field name="field_name" />
+							<field name="field_type" />
+							<field name="display_name" />
+						</group>
+						<group>
+							<field name="parameter" />
+							<field name="sequence" />
+							<field name="is_required" />
+						</group>
+						<field name="description" />
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="document_form_type_view_tree" model="ir.ui.view">
+		<field name="name">document.template.line.tree</field>
+		<field name="model">document.template.lines</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="document_template_id" />
+				<field name="field_name" />
+				<field name="field_type" />
+				<field name="display_name" />
+				<field name="parameter" />
+				<field name="sequence" />
+				<field name="is_required" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="document_template_line_search" model="ir.ui.view">
+		<field name="name">document.template.search</field>
+		<field name="model">document.template.lines</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="display_name" domain="[('display_name','ilike', self)]" />
+				<field name="parameter" domain="[('parameter','ilike', self)]" />
+				<separator />
+				<filter string="Is Required" name="is_required" domain="[('is_required','=',True)]" />				
+				<group expand="0" string="Group By">
+					<filter string="Form" context="{'group_by' : 'document_template_id' }" />
+					<filter string="Parameter" context="{'group_by': 'parameter'}" />
+					<filter string="Field Type" context="{'group_by': 'field_type'}" />
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record id="document_template_line_action" model="ir.actions.act_window">
+		<field name="name">Template Lines</field>
+		<field name="res_model">document.template.lines</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+
+
+	<menuitem id="form_templates_menu" sequence="-5" name="Form Template"
+		parent="website_sign.menu_document" />
+
+	<menuitem id="document_form_template_action_menu" name="Template Types"
+		parent="form_templates_menu" action="document_form_action" />
+
+	<menuitem id="document_template_action_menu" name="Template "
+		parent="form_templates_menu" action="document_template_action" />
+
+	<menuitem id="document_template_line_action_menu" name="Template Lines "
+		parent="form_templates_menu" action="document_template_line_action" />
+
+	<menuitem id="tag_type_action_menu" name="Tags"
+		parent="website_sign.digital_signatures_menu" action="tag_type_action" />
+
+</odoo>

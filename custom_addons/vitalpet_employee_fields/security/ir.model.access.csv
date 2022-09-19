@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_termination_type_officer,termination.type,model_termination_type,hr.group_hr_user,1,1,1,1
+access_termination_type_manager,termination.type,model_termination_type,hr.group_hr_manager,1,1,1,1
+access_termination_type_employee,termination.type,model_termination_type,base.group_user,1,1,1,0
+access_termination_reason_officer,termination.reason,model_termination_reason,hr.group_hr_user,1,1,1,1
+access_termination_reason_manager,termination.reason,model_termination_reason,hr.group_hr_manager,1,1,1,1
+access_termination_reason_employee,termination.reason,model_termination_reason,base.group_user,1,1,1,0
+access_terminate_member_officer,terminate.member,model_terminate_member,hr.group_hr_user,1,1,1,1
+access_terminate_member_manager,terminate.member,model_terminate_member,hr.group_hr_manager,1,1,1,1
+access_terminate_member_employee,terminate.member,model_terminate_member,base.group_user,1,1,1,0
+mail.access_mail_template,mail.template,mail.model_mail_template,base.group_user,1,0,0,0
+access_mail_template_manager,mail.template,mail.model_mail_template,hr.group_hr_manager,1,1,1,0

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data >
+
+        <!--Email template -->
+        <record id="email_template_pet" model="mail.template">
+            <field name="name">Report Card Mass Mail (Pet)</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="partner_to">${object.parent_id != False and object.parent_id.id}</field>
+            <field name="subject">Report card of ${object.firstname }</field>
+            <field name="report_template" ref="report_card_pet_mass_mailling_id"/>
+            <field name="report_name">${(object.name)}_report_card</field>
+            <field name="body_html"><![CDATA[
+                                <p><strong> Dear ${object.parent_id.name or ''}
+                                        ,</strong> </p>
+                                        <p>
+                                        The health of your pet is very important to us. We are taking this opportunity to provide you with a
+                                        “Report Card” on your pet to help you keep your pet healthy, happy, and in-shape! Please review
+                                        the information below and call us at 210.696.3211 to make an appointment.
+                                        </p>
+                                        <p>
+                                        Here is your report card of <strong>${object.firstname or ''}</strong>.
+                                        </p>
+                                        <p>You can reply to this email if you have any questions.</p>
+                                        <p>Thank you,</p>
+
+]]>
+</field>
+    </record>
+
+</data>
+</odoo>

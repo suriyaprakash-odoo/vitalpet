@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="actual_labour_tree" model="ir.ui.view">
+            <field name="name">actual.labour.cost.tree</field>
+            <field name="model">actual.labour.cost</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="actual_labour_form" model="ir.ui.view">
+            <field name="name">actual.labour.cost.form</field>
+            <field name="model">actual.labour.cost</field>
+            <field name="arch" type="xml">
+                <form  create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1" />
+                                <field name="company_id" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="from_date" class="form_from_date" readonly="1" />
+                                <field name="to_date" class="form_to_date" readonly="1" />
+                            </group>
+                        </group>
+                        <field name="actual_plan" widget="actual_app"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_actual_labour" model="ir.actions.act_window">
+            <field name="name">Actual Labor Cost</field>
+            <field name="res_model">actual.labour.cost</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p>
+                Click here to create new contracts.
+              </p>
+            </field>
+        </record>
+<!-- 
+		<menuitem name="Actual Labor Cost" id="menu_actual_labour"  sequence="1" action="action_actual_labour" parent="menu_staff" />
+ -->		
+
+		<menuitem name="Actual Labor Cost" id="team_menu_staff_planning_actual"  sequence="1" action="action_actual_labour" parent="team_menu_staff_planning"
+		 groups="vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_user" />
+
+
+    </data>
+</odoo>

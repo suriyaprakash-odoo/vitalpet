@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Sync Trigger Action and menu -->
+       
+       <record id="flow_trigger_tree" model="ir.ui.view">
+            <field name="name">flow.trigger.tree</field>
+            <field name="model">flow.trigger</field>
+            <field name="arch" type="xml">
+                <tree string="Trigger Flow Log" create="false" edit="false" delete="false">
+                    <field name="name" readonly="0"/>
+                    <field name="practice_id" readonly="0"/>
+                    <field name="office_id" readonly="0"/>
+                    <field name="user_id" readonly="0"/>
+                    <field name="create_date" readonly="0"/>
+                </tree>
+            </field>
+        </record>
+       
+       <record model="ir.actions.act_window" id="flow_trigger_action">
+            <field name="name">Trigger Flow  Log</field>
+            <field name="res_model">flow.trigger</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="flow_trigger_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Sync Log is empty.
+                </p>
+            </field>
+    	</record>	
+
+           <menuitem id="flow_trigger_log_mapping" name="Trigger Flow Log" parent="vitalpet_mapping.reports_mapping" action='flow_trigger_action' sequence="99"/>
+
+</odoo>
+

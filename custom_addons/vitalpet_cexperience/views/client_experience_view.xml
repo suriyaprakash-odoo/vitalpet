@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+		<!-- Main Menu -->
+		<menuitem name="Client Experience"
+			id="menu_client_experience"
+			web_icon="vitalpet_cexperience,static/description/icon.png"
+			sequence="2" groups="group_client_experience_user"/>
+
+		<record id="client_experience_form_view" model="ir.ui.view">
+			<field name="name">experience.visit.form</field>
+			<field name="model">experience.visit</field>
+			<field name="arch" type="xml">
+				<form string="Experience Visit">
+					<header>
+						<button name="validate" string="VALIDATE"
+							type="object" attrs="{'invisible': [('state_bar', '=', 'validate')]}"/>
+						<button name="set_draft" string="SET TO DRAFT"
+							type="object" attrs="{'invisible': [('state_bar', '=', 'draft')]}"
+							groups="vitalpet_cexperience.group_client_experience_manager" />
+						<field name="state_bar" widget="statusbar" />
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button name="action_view_board" type="object"
+								class="oe_stat_button board_review" icon="fa-archive"
+								string="Board Review" widget="statinfo" attrs="{'invisible': [('board_review', '=', 'no')]}">
+							</button>
+							<button name="action_view_board" type="object"
+								class="oe_stat_button" icon="fa-archive"
+								string="Board Review" widget="statinfo" attrs="{'invisible': [('board_review', '=', 'yes')]}">
+							</button>
+							<button name="action_client_experience_view"
+								class="oe_stat_button" icon="fa-check-square">
+								<field name="pre_exam" widget="statinfo"
+									string="Pre-Exam Score" />
+							</button>
+							<button name="action_view_exam" class="oe_stat_button"
+								icon="fa-check-square">
+								<field name="exam_score" widget="statinfo"
+									string="Exam Score" />
+							</button>
+							<button name="action_view_post_exam" 
+								class="oe_stat_button" icon="fa-check-square">
+								<field name="post_exam" widget="statinfo"
+									string="Post-Exam Score" />
+							</button>
+							<button name="action_view_visit_score" 
+								class="oe_stat_button" icon="fa-check-square">
+								<field name="visit_score" widget="statinfo"
+									string="Visit Score" />
+							</button>
+							<button name="action_view_doc"
+								class="oe_stat_button" icon="fa-archive">
+								<field name="doc_attach" widget="statinfo"
+									string="Of 4 Documents" />
+							</button>
+						</div>
+						<label name="name" string="" />
+						<div>
+							<h1><field name="name" /></h1>
+						</div>
+						<group>
+							<group>
+								<field name="company_id" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="doctor_id" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="tech_id" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="rec_in_id" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="rec_out_id" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="visit_date" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="visit_time" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="pims_record" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="currency_id" invisible="1" />
+								<field name="disc_per" invisible="1" />
+								<field name="non_inc_tot" invisible="1" />
+								<field name="cron_updated" invisible="1"/>
+								<field name="visit_review_analysis" invisible="1"/>
+								<field name="services_active" invisible="1"/>
+								<field name="discount_services_active" invisible="1"/>
+								<field name="cron_board" invisible="1"/>
+							    <field name="board_review" invisible="1"/>
+							    <field name="board_review_track" invisible="1"/>
+							    <field name="offer_grooming_sett" invisible="1"/>
+							    
+<!-- 								<field name="reason_visit_ids_int" invisible="0"/>
+ -->							</group>
+							<group>
+								<field name="invoice_amount" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="client_name" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="client_address" attrs="{'readonly': [('state_bar','=','validate')]}" />
+								<field name="client_email" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="client_mobile_phone" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="patient_name" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="patient_age" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="patient_cal" invisible="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+								<field name="patient_species" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+							</group>
+						</group>
+
+						<notebook>
+							<page string="PRE-EXAM">
+								<group>
+									<group string="Reason For Visit">
+										<!-- <field name="reason_visit_ids"
+											 widget="many2many_checkboxes"/>  -->
+										<field name="wellness" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="surgery" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="sick" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="day_time_emergency" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="after_hrs_emergency" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="other" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="new_client" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="practice_tour"
+											attrs="{'invisible': [('new_client','=',False)],'readonly': [('state_bar','=','validate')]}" />
+										<field name="records_transfer"
+											attrs="{'invisible': ['|',('new_client','=',False),('practice_tour','=',False)],'readonly': [('state_bar','=','validate')],'required': [('practice_tour','=',True)]}" />
+										<field name="former_practice"
+											attrs="{'required': [('records_transfer','=',True),('new_client','=',True),('practice_tour','=',True)],'invisible': ['|',('records_transfer','=',False),('new_client','=',False)],'readonly': [('state_bar','=','validate')]}" />
+										<field name="surgery_type" 
+											attrs="{'invisible': [('surgery','=',False)],'readonly': [('state_bar','=','validate')]}" />
+										<field name="presenting_complaint" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+									<group string="Basic Services">
+										<field name="offer_nailtrim" attrs="{'invisible': ['|','|',('surgery','=',True), ('day_time_emergency','=',True),('after_hrs_emergency','=',True)],'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_promotion" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_daycamp" attrs="{'invisible': [('offer_daycamp_sett','=',False)],'readonly': [('state_bar','=','validate')]}" />
+										<field name="offer_daycamp_sett" invisible="1"/>
+										<field name="offer_bath_accept" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_anal_gland_accept" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="groomer_introduction" attrs="{'invisible': [('offer_grooming_sett','=',False)],'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+								</group>
+								<group>
+									<group>
+									</group>
+									<group string="Compliance">
+										<field name="compliance_vaccines" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_vaccines" attrs="{'invisible': [('compliance_vaccines','=','up to date')],'readonly': [('state_bar','=','validate')]}"/>
+										<field name="compliance_parasiticide" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_parasiticide" attrs="{'invisible': [('compliance_parasiticide','=','up to date')],'readonly': [('state_bar','=','validate')]}"/>
+										<field name="compliance_diagnostics" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="offer_diagnostics" attrs="{'invisible': [('compliance_diagnostics','=','up to date')],'readonly': [('state_bar','=','validate')]}"/>
+										<field name="compliance_dental_cleaning" required="1" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="scheduled_dental" attrs="{'invisible': [('compliance_dental_cleaning','=','up to date')],'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+								</group>
+							</page>
+							<page string="EXAM">
+								<group>
+									<group string="Basics">
+										<field name="tpr_compliance" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="bcs_recorded" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="physical_exam_recorded" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="soap" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="x_ray" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="senior_workup_offered" attrs="{'invisible': [('patient_cal','=',False)],'readonly': [('state_bar','=','validate')]}"/>
+										<field name="estimate" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="treatment_plan_approved" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+									<group string="Diagnostics">
+										<field name="blood_parasite" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="cbc_panel" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="chemistry_panel" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="intestinal_parasite" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+									<group string="Dentistry">
+										<field name="dental_grade" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="dental_score" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="dental_recom_made" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="dental_sch" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="rads_recom" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+									<group string="Pharmacy">
+										<field name="worm_prevention" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="flea_tick_prevention" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="sub_prescribes" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+								</group>
+							</page>
+							<page string="POST-EXAM">
+								<group>
+									<group>
+										<field name="offer_boarding" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="camp_booked" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="diet_recommended" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="report_card_delivered" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="followup_reminder_setup" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="grooming_offer" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+
+									</group>
+									<group>
+										<field name="app_schedule" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="app_date" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="callback_performed" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+										<field name="callback_id" attrs="{'readonly': [('state_bar','=','validate')]}"/>
+									</group>
+								</group>
+							</page>
+							<page string="DISCOUNTS AND NON-INVOICED ITEMS">
+								<group>
+									<field name="discounts_ids" attrs="{'readonly': [('state_bar','=','validate')]}">
+										<tree editable="bottom">
+											<field name="service" required="1"/>
+											<field name="std_price" />
+											<field name="sell_price" />
+											<field name="discount" readonly="1" invisible="1"/>
+											<field name="discount_percent" readonly="1"/>
+										</tree>
+									</field>
+								</group>
+								<group>
+									<field name="non_invoiced_ids" attrs="{'readonly': [('state_bar','=','validate')]}">
+										<tree editable="bottom">
+											<field name="service" />
+											<field name="std_price" />
+										</tree>
+									</field>
+								</group>
+							</page>
+							<page string="DOCUMENTS">
+								<group>
+									<field name="documents_ids" attrs="{'readonly': [('state_bar','=','validate')]}">
+										<tree editable="bottom" create="false" decoration-danger="count&gt;0">
+											<field name="doc_name" required="1" />
+											<field name="attachment" required="0" />
+										    <field name="count" invisible="1" />
+										</tree>
+									</field>
+								</group>
+							</page>
+						</notebook>
+					
+						<style>
+							.board_review span{color:red;}
+						</style>
+					</sheet>
+					<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+				</form>
+			</field>
+		</record>
+
+		<record id="client_experience_tree_view" model="ir.ui.view">
+			<field name="name">experience.visit.tree</field>
+			<field name="model">experience.visit</field>
+			<field name="arch" type="xml">
+				<tree string="Experience Visit"
+					decoration-danger="board_review=='yes' or doc_attach&lt;4">
+					<field name="company_id" />
+					<field name="visit_date" />
+					<field name="rec_in_id" />
+					<field name="doctor_id" />
+					<field name="tech_id" />
+					<field name="rec_out_id" />
+					<field name="pre_exam" />
+					<field name="exam_score" />
+					<field name="post_exam" />
+					<field name="visit_score" />
+					<field name="non_inc_tot" />
+					<field name="disc_per" />
+					<field name="board_review" />
+					<field name="state_bar" string="Status" />
+					<field name="doc_attach" string="Documents" />
+					<field name="services_active" invisible="1"/>
+					<field name="discount_services_active" invisible="1"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="client_experience_calendar_view">
+			<field name="name">client experience Calendar</field>
+			<field name="model">experience.visit</field>
+			<field name="priority" eval="2" />
+			<field name="arch" type="xml">
+				<calendar string="Applicants" color="doctor_id"
+					date_start="visit_date">
+					<field name="doctor_id" />
+					<field name="visit_date" />
+				</calendar>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="client_experience_graph_view">
+            <field name="name">client experience graph</field>
+            <field name="model">experience.visit</field>
+            <field name="arch" type="xml">
+                <graph string="Applicants">
+                    <field name="visit_date"/>
+                    <field name="visit_score" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="view_experience_visit_pivot" model="ir.ui.view">
+         <field name="name">experience.visit.pivot</field>
+         <field name="model">experience.visit</field>
+         <field name="arch" type="xml">
+             <pivot string="Experience Visit" disable_linking="True">
+                <field name="visit_date" interval="month" />
+			    <field name="visit_review_analysis" type="measure" />
+             </pivot>
+         </field>
+    </record>
+
+		<record id="action_client_experience_view"
+			model="ir.actions.act_window">
+			<field name="name">Visit Review</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">tree,form,calendar,graph,pivot</field>
+			<field name="context">{
+                                  'group_by':'visit_date'
+                                  }</field>
+		</record>
+		
+		<record id="action_client_experience_board_view"
+			model="ir.actions.act_window">
+			<field name="name">Board Review</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('board_review','=','yes')]</field>
+		</record>
+		
+		<record id="action_client_exp_reports"
+			model="ir.actions.act_window">
+			<field name="name">Visit Review Analysis</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">pivot</field>
+		</record>
+		
+		<record id="action_client_experience_view_non_invoiced"
+			model="ir.actions.act_window">
+			<field name="name">Services Not Invoiced</field>
+			<field name="res_model">experience.visit</field>
+			<field name="domain">[('services_active','=', False)]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<record id="action_client_experience_view_discounted_services"
+			model="ir.actions.act_window">
+			<field name="name">Discounted Services</field>
+			<field name="res_model">experience.visit</field>
+			<field name="domain">[('discount_services_active','=', True)]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<record id="action_client_experience_view_doctor_leader_board"
+			model="ir.actions.act_window">
+			<field name="name">Doctor Leaderboard</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{
+                                  'group_by':'doctor_id'
+                                  }</field>
+		</record>
+	    <record id="action_client_experience_view_technician_leader_board"
+			model="ir.actions.act_window">
+			<field name="name">Technician Leaderboard</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{
+                                  'group_by':'tech_id'
+                                  }</field>
+		</record>	
+		
+		<record id="action_client_experience_view_receptionist_leader_board"
+			model="ir.actions.act_window">
+			<field name="name">Receptionist Leaderboard</field>
+			<field name="res_model">experience.visit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{
+                                  'group_by':'rec_in_id'
+                                  }</field>
+		</record>
+
+		<!--Client Experience Sub menu -->
+		<menuitem name="Experience" id="menu_exp_sub"
+			parent="menu_client_experience"
+			 sequence="2" />
+			
+		<menuitem name="Visit Review" id="menu_exp_sub_visit"
+			parent="menu_exp_sub"
+			action="action_client_experience_view" sequence="7" />
+			
+		<menuitem name="Board Review" id="menu_exp_sub_board"
+			parent="menu_exp_sub"
+			action="action_client_experience_board_view" sequence="8" />	
+			
+		<menuitem name="Configuration" id="menu_client_exp_settings"
+			parent="menu_client_experience" groups="vitalpet_cexperience.group_client_experience_manager"
+			sequence="4" />
+			
+		<menuitem name="Settings" id="menu_client_exp_settings_sub"
+			parent="menu_client_exp_settings" action="action_client_exp_settings"
+			sequence="7" groups="vitalpet_cexperience.group_client_experience_manager"/>	
+		
+		<!-- Dashboard Menu -->
+		<menuitem id="menu_client_experience_dashboard"
+			action="client_experience_dashboard" parent="menu_client_experience"
+			name="Dashboard" sequence="1" />	
+
+		<menuitem name="Reports" id="menu_client_exp_reports"
+			parent="menu_client_experience" 
+			sequence="3" />	
+			
+		<menuitem name="Visit Review Analysis" id="menu_client_exp_reports_sub1"
+			parent="menu_client_exp_reports" action="action_client_exp_reports"
+			sequence="1" />	
+			
+		<menuitem name="Services Not Invoiced" id="menu_client_exp_reports_sub2"
+			parent="menu_client_exp_reports" action="action_client_experience_view_non_invoiced"
+			sequence="2" />
+			
+		 <menuitem name="Discounted Services" id="menu_client_exp_reports_sub3"
+			parent="menu_client_exp_reports" action="action_client_experience_view_discounted_services"
+			sequence="3" />	
+			
+		<menuitem name="Doctor Leaderboard" id="menu_client_exp_reports_sub4"
+			parent="menu_client_exp_reports" action="action_client_experience_view_doctor_leader_board"
+			sequence="4" />	
+		
+		<menuitem name="Technician Leaderboard" id="menu_client_exp_reports_sub5"
+			parent="menu_client_exp_reports" action="action_client_experience_view_technician_leader_board"
+			sequence="5" />	
+		
+		<menuitem name="Receptionist Leaderboard" id="menu_client_exp_reports_sub6"
+			parent="menu_client_exp_reports" action="action_client_experience_view_receptionist_leader_board"
+			sequence="6" />				
+		
+		<record id="view_employee_visit_group" model="ir.ui.view">
+			<field name="name">experience.visit</field>
+			<field name="model">experience.visit</field>
+			<field name="arch" type="xml">
+				<search string="Employee Visit">
+					<field name="rec_in_id" />
+					<field name="doctor_id" />
+					<field name="tech_id" />
+					<filter name="state_bar" string="Board Review" domain="[('state_bar','=','validate')]"/>
+					<filter string="Non Invoiced"
+						domain="[('disc_per', '&gt;', 0)]" />
+					<filter string="Discounts"
+						domain="[('non_inc_tot', '&gt;', 0)]" />
+					<separator />
+					<group expand="0" string="Group By...">
+						<filter name="company_id" string="Company"
+							context="{'group_by':'company_id'}" />
+						<filter name="visit_date" string="Visit Date"
+							context="{'group_by':'visit_date'}" />
+						<filter name="rec_in_id" string="Admitting Receptionist"
+							context="{'group_by':'rec_in_id'}" />
+						<filter name="doctor_id" string="Doctor"
+							context="{'group_by':'doctor_id'}" />
+						<filter name="tech_id" string="Technician"
+							context="{'group_by':'tech_id'}" />
+						<filter name="rec_out_id" string="Check Out Receptionist"
+							context="{'group_by':'rec_out_id'}" />
+						<filter name="state_bar" string="Status"
+							context="{'group_by':'state_bar'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+	</data>
+</odoo>

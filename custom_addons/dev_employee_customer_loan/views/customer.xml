@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="inherit_partner_form_view" model="ir.ui.view">
+            <field name="name">inherit.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                
+<!--                <field name="mobile" position="after">-->
+<!--                    <field name="mobile_1" />-->
+<!--                    <field name="mobile_2" />-->
+<!--                </field>-->
+                <xpath expr="/form/sheet/group/group/field[@name='type']" position="before">
+
+                            <field name="first_name" />
+                            <field name="last_name" />
+<!--                            <field name="customer_1" />-->
+<!--                            <field name="customer_2" />-->
+<!--                            <field name="dob" />-->
+<!--                            <field name="id_no" />-->
+                            <field name="id" invisible="1"/>
+
+                </xpath>
+                <xpath expr="//field[@name='name']" position="replace">
+                        <field name="name" default_focus="1" placeholder="Name" required="0" />
+            </xpath>
+                
+<!--                <xpath expr="/form/sheet/group/group/field[@name='function']" position="before">-->
+<!--                            <field name="chinese_first_name" />-->
+<!--                            <field name="chinese_last_name" />-->
+<!--                            <field name="chinese_address" />-->
+
+<!--                </xpath>-->
+
+                <page name="internal_notes" position="before">
+<!--                    <page name="Employer Information" string="Employer Information">-->
+<!--                        <field name="partner_employee_ids">-->
+<!--                            <tree string="partner employer" editable="bottom">-->
+<!--                                <field name="name"/>-->
+<!--                                <field name="address"/>-->
+<!--                                <field name="contact_number"/>-->
+<!--                                <field name="title"/>-->
+<!--                                <field name="income"/>-->
+<!--                                <field name="servicing_year"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+<!--                    </page>-->
+
+<!--                    <page name="Existing Loan Information" string="Existing Loan Information">-->
+<!--                        <field name="partner_existing_loan_ids">-->
+<!--                            <tree string="existing loan information" editable="bottom">-->
+<!--                                <field name="existing_loan_company"/>-->
+<!--                                <field name="outstanding_loan_amount"/>-->
+<!--                                <field name="monthly_installment"/>-->
+<!--                                <field name="remaining_terms"/>-->
+<!--                                <field name="attachment" filename="att_name"/>-->
+<!--                                <field name="att_name" invisible="1"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+<!--                    </page>-->
+
+<!--                    <page name="Guarantor Information" string="Guarantor Information">-->
+<!--                        <field name="partner_guarantor_ids" context="{'partner_id': id}">-->
+<!--                            <tree string="GuarantorInformation">-->
+<!--                                <field name="relation"/>-->
+<!--                                <field name="attachment_ids" widget="many2many_list"/>-->
+<!--                                <field name="partner_id" invisible="1"/>-->
+<!--                                <field name="guarantor_id" context="{'g_id': True, 'partner_id': partner_id}" domain="[('parent_id', '=',partner_id), ('type', '=', 'delivery')]"/>-->
+
+<!--                            </tree>-->
+<!--                        </field>-->
+<!--                    </page>-->
+
+                    <page name="Property Information" string="Property Information">
+                        <field name="partner_property_ids" context="{'partner_id': id}">
+                            <tree string="Property Information" >
+                                <field name="address"/>
+                                <field name="age"/>
+                                <field name="value_company"/>
+                                <field name="value_date"/>
+                                <field name="value_amount"/>
+                                <field name="existing_mortgage_bank"/>
+                                <field name="outstanding_amount"/>
+                                <field name="monthly_installment"/>
+                                <field name="remaining_terms"/>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="attachment_ids" widget="many2many_list"/>
+                                <field name="property_id" context="{'p_id': True, 'partner_id': partner_id}" domain="[('parent_id', '=',partner_id), ('type', '=', 'other')]"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page name="Loan Information" string="Loan Information">
+                        <field name="loan_ids">
+                            <tree string="Loan Information" editable="bottom">
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="loan_type"/>
+                                <field name="calc_principle_amount"/>
+                                <field name="calc_interest_rate"/>
+                                <field name="calc_months"/>
+                                <field name="calc_monthly_emi"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+
+        <record id="view_partner_attachment_tree" model="ir.ui.view">
+            <field name="name">view.partner.attachment.type.tree</field>
+            <field name="model">partner.attachment</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Loan Proof Type" editable="bottom">
+                    <field name="name" invisible="1"/>
+                    <field name="att_name" filename="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+<!--         <record id="view_partner_guarantor_form" model="ir.ui.view">-->
+<!--            <field name="name">view.partner.guarantor.type.tree</field>-->
+<!--            <field name="model">partner.guarantor</field>-->
+<!--            <field name="type">form</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="partner_guarantor" >-->
+<!--                    <group col="4">-->
+<!--                        <field name="guarantor_id" context="{'g_id': True, 'partner_id': partner_id}" domain="[('parent_id', '=', partner_id), ('type', '=', 'other')]"/>-->
+<!--                        <field name="relation" />-->
+<!--                        <field name="partner_id" invisible="1" />-->
+
+<!--                    </group>-->
+<!--                    <field name="attachment_ids">-->
+<!--                        <tree string="Attchment" editable="bottom">-->
+<!--                            <field name="name" invisible="1"/>-->
+<!--                            <field name="att_name" filename="name"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="view_partner_property_form" model="ir.ui.view">
+            <field name="name">view.partner.property.type.tree</field>
+            <field name="model">partner.property</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="partner_guarantor" >
+                    <group col="4">
+                        <field name="property_id" context="{'p_id': True, 'partner_id': partner_id}" domain="[('parent_id', '=', partner_id), ('type', '=', 'delivery')]"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="address" />
+                        <field name="age" />
+                        <field name="value_company" />
+                        <field name="value_date" />
+                        <field name="value_amount" />
+                        <field name="existing_mortgage_bank" />
+                        <field name="outstanding_amount" />
+                        <field name="monthly_installment" />
+                        <field name="remaining_terms" />
+                    </group>
+                    <field name="attachment_ids">
+                        <tree string="Attchment" editable="bottom">
+                            <field name="name" invisible="1"/>
+                            <field name="att_name" filename="name"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+

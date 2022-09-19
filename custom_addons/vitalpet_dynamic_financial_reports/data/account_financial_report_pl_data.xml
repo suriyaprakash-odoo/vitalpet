@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		
+		<!--Profit and Loss (Withpout HQ) -->
+
+		<record id="account_financial_report_pl_whq_0" model="account.financial.html.report">
+			<field name="name">Profit and Loss  </field>
+			<field name="debit_credit" eval="False" />
+			<field name="report_type">date_range_analytic</field>
+			<field name='parent_id'
+				ref='account_reports.account_reports_legal_statements_menu' />
+		</record>
+
+		<record id="account_financial_report_pl_whq_net_income_0"
+			model="account.financial.html.report.line">
+			<field name="name">NET INCOME</field>
+			<field name="code">NTCMEWHQ</field>
+ 			<field name="formulas">balance = (EBITDAWHQ.balance) - (ONRIEWHQ.balance + IEWHQ.balance + DAWHQ.balance + FMTWHQ.balance + FCTWHQ.balance + NCIWHQ.balance)</field>
+ 			<field name="financial_report_id" ref='account_financial_report_pl_whq_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="0" />
+		</record>
+
+		<record id="account_financial_report_pl_whq_gross_revenue_0"
+			model="account.financial.html.report.line">
+			<field name="name">Gross Revenue</field>
+			<field name="code">GRWHQ</field>
+			<field name="formulas">balance = -(sum.balance)</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain" eval="[('account_id.user_type_id', '=','Income'),('account_id.tag_ids', '!=', 'Revenue Adjustments')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="1" />
+			<field name="level" eval="1" />
+		</record>
+
+		<record
+			id="account_financial_report_pl_whq_discount_adjustment_0"
+			model="account.financial.html.report.line">
+			<field name="name">Discounts and Adjustments</field>
+			<field name="code">DJWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Income'),('account_id.tag_ids', '=', 'Revenue Adjustments')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="2" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_net_revenue_0"
+			model="account.financial.html.report.line">
+			<field name="name">Net Revenue</field>
+			<field name="code">NRWHQ</field>
+			<field name="formulas">balance = GRWHQ.balance - DJWHQ.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="3" />
+			<field name="level" eval="2" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_cost_goods_0"
+			model="account.financial.html.report.line">
+			<field name="name">Cost of Goods Sold</field>
+			<field name="code">COGSWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Cost of Revenue')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="4" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_cogs_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(% Net Revenue)</field>
+			<field name="code">COGS_AVGWHQ</field>
+			<field name="formulas">balance = ((COGSWHQ.balance) / (NRWHQ.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="5" />
+			<field name="level" eval="6" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_gross_profit_0"
+			model="account.financial.html.report.line">
+			<field name="name">Gross Profit</field>
+			<field name="code">GPWHQ</field>
+			<field name="formulas">balance = NRWHQ.balance - COGSWHQ.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="6" />
+			<field name="figure_type">float</field>
+			<field name="level" eval="2" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_gross_margin_0"
+			model="account.financial.html.report.line">
+			<field name="name">(Gross Margin)</field>
+			<field name="code">AVGWHQ</field>
+			<field name="formulas">balance = (GPWHQ.balance) / (NRWHQ.balance)</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="7" />
+			<field name="level" eval="6" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_hsoe_0"
+			model="account.financial.html.report.line">
+			<field name="name">Hospital Operating Expenses</field>
+			<field name="code">HSOEWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Expenses'),('account_id.tag_ids', '!=','Overhead Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="8" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_hsoe_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(% of Revenue)</field>
+			<field name="code">HSOE_AVGWHQ</field>
+			<field name="formulas">balance = ((HSOEWHQ.balance) / (NRWHQ.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="9" />
+			<field name="level" eval="6" />
+		</record>
+		<record
+			id="account_financial_report_pl_whq_hospital_contribution_0"
+			model="account.financial.html.report.line">
+			<field name="name">Hospital Contribution</field>
+			<field name="code">HCWHQ</field>
+			<field name="formulas">balance = GPWHQ.balance - HSOEWHQ.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="10" />
+			<field name="level" eval="2" />
+		</record>
+		<record
+			id="account_financial_report_pl_whq_hc_avg_0"
+			model="account.financial.html.report.line">
+			<field name="name">(Hospital EBTDA Margin) </field>
+			<field name="code">HC_AVGWHQ</field>
+			<field name="formulas">balance = ((HCWHQ.balance) / (NRWHQ.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="11" />
+			<field name="level" eval="6" />
+		</record>
+				
+		<record
+			id="account_financial_report_pl_whq_ebitda_0"
+			model="account.financial.html.report.line">
+			<field name="name">EBITDA</field>
+			<field name="code">EBITDAWHQ</field>
+			<field name="formulas">balance = HCWHQ.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="14" />
+			<field name="level" eval="2" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_ebitda_margin_0"
+			model="account.financial.html.report.line">
+			<field name="name">(EBITDA Margin)</field>
+			<field name="code">EBITDA_AVGWHQ</field>
+			<field name="formulas">balance = ((EBITDAWHQ.balance) / (NRWHQ.balance))</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="figure_type">percents</field>
+			<field name="sequence" eval="15" />
+			<field name="level" eval="6" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_onrie_0"
+			model="account.financial.html.report.line">
+			<field name="name">Other / Non-Recurring (Income) Expense*</field>
+			<field name="code">ONRIEWHQ</field>
+			<field name="formulas">balance = -(sum.balance)</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),'|',('account_id.tag_ids', '=','Other Income'),('account_id.tag_ids', '=','Non Recurring Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="16" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_interest_expense_0"
+			model="account.financial.html.report.line">
+			<field name="name">Interest Expense</field>
+			<field name="code">IEWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Interest Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="17" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_interest_expenses_0"
+			model="account.financial.html.report.line">
+			<field name="name">Depreciation and Amortization </field>
+			<field name="code">DAWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Depreciation'),'|',('account_id.tag_ids', '=','Depreciation Expense'),('account_id.tag_ids', '=','Amortization Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="18" />
+			<field name="level" eval="1" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_pl_whq_fmt_0"
+			model="account.financial.html.report.line">
+			<field name="name">	Franchise and Margin Taxes</field>
+			<field name="code">FMTWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','State Tax Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="19" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_FCT_0"
+			model="account.financial.html.report.line">
+			<field name="name">Federal Corporate Tax (Benefit) Liability Estimate</field>
+			<field name="code">FCTWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Federal Tax Expense')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="20" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record
+			id="account_financial_report_pl_whq_NCI_0"
+			model="account.financial.html.report.line">
+			<field name="name">	Non-Controlling (Minority) interest</field>
+			<field name="code">NCIWHQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_pl_whq_net_income_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Other Income'),('account_id.tag_ids', '=','Minority Distributions')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="sequence" eval="21" />
+			<field name="level" eval="1" />
+		</record>
+
+
+	</data>
+</odoo>

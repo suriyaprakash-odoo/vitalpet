@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_terminate_team_members" model="res.groups">
+        <field name="name">Is Terminate Team Members</field>
+        <field name="comment">He/She can terminate the Team Members</field>
+		
+    </record>
+
+</odoo>

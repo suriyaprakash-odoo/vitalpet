@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="report_hr_recruitment"
+            string="Offer Letter"
+            model="hr.applicant"
+            report_type="qweb-pdf"
+            file="vitalpet_custom_hr_recruitment.report_recruitment"
+            name="vitalpet_custom_hr_recruitment.report_recruitment"
+        />
+    </data>
+</odoo>

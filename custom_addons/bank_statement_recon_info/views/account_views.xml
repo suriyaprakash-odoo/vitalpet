@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_bank_statement_line_form_inherited" model="ir.ui.view">
+            <field name="name">bank.statement.line.form</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account.view_bank_statement_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="after">
+                    <field name="journal_entry_ids">
+                        <tree string="Journal Items" create="false" edit="false" delete="false">
+                            <field name="date"/>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="ref"/>
+                            <field name="journal_id"/>
+                            <field name="state"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+</odoo>

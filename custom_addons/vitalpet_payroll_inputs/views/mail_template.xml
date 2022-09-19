@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="production_validation_notification_payroll" model="mail.template">
+			<field name="name">Production Validation Notification</field>
+			<field name="subject">Production Update</field>
+			<field name="email_to"></field>
+			<field name="model_id" ref="vitalpet_payroll_inputs.model_hr_holidays" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				 <![CDATA[
+                     ${ctx['body_content'] | safe}
+                ]]> 
+			</field>
+		</record>
+
+	</data>
+</odoo>

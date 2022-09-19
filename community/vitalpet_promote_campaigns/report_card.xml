@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<template id="report_card_pet_body">
+
+    <div class="header" style="font-size:10px;padding-left:10px;padding-right:10px">
+    <div class="row">
+            <div class="col-xs-6" name="o.company_id_address">
+                <p ><span style="color: red; padding-bottom:0px" t-field="o.company_id.name" /></p>
+                <span  t-field="o.company_id.partner_id"
+                    t-field-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+            </div>
+            <div class="col-xs-6" align="right" >
+                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 120px;"/>
+            </div>
+    </div>
+    </div>
+        <div class="page" style="padding-left:26px;padding-right:10px">
+
+            <div class="row" style="font-size:13px; padding-left:28px" >
+                    <p style="text-align: left;"
+                     t-field="o.__last_update"  t-field-options="{&quot;format&quot;: &quot;MMMM dd, yyyy&quot;}" />
+                    <p >
+                     Dear <span t-if="o.petowner_id.name" t-field="o.petowner_id.name"></span>,
+                     <!-- span t-if="o.petowner_id.middlename" t-field="o.petowner_id.middlename">' '</span><span t-if="o.petowner_id.lastname" t-field="o.petowner_id.lastname"/-->
+                     </p>
+                     <p>
+                     The health of your pet is very important to us. We are taking this opportunity to provide you with a <br/>
+                     “Report Card” on your pet to help you keep your pet healthy, happy, and in-shape! Please review<br/>
+                      the information below and call us at 210.696.3211 to make an appointment.
+                    </p>
+            </div>
+        <div class="row zero_min_height">
+                <div style="border-bottom: 3px solid #4dc3ff;padding-left:0px"></div>
+        </div>
+            <div class="row" style="color: #4dc3ff; padding-left:10px;">
+            <h3 >
+                <span  t-field="o.pet_id.firstname"/> the <span  t-field="o.breed_id.name"/>
+            </h3>
+            </div>
+            <div class="row">
+
+           <table class="table"  style="width: 100%; border: 1px solid black; border-collapse: collapse; margin-top: 10px;">
+                <thead >
+                    <tr  >
+                        <th style="font-size:11px; border: 1px solid black; color: #4dc3ff; height: 20px; width: 90px; text-align: center;">Status</th>
+                        <th style="font-size:11px; border: 1px solid black; color: #4dc3ff; height: 20px;width: 180px; text-align: center;">Care</th>
+                        <th style="font-size:11px; border: 1px solid black; color: #4dc3ff; height: 20px; text-align: center;">Why This is Important</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr t-foreach="o.reportcard_lines" t-as="l" >
+                        <td style="border: 1px solid black;">
+                                    <img  t-if="l.status=='red'" src='/vitalpet_promote_campaigns/static/src/img/Red.PNG' style="width:100%"/>
+                                    <img  t-if="l.status=='green'"  src='/vitalpet_promote_campaigns/static/src/img/green.PNG' style="width:100%"/>
+                                    <img t-if="l.status=='yellow'"  src='/vitalpet_promote_campaigns/static/src/img/yellow.PNG' style="width:100%"/>
+                        </td>
+                        <td style="border: 1px solid black;"><span t-field="l.care_category_id"/></td>
+                        <td style="border: 1px solid black;"><span t-field="l.message"/></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+        </div>
+        <div class="footer" >
+       <img  src='/vitalpet_promote_campaigns/static/src/img/statibottom.PNG' style="position:absolute; top:0px; left:0px; width:100%"/>
+        </div>
+</template>
+
+
+<template id="report_card_pet">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t  t-call='vitalpet_promote_campaigns.report_card_pet_body' />
+
+
+        </t>
+    </t>
+</template>
+        <report id="report_card_pet_id"
+        string="Report card"
+        model="promote.campaigns.reportcard"
+        report_type="qweb-pdf"
+        name="vitalpet_promote_campaigns.report_card_pet"
+        />
+       <record id="report_card_pet_id" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="vitalpet_promote_campaigns.paperformat_report_cards"/>
+        </record>
+    </data>
+
+
+
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="FieldAudio">
+        <span t-att-class="'oe_form_field '+widget.widget_class" t-att-style="widget.node.attrs.style">
+            <t t-if="!widget.get('effective_readonly')">
+                <input type="text"/>
+                <span class="oe_form_char_content_edit"></span>
+            </t>
+            <t t-if="widget.get('effective_readonly')">
+                <span class="oe_form_char_content"></span>
+            </t>
+        </span>
+    </t>
+<!--extend treeView for media player for -->
+
+    <tr t-extend="ListView.row">
+        <t t-jquery="t td t" t-operation="replace"><t t-if="column.widget =='audio' || column.type == 'audio'"><iframe t-attf-srcdoc="&lt;audio id=&quot;Myaudio&quot; controls preload=&quot;auto&quot;&gt; 
+&lt;source id=&quot;MySource&quot; src=&quot;{{render_cell(record, column)}}&quot; type=&quot;audio/mpeg&quot;&gt; &lt;/audio&gt;&lt;br&gt;"
+width="300"  height="40" border="0" scrolling="no" frameBorder="0"></iframe></t><t t-if="column.widget !='audio'" t-raw="render_cell(record, column)"/></t>
+    </tr>
+<!--tempalte media player for Formview-->
+<t t-name="playertemaplate">
+          <iframe t-attf-srcdoc="&lt;!DOCTYPE html&gt; 
+            &lt;html&gt; 
+             &lt;meta charset=&quot;UTF-8&quot;&gt; 
+            &lt;body&gt; 
+            &lt;audio id=&quot;Myaudio&quot; controls preload=&quot;auto&quot;&gt; 
+            &lt;source id=&quot;MySource&quot; src=&quot;{{url}}&quot; type=&quot;audio/mpeg&quot;&gt; &lt;/audio&gt;&lt;br&gt;
+            &lt;/body&gt; 
+            &lt;/html&gt;"
+            width="300"  height="40" border="0" scrolling="no" frameBorder="0">
+</iframe>
+</t>
+</templates>

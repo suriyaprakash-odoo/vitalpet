@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- Leave Hours: On Change view changes -->
+	<record id="edit_holiday_new_inherit_leave_hours" model="ir.ui.view">
+		<field name="name">edit.holiday.new.inherit.leave_hours</field>
+		<field name="model">hr.holidays</field>
+		<field name="inherit_id" ref="hr_holidays.edit_holiday_new" />
+		<field name="arch" type="xml">
+			<field name='department_id' position='replace' />
+	
+			<xpath expr="//field[@name='employee_id']" position='after'>
+						<field name="company_id" />
+			</xpath>
+			<xpath expr="//form/sheet/group/group[1]" position="replace">
+				<group>
+					<field name="name" attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}" />
+					<field name="holiday_status_id" context="{'employee_id':employee_id}" />
+					<label for="number_of_hours_temp" string="Duration" />
+					<div>
+						<div attrs="{'invisible': [('type', '=', 'add')]}">
+							<field name="date_from" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline" />
+							<label string="-" class="oe_inline" />
+							<field name="date_to" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline" />
+						</div>
+						<div attrs="{'invisible': [('type', '=', 'remove')]}">
+							<field name="number_of_days_temp" class="oe_inline" /> days
+                            </div>
+						<div attrs="{'invisible': [('type', '=', 'add')]}">
+							<field name="hours_readonly" invisible="True" />
+							<div>
+								<field name="number_of_hours_temp" class="oe_inline" /> Hours
+                            </div>
+						</div>
+						<div attrs="{'invisible': [('type', '=', 'add')]}">
+							<span style="color:#bababa;">
+								<field name="leave_days" />Day(s) * 8 hours</span>
+						</div>
+						</div>
+				</group>
+			</xpath>
+		</field>
+	</record>
+	<record id="holiday_approve" model="ir.actions.server">
+		<field name="name">Approve</field>
+		<field name="type">ir.actions.server</field>
+		<field name="model_id" ref="model_hr_holidays" />
+		<field name="state">code</field>
+		<field name="code">
+            if records:
+            action = records.action_approve()
+        </field>
+
+	</record>
+
+	<record id="action_holiday_approve" model="ir.values">
+		<field name="name">Approve</field>
+		<field name="model_id" ref="model_hr_holidays" />
+		<field name="model">hr.holidays</field>
+		<field name="key2">client_action_multi</field>
+		<field eval="'ir.actions.server,%d'%holiday_approve" name="value" />
+	</record>
+
+
+</odoo>

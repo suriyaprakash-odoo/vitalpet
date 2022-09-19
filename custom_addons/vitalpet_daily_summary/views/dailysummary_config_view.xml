@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Mypractice config wizard -->
+    
+    <record id="view_inherit_mypractice_config_settings" model="ir.ui.view">
+        <field name="name">mypractice settings</field>
+        <field name="model">mypractice.config.settings</field>
+        <field name="inherit_id" ref="vitalpet_mypractice.view_mypractice_config_settings"/>
+        <field name="arch" type="xml">
+            <div id="main" position="inside">
+                <group>
+                    <group string='Daily Summary'  >
+                       
+                        <label for="id" string="Enabled" style="padding-left: 2em;"/>
+                        <div>
+                        <field name='daily_report'/>
+                    </div>
+                     <label for="id" string="Manual / Feed" style="padding-left: 2em;"/>
+                     <div>
+                        <field name='source'/>
+                        </div>
+
+                         <label for="id" string="Local Tax Partner" style="padding-left: 2em;"/>
+                         <div>
+                        <field name='local_tax_partner'/>
+                    </div>
+                     <label for="id" string="Daily Report To Do" style="padding-left: 2em;"/>
+                     <div>
+                        <field name='daily_report_todo'/>
+                        </div>
+                         <label for="id" string="Deposit To Do" style="padding-left: 2em;"/>
+                         <div>
+                        <field name='deposit_todo'/>
+                    </div>
+<!--                      <label for="id" string="Replacement Account" style="padding-left: 2em;"/>
+                         <div>
+                        <field name='replacement_account_id'/>
+                    </div> -->
+                    </group>
+                    <group string='Round-Off'>
+                        <field name='ss_roundof' required='True'/>
+                        <field name='ss_adjustments_id' domain="[('company_id', '=', company_id)]" required='True'/>
+                    </group>
+                </group>
+            </div>
+        </field>
+    </record>
+   
+
+</odoo>

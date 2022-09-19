@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>	
+	<data>
+		<record id="billpay_form_inherited" model="ir.ui.view">
+			<field name="name">account.invoice.form</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_form" />
+			<field name="arch" type="xml">
+				<field name="date_due" position="after">
+					<field name="billpay_id" readonly="1" />
+					<field name="invoice_number" />
+					<field name="acc_number_id" />
+				</field>
+
+				<xpath expr="//form/sheet/notebook/page[2]/group/group[2]/field[@name='company_id']" position="after">
+					<field name="notes" />
+				</xpath>
+
+				<xpath expr="//sheet//div[1]" position="before">
+					<div class="oe_button_box">
+						<button name="action_get_attachment_view" class="oe_stat_button" type="object" icon="fa-book">
+							<field name="attachment_number" widget="statinfo" string="Documents" />
+						</button>
+					</div>
+				</xpath>
+				
+				<!-- <div class="oe_button_box"> <button name="action_get_attachment_view" 
+					class="oe_stat_button" type="object" icon="fa-book"> <field name="attachment_number" 
+					widget="statinfo" string="Documents" /> </button> </div> -->
+
+			</field>
+		</record>
+
+		<record id="inher_invoice_supplier_tree" model="ir.ui.view">
+			<field name="name">account.invoice.supplier.tree</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_tree" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='number']" position="after">
+					<field name="billpay_id" />
+				</xpath>
+
+			</field>
+		</record>
+
+
+		<record id="billpay_search_filter" model="ir.ui.view">
+			<field name="name">account.invoice.select</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.view_account_invoice_filter" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//search" position="inside">
+					<field name="billpay_id"/>
+				</xpath>
+
+			</field>
+		</record>
+		
+
+		<record id="invoice_form_inherited" model="ir.ui.view">
+			<field name="name">account.invoice.form</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form" />
+			<field name="arch" type="xml">
+				
+				<field name="payment_term_id" position="after">
+					<field name="date_due" />
+				</field>
+
+				<xpath expr="//notebook//page//field[@name='date_due']" position="replace">
+					<label for="account_fiscal_periods_id" />
+					<div class="o_row">
+						<field name="account_fiscal_periods_id" readonly="1" />
+						<field name="account_fiscal_periods_quarterly" readonly="1" />
+						<field name="account_fiscal_period_week_id" readonly="1" />
+					</div>
+				</xpath>
+
+			</field>
+		</record>
+
+
+		<record id="account_fiscal_periods_invoice_tree" model="ir.ui.view">
+			<field name="name">account.invoice.tree</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_tree" />
+			<field name="arch" type="xml">
+
+				<field name="date_due" position="after">
+					<field name="account_fiscal_periods_year" string="Fiscal Year" />
+					<field name="account_fiscal_periods_quarterly" string="Fiscal Quarter" />
+					<field name="account_fiscal_periods_id" string="Fiscal Month" />
+                    
+                    <field name="account_fiscal_period_week_id" string="Fiscal Week" />
+                    
+				</field>
+			</field>
+		</record>
+
+		<record id="account_fiscal_periods_view_account_invoice_filter" model="ir.ui.view">
+			<field name="name">account.invoice.select</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.view_account_invoice_filter" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//search//group" position="inside">
+					<filter string="Fiscal Year" context="{'group_by':'account_fiscal_periods_year'}" />
+					<filter string="Fiscal Quarter" context="{'group_by':'account_fiscal_periods_quarterly'}" />
+					<filter string="Fiscal Month" context="{'group_by':'account_fiscal_periods_id'}" />
+					<filter string="Fiscal Week" context="{'group_by':'account_fiscal_period_week_id'}" />
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="daterange_invoice_supplier_form" model="ir.ui.view">
+			<field name="name">account.invoice.supplier.form</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_form" />
+			<field name="arch" type="xml">
+
+				<field name="reference" position="after">
+					<field name="date" />
+				</field>
+
+				<xpath expr="//notebook//page//field[@name='date']" position="replace">
+					<label for="account_fiscal_periods_id" />
+					<div class="o_row">
+						<field name="account_fiscal_periods_id" readonly="1" />
+						<field name="account_fiscal_periods_quarterly" readonly="1" />
+						<field name="account_fiscal_period_week_id" readonly="1" />
+					</div>
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="account_fiscal_periods_invoice_supplier_tree" model="ir.ui.view">
+			<field name="name">account.invoice.supplier.tree</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_tree" />
+			<field name="arch" type="xml">
+
+				<field name="date_due" position="after">					
+					<field name="account_fiscal_periods_year" string="Fiscal Year" />
+                    <field name="account_fiscal_periods_quarterly" string="Fiscal Quarter" />
+                    <field name="account_fiscal_periods_id" string="Fiscal Month" />
+                    <field name="account_fiscal_period_week_id" string="Fiscal Week" />
+				</field>
+
+			</field>
+		</record> 
+
+	</data>
+</odoo>

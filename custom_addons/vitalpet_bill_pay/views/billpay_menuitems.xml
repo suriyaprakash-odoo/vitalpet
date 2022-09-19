@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--Bill Pay Menus-->
+    <menuitem name="Bill Pay" id="menu_bill_pay"  web_icon="vitalpet_bill_pay,static/description/icon.png" groups="group_billpay_processor,group_billpay_approver"/>
+    <menuitem id="menu_bill_pay_dashboard" name="Dashboard" action="vitalpet_bill_pay_dashboard" parent="menu_bill_pay" sequence="1" groups="group_billpay_processor,group_billpay_approver"/>
+    <menuitem id="menu_bill_pay_inbox_main" name="Inbox" parent="menu_bill_pay"  sequence="2"/>
+    <menuitem id="menu_bill_pay_inbox" name="Inbox" parent="menu_bill_pay_inbox_main" action="action_billpay_inbox" sequence="1"/>
+    <menuitem id="menu_bill_account_pay" name="Payable" parent="menu_bill_pay_inbox_main" action="action_account_payable" sequence="3"/>
+    <menuitem id="menu_bill_account_rec" name="Receivable" parent="menu_bill_pay_inbox_main" action="action_account_receivable" sequence="4"/>
+    <menuitem id="menu_bill_pay_bills" name="Bills &amp; Credits" parent="menu_bill_pay" sequence="3" groups="group_billpay_processor,group_billpay_approver"/>
+
+    <menuitem id="menu_bill_pay_bills_open" name="Open" parent="menu_bill_pay_bills" action="action_billpay_bills_open" sequence="1"/>
+    <menuitem id="menu_bill_pay_bills_hold" name="Hold" parent="menu_bill_pay_bills" action="action_billpay_bills_hold" sequence="2"/>
+    <menuitem id="menu_bill_pay_bills_toapprove" name="Awaiting Approval" parent="menu_bill_pay_bills" action="action_billpay_bills_toapprove" sequence="3"/>
+    <menuitem id="menu_bill_pay_bills_approved" name="Approved" parent="menu_bill_pay_bills" action="action_billpay_bills_approved" sequence="5"/>
+    <menuitem id="menu_bill_pay_bills_posted" name="Posted" parent="menu_bill_pay_bills" action="action_billpay_bills_posted" sequence="6"/>
+	<menuitem id="menu_bill_pay_bills_refuse" action="vitalpet_bill_pay.action_billpay_bills_refused" name="Refused" parent="menu_bill_pay_bills" sequence="4"/>
+	<menuitem id="menu_bill_pay_bills_paid" action="vitalpet_bill_pay.action_billpay_paid" name="Paid" parent="menu_bill_pay_bills" sequence="7"/>
+
+
+
+    <menuitem id="menu_bill_pay_to_approve" name="To Approve" parent="menu_bill_pay" sequence="3"  groups="group_billpay_approver"/>
+    <menuitem id="menu_bill_pay_bill_approve" name="Bills To Approve" parent="menu_bill_pay_to_approve" action="action_billpay_approval" sequence="1"/>
+    <menuitem id="menu_bill_pay_credits_approve" name="Credits To Approve" parent="menu_bill_pay_to_approve" action="action_billpay_credit_approval" sequence="2"/>
+    
+    <menuitem id="menu_bill_pay_accountant" name="Accountant" parent="menu_bill_pay" sequence="4"  groups="group_billpay_processor,group_billpay_approver"/>
+    <menuitem id="menu_bill_pay_billpost_accountant" name="Bills To Post" parent="menu_bill_pay_accountant" action="action_billpay_accountant_billpost" sequence="1"/>
+    <menuitem id="menu_bill_pay_creditpost_accountant" name="Credits To Post" parent="menu_bill_pay_accountant" action="action_billpay_accountant_credit_post" sequence="2"/>
+<!--     <menuitem id="menu_bill_pay_reversals" name="Reversals" parent="menu_bill_pay_accountant" action="action_billpay_accountant_reversals" sequence="3"/>
+ -->	<menuitem id="menu_bill_pay_vendor_bills" name="Vendor Bills" parent="menu_bill_pay_accountant" action="account.action_invoice_tree2" sequence="4" />
+
+<!--Bill Pay Mail Report and Log-->
+    <menuitem id="menu_bill_pay_report" name="Reports" parent="menu_bill_pay" sequence="5" groups="group_billpay_processor,group_billpay_approver"/>
+<!--     <menuitem id="menu_bill_pay_log" name="Intercompany Log" parent="menu_bill_pay_report" action="action_billpay_log" sequence="3" groups="group_billpay_approver"/>
+ -->	
+ 	<menuitem id="menu_all_credit" name="All Credits" parent="menu_bill_pay_report" action="action_billpay_all_credits" sequence="2" groups="group_billpay_approver,group_billpay_processor"/>
+	<menuitem id="menu_all_bill" name="All Bills" parent="menu_bill_pay_report" action="action_billpay_all_bills" sequence="1" groups="group_billpay_approver,group_billpay_processor"/>
+	
+<!--Bill Pay Configuration and It's Settings-->
+    <menuitem id="menu_bill_pay_configuration" name="Configuration" parent="menu_bill_pay" sequence="100"/>
+    <menuitem id="menu_bill_general_settings" name="Settings" parent="menu_bill_pay_configuration" sequence="0" action="action_billpay_settings" groups="base.group_system"/>
+    <menuitem id="menu_bill_products" name="Products" parent="menu_bill_pay_configuration" sequence="1" action="product.product_template_action" groups="base.group_system,group_billpay_manager" />
+    
+    <menuitem id="menu_bill_vendors" name="Vendors" parent="menu_bill_pay_configuration" sequence="2" action="base.action_partner_supplier_form" groups="base.group_system,group_billpay_manager" />
+    
+    
+    
+</odoo>

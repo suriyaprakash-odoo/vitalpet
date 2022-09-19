@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <!--
+        This template is the ribbon at the top of the Billpay Inbox that adds
+        some figures to it. We call this rubbon the "Billpay Ibox".
+    -->
+    <t t-name="vitalpet_bill_pay.BillpayInbox">
+    	<style>
+.image_file{
+    padding-left: 0px;
+    background: #fff;
+    width: 418px;
+    height: 68px;
+    vertical-align: middle;
+}
+
+.upload_icon{
+    background: #875a7b;
+    color: #fff;
+    padding: 19px;
+    font-size: 30px;
+    float: left;
+}
+.drag_text{
+    float: left;
+    padding-top: 24px;
+    padding-left: 8px;
+    font-size: 16px;
+}
+.browse{
+    background: #875a7b;
+    border: 0;
+    color: #fff;
+    padding: 7px 17px;
+    margin-left: 16px;
+    float: left;
+    margin-top: 18px;
+    font-size: 15px;
+}
+.o_image_upload{
+	background: #fff;
+	opacity: 0;
+    width: 418px;
+    height: 68px;
+	vertical-align: middle;
+}
+.oe_view_nocontent{display:none;}
+	     </style>
+	     
+<div class="col-md-12" style="padding-left: 4px;">
+  <div class="image_file">
+	  <div style="position: absolute;">
+		  <i class="fa fa-upload upload_icon"></i>
+		  <span class="drag_text">Drag and drop files here or </span>
+		  <button class="browse" >Browse</button>
+	  </div>
+	  <input class="o_image_upload" name="inbox_doc" type="file" />
+  </div>
+</div>
+        <br />
+    </t>
+</templates>

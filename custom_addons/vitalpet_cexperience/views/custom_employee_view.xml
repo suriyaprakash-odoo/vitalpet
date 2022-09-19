@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="custom_hr_employee_visit_review" model="ir.ui.view">
+		<field name="name">hr.employee.visit</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form" />
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//button[@name='toggle_active']" position="after">
+					<button name="action_employee_rec_view"	
+						class="oe_stat_button" type="object" icon="fa-check-square" groups="vitalpet_cexperience.group_client_experience_user">
+						<field name="visits" widget="statinfo"
+						string="Visits" groups="vitalpet_cexperience.group_client_experience_user"/>
+				   </button>
+				</xpath>
+			</data>
+		</field>
+	</record>
+	
+	
+</odoo>

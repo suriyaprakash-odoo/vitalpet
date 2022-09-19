@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="act_hr_employee_hr_production" model="ir.actions.act_window">
+        <field name="name">Production</field>
+        <field name="res_model">hr.production</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': [active_id],
+            'default_employee_id': active_id}
+        </field>
+   	</record>
+	
+
+	<record id="hr_hr_employee_view_production_form" model="ir.ui.view">
+        <field name="name">hr.employee.view.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="%(act_hr_employee_hr_production)d" class="oe_stat_button"
+                        icon="fa-book" type="action" groups="hr.group_hr_manager,vitalpet_mypractice.group_my_practice_officer">
+                        <field name="production_count" widget="statinfo" string="Production" />
+                    </button>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+	<record id="hr_production_line_form_view" model="ir.ui.view">
+		<field name="name">Production Form</field>
+		<field name="model">hr.production.line</field>
+		<field name="arch" type="xml">
+			<form string="Production Report">
+				<group>
+					<group>
+						<field name="employee_id" readonly="1"/>
+						<field name="company_id" readonly="1"/>
+						<field name="date"  readonly="1"/>
+						<field name="payroll_period"  readonly="1"/>
+						<field name="fin_year" readonly="1" />
+						<field name="quarter"  readonly="1"/>
+						<field name="fin_month"  readonly="1"/>
+						<field name="fin_week"  readonly="1"/>
+						<field name="days_worked"  readonly="1"/>
+						<field name="production_per_day"  readonly="1"/>
+					</group>
+					<group>
+						<field name="job_id" string="Job"  readonly="1"/>
+						<field name="bonus_id" string="Tag"  readonly="1"/>
+						<field name="production_type"  readonly="1"/>
+						<field name="amount"  readonly="1"/>
+						<field name="status"  readonly="1"/>
+						<field name="pre_amount" invisible="1"/>
+					</group>
+				</group>
+			</form>
+		</field>
+	</record>
+
+
+	<record model="ir.ui.view" id="hr_production_line_tree_view">
+		<field name="name">Production Tree</field>
+		<field name="model">hr.production.line</field>
+		<field name="arch" type="xml">
+			<tree string="Vitalpet Production" colors="red:status_production == 'history'">
+				<field name="employee_id" />
+				<field name="company_id" />
+				<field name="date" />
+				<field name="payroll_period" />
+				<field name="job_id" string="Job" />
+				<field name="bonus_id" string="Tag" />
+				<field name="production_type" />
+				<field name="amount" />
+				<field name="days_worked" />
+				<field name="production_per_day" />
+				<field name="status" />
+				<field name="status_production" invisible="1"/>
+				<field name="fin_year" />
+				<field name="quarter" />
+				<field name="fin_month" />
+				<field name="fin_week" />
+			</tree>
+		</field>
+	</record>
+
+
+	<record id="vitalpet_production_report_action_1" model="ir.actions.act_window">
+		<field name="name">Production Reports</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">hr.production.line</field>
+		<field name="view_id" ref="hr_production_line_tree_view" />
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<record id="vitalpet_hr_production_view_search" model="ir.ui.view">
+		<field name="name">hr.production.line.search</field>
+		<field name="model">hr.production.line</field>
+		<field name="arch" type="xml">
+			<search string="Search Production Report">
+				<field name="employee_id" domain="[('employee_id','ilike', self)]" />
+				<field name="job_id" domain="[('job_id','ilike', self)]" />
+
+				<filter string="Validated" domain="[('status','=', 'validate')]" />
+				
+				<filter string="Non Validated" domain="[('status','=', 'non_validate')]" />
+
+				<group expand="0" string="Group By">
+
+
+					<filter string="Job" context="{'group_by':'job_id'}" />
+
+					<filter string="Tag" domain="[]" context="{'group_by':'bonus_id'}" />
+
+					<filter string="Company" domain="[]" context="{'group_by':'company_id'}" />
+
+					<filter string="Employee" domain="[]"
+						context="{'group_by':'employee_id'}" />
+
+					<filter string="Payroll Period" domain="[]"
+						context="{'group_by':'payroll_period'}" />
+
+					<filter string="Date" domain="[]" context="{'group_by':'date'}" />
+
+					<filter string="Status" domain="[]" context="{'group_by':'status'}" />
+					<filter string="Fiscal Year" context="{'group_by':'fin_year'}"/>
+                    <filter string="Fiscal Quarter" context="{'group_by':'quarter'}"/>
+                    <filter string="Fiscal Month" context="{'group_by':'fin_month'}"/>
+                    <filter string="Fiscal Week" context="{'group_by':'fin_week'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<menuitem id="vitalpet_production_report_menu_1" action="vitalpet_production_report_action_1"
+		string="Production Reports" parent="vitalpet_payroll_inputs.payroll_inputs_menu_heading" groups="vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager,vitalpet_mypractice.group_my_practice_user"
+		sequence="7" />
+
+</odoo>

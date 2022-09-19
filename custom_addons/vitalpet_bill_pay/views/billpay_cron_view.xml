@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record forcecreate="True" id="ir_cron_billpay_daily" model="ir.cron">
+			<field name="name">Billpay Incoming Server</field>
+			<field eval="True" name="active" />
+			<field name="interval_number">1</field>
+			<field name="interval_type">minutes</field>
+			<field name="numbercall">-1</field>
+			<field eval="True" name="doall" />
+			<field eval="'billpay.bills'" name="model" />
+			<field eval="'cron_fetch_mails_call'" name="function" />
+ 			<field eval="'()'" name="args" />
+		</record>
+	</data>
+</odoo>

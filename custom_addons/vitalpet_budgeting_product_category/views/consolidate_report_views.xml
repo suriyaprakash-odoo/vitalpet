@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+ 		<record model="ir.cron" id="budget_consolidate_month">
+            <field name="name">Budget consolidate month</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'budget.consolidate.monthly'"/>
+            <field name="function" eval="'action_create_budget_consolidate_month'"/>
+            <field name="args" eval="'(2,)'"/>
+        </record>
+        
+        <record model="ir.ui.view" id="view_budget_consolidate_month_kanban">
+            <field name="name">budget.consolidate.monthly.kanban</field>
+            <field name="model">budget.consolidate.monthly</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="month_year">
+                    <field name="margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="is_margin" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <field name="is_visible" />
+                    <templates>
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"' >
+                            <div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}" >
+                                <div style='width:100%;border-radius: 2px;'  class="box">
+                                    <table class="oe_budget_oneline"  style="border:0;width: 100%;color:#000000;" >
+                                        <thead>
+                                            <tr>
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+                                                    <span style="display:none;">
+                                                        <field name="name" />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+                                                    <span>Planned</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Actual</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Variance / YoY</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+                                                    <field name="name" />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+                                                    <span>
+                                                        <field name='planned_amount' />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="c_actual_value">
+                                                    <field name='actual_amount' />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+                                                    <span>
+                                                        <field name='var_amount' />%
+                                                    </span>
+                                                </td>
+                                            </tr> 
+                                            <div t-if='record.is_margin.raw_value'>  
+                                                <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+                                                    <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+                                                        <span>
+                                                            <field name='plan_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="m_actual_value">
+                                                        <span>
+                                                            <field name='actual_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+                                                        <span>
+                                                            <field name='var_margin' />%
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+                                                    <span>
+                                                        <field name='plan_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="p_actual_value">
+                                                    <span>
+                                                        <field name='act_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+                                                    <span>
+                                                        <field name='yoy' />%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="oe_clear">
+                                </div>                           
+                            </div>
+                            <style >
+                                .box:hover
+                                {
+                                    -moz-box-shadow: 0 0 11px #4c4c4c;
+                                    -webkit-box-shadow: 0 0 11px #4c4c4c;
+                                    box-shadow: 0 0 11px #4c4c4c;
+                                }
+                            </style>
+                        </div>
+                    </templates>
+                </kanban>
+            </field>
+        </record>	
+
+
+       <record id="view_budget_consolidate_monthly_search" model="ir.ui.view">
+            <field name="name">budget.consolidate.monthly.search</field>
+            <field name="model">budget.consolidate.monthly</field>
+            <field name="arch" type="xml">
+                <search string="Budget Lines">
+                    <group expand="1" string="Group By...">
+                        <filter string="Month" icon="terp-project" domain="[]" context="{'group_by':'month'}" />
+                        <filter string="Quarter" icon="terp-project" domain="[]" context="{'group_by':'quarter'}" />
+                        <filter string="Year" icon="terp-project" domain="[]" context="{'group_by':'fin_yr'}" />
+                        
+                    	<filter string="This F.Year" name="this_year" domain="[('fin_yr','=',  time.strftime('%%Y'))]"/>
+                    	<filter string="Last F.Year" name="last_year" 
+            				domain="[('fin_yr','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+						<filter string="This Period" name="current_month" domain="[( 'current_month', '=', '1' )]" />
+                        <filter string="Last Year This Period" name="last_year_current_month" domain="[( 'last_year_current_month', '=', '1' )]" />
+					
+						<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+						<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+						<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+		<record id="action_budget_consolidate_monthly" model="ir.actions.act_window">
+			<field name="name">Budget Consolidation Monthly</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">budget.consolidate.monthly</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban</field>
+            <field name="context">{'search_default_current_month': 1,'search_default_budget': 1}</field>
+		</record>
+		
+		<menuitem id="budget_consolidate_monthly_view" parent="menu_act_budget_pactice_view" name="Budget Consolidation" action="action_budget_consolidate_monthly" />
+
+ 		<record model="ir.cron" id="budget_consolidate_quarter">
+            <field name="name">Budget consolidate quarter</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'budget.consolidate.quarterly'"/>
+            <field name="function" eval="'action_create_budget_consolidate_quarter'"/>
+            <field name="args" eval="'(2,)'" />
+        </record>
+        
+        
+        <record model="ir.ui.view" id="view_budget_consolidate_quarterly_kanban">
+            <field name="name">budget.consolidate.quarterly.kanban</field>
+            <field name="model">budget.consolidate.quarterly</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="quarter_year">
+                    <field name="margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="is_margin" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <field name="is_visible" />
+                    <templates>
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"' >
+                            <div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}">
+                                <div style='width:100%;border-radius: 2px;'  class="box">
+                                    <table class="oe_budget_oneline"  style="border:0;width: 100%;color:#000000;" >
+                                        <thead>
+                                            <tr>
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+                                                    <span style="display:none;">
+                                                        <field name="name" />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+                                                    <span>Planned</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Actual</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Variance / YoY</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+                                                    <field name="name" />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+                                                    <span>
+                                                        <field name='planned_amount' />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="c_actual_value">
+                                                    <field name='actual_amount' />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+                                                    <span>
+                                                        <field name='var_amount' />%
+                                                    </span>
+                                                </td>
+                                            </tr> 
+                                            <div t-if='record.is_margin.raw_value'>  
+                                                <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+                                                    <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+                                                        <span>
+                                                            <field name='plan_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="m_actual_value">
+                                                        <span>
+                                                            <field name='actual_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+                                                        <span>
+                                                            <field name='var_margin' />%
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+                                                    <span>
+                                                        <field name='plan_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="p_actual_value">
+                                                    <span>
+                                                        <field name='act_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+                                                    <span>
+                                                        <field name='yoy' />%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="oe_clear">
+                                </div>                           
+                            </div>
+                            <style >
+                                .box:hover
+                                {
+                                    -moz-box-shadow: 0 0 11px #4c4c4c;
+                                    -webkit-box-shadow: 0 0 11px #4c4c4c;
+                                    box-shadow: 0 0 11px #4c4c4c;
+                                }
+                            </style>
+                        </div>
+                    </templates>
+                </kanban>
+            </field>
+        </record>	
+
+
+       <record id="view_budget_consolidate_quarterly_search" model="ir.ui.view">
+            <field name="name">budget.consolidate.quarterly.search</field>
+            <field name="model">budget.consolidate.quarterly</field>
+            <field name="arch" type="xml">
+                <search string="Budget Lines">
+                    <group expand="1" string="Group By...">
+                        <filter string="Quarter" icon="terp-project" domain="[]" context="{'group_by':'quarter'}" />
+                        <filter string="Year" icon="terp-project" domain="[]" context="{'group_by':'fin_yr'}" />
+                        
+                    	<filter string="This F.Year" name="this_year" domain="[('fin_yr','=',  time.strftime('%%Y'))]"/>
+                    	<filter string="Last F.Year" name="last_year" 
+            				domain="[('fin_yr','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+					    <filter string="This Quarter" name="current_quarter" domain="[( 'current_quarter', '=', '1' )]" />
+                        <filter string="Last Year This Quarter" name="last_year_current_quarter" domain="[( 'last_year_current_quarter', '=', '1' )]" />
+						<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+						<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+						<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+		<record id="action_budget_consolidate_quarterly" model="ir.actions.act_window">
+			<field name="name">Budget Consolidation Quarterly</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">budget.consolidate.quarterly</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban</field>
+            <field name="context">{'search_default_current_quarter': 1,'search_default_budget': 1}</field>		
+        </record>
+		
+		<!-- <menuitem id="budget_consolidate_quarterly_view" parent="menu_act_budget_pactice_view" name="Consolidate Quarterly" action="action_budget_consolidate_quarterly" /> -->
+
+        <record model="ir.cron" id="budget_consolidate_yearly">
+            <field name="name">Budget consolidate yearly</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'budget.consolidate.yearly'"/>
+            <field name="function" eval="'action_create_budget_consolidate_year'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record model="ir.ui.view" id="view_budget_consolidate_year_kanban">
+            <field name="name">budget.consolidate.yearly.kanban</field>
+            <field name="model">budget.consolidate.yearly</field>
+            <field name="arch" type="xml">
+                <kanban js_class="budget_kanban_view" create="0" default_group_by="fin_yr">
+                    <field name="margin" />
+                    <field name="actual_amount" default="sum" />
+                    <field name="planned_amount" />
+                    <field name="name" />
+                    <field name="is_margin" />
+                    <field name="var_amount_higher" />
+                    <field name="var_margin_higher" />
+                    <field name="var_yoy_higher" />
+                    <field name="check_variance_high" />
+                    <field name="is_visible" />
+                    <templates>
+                        <div t-name="kanban-box" style="padding: 0px 0px;box-shadow:none;"  t-if='record.is_visible.raw_value=="Yes"' >
+                            <div  t-attf-style="padding: 8px 8px;background:{{record.check_variance_high.raw_value}}">
+                                <div style='width:100%;border-radius: 2px;'  class="box">
+                                    <table class="oe_budget_oneline"  style="border:0;width: 100%;color:#000000" >
+                                        <thead>
+                                            <tr>
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;" class="c_name">
+                                                    <span style="display:none;">
+                                                        <field name="name" />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: center;padding:4px 4px;" title="Amount on Global budget">
+                                                    <span>Planned</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Actual</span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: center;padding:4px 4px;" title="Amount computed">
+                                                    <span>Variance / YoY</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-attf-style="background:{{record.var_amount_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;padding:4px 4px;">
+                                                    <field name="name" />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="c_planned_value">
+                                                    <span>
+                                                        <field name='planned_amount' />
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="c_actual_value">
+                                                    <field name='actual_amount' />
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="c_var">
+                                                    <span>
+                                                        <field name='var_amount' />%
+                                                    </span>
+                                                </td>
+                                            </tr> 
+                                            <div t-if='record.is_margin.raw_value'>  
+                                                <tr t-attf-style="background:{{record.var_margin_higher.raw_value}}">
+                                                    <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">Margin</td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="m_planned_value">
+                                                        <span>
+                                                            <field name='plan_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="m_actual_value">
+                                                        <span>
+                                                            <field name='actual_margin' />%
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="m_var">
+                                                        <span>
+                                                            <field name='var_margin' />%
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            <tr t-attf-style="background:{{record.var_yoy_higher.raw_value}}">
+                                                <td style="width:120px; font-size: 9px;border-top:1px solid #000;border-left:1px solid #000; text-align: right;border-bottom: 1px solid #000;padding:4px 4px;">%Of Net Revenue</td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px; text-align: right;padding:4px 4px;" title="Amount on Global budget" class="p_planned_value">
+                                                    <span>
+                                                        <field name='plan_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 10px;text-align: right;padding:4px 4px;" title="Amount computed" class="p_actual_value">
+                                                    <span>
+                                                        <field name='act_pct_nr' />%
+                                                    </span>
+                                                </td>
+                                                <td style="width:60px;white-space: normal;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;  font-size: 9px; text-align: right;padding:4px 4px;" title="Amount computed" class="p_var">
+                                                    <span>
+                                                        <field name='yoy' />%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="oe_clear">
+                                </div>                           
+                            </div>
+                            <style >
+                                .box:hover
+                                {
+                                    -moz-box-shadow: 0 0 11px #4c4c4c;
+                                    -webkit-box-shadow: 0 0 11px #4c4c4c;
+                                    box-shadow: 0 0 11px #4c4c4c;
+                                }
+                            </style>
+                        </div>
+                    </templates>
+                </kanban>
+            </field>
+        </record>   
+
+
+
+       <record id="view_budget_consolidate_yearly_search" model="ir.ui.view">
+            <field name="name">budget.consolidate.yearly.search</field>
+            <field name="model">budget.consolidate.yearly</field>
+            <field name="arch" type="xml">
+                <search string="Budget Lines">
+                    <group expand="1" string="Group By...">
+                        <filter string="Year" icon="terp-project" domain="[]" context="{'group_by':'fin_yr'}" />
+                    	<filter string="This F.Year" name="this_year" domain="[('fin_yr','=',  time.strftime('%%Y'))]"/>
+                    	<filter string="Last F.Year" name="last_year" 
+            				domain="[('fin_yr','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+					
+						<filter string="Budget" name='budget' domain="[('budget_scenario','=','budget')]"/>
+						<filter string="Minimum" name='minimum' domain="[('budget_scenario','=','minimum')]"/>
+						<filter string="Stretch" name='stretch' domain="[('budget_scenario','=','stretch')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_budget_consolidate_yearly" model="ir.actions.act_window">
+            <field name="name">Budget Consolidation Yearly</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">budget.consolidate.yearly</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="context">{'search_default_this_year': 1,'search_default_budget': 1}</field>
+        </record>
+        
+        <!-- <menuitem id="budget_consolidate_yearly_view" parent="menu_act_budget_pactice_view" name="Consolidate Yearly" action="action_budget_consolidate_yearly" /> -->
+		
+</odoo>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+    
+        <record model="ir.cron" id="weekly_report_cron">
+            <field name="name">Weekly Report Scheduler</field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name='active'>true</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'weekly.report'"/>
+            <field name="function" eval="'action_create_weekly_report'"/>
+            <field name="args" eval="'()'" />
+        </record>        
+
+	<record id="view_weekly_report_tree" model="ir.ui.view">
+        <field name="name">weekly.report.metrics.tree</field>
+        <field name="model">weekly.report</field>
+        <field name="arch" type="xml">
+            <tree string="Weekly Report">
+            	
+                <field name="year" invisible="1" />
+                <field name="fin_year"/>
+                <field name="current_company" invisible="1"/>
+                <field name="quarter"/>
+                <field name="fin_month" string="Month"/>               
+                <field name="week" invisible="1"/>  
+                <field name="fin_week"/>              
+                <field name="company_id"/>
+                <field name="apc"/>
+                <field name="apcvsly"/>
+                <field name="gross"/>
+                <field name="gross_growth"/>
+                <field name="deposit"/>
+                <field name="depositgrowth"/>
+                <field name="discount"/>
+                <field name="labour_budgettemp"/>               
+                <field name="labour_achievedtemp"/>
+                <field name="ncint"/>
+                <field name="clients_gain_loss"/>
+                <field name="ncgrthtempnew"/>
+                <field name="ncvisittempnew"/>
+                <field name="labper"/>
+                <field name="nptnts"/>
+                <field name="visit"/>
+                <field name="visitgrowth"/>
+                <field name="trans"/>
+                <field name="grooming"/>
+                <field name="non_medical_pro_serv_per"/>
+                <field name="non_medical_pro_serv"/>
+                <field name="ly_non_medical_pro_serv"/>
+                <field name="annualized_turnover_rate"/>
+                <field name="grooming_growth"/>
+                <field name="brdngoccpncytemp"/>
+                <field name="dntprophys"/>
+                <field name="day_campers"/>
+                <field name="day_campers_occupance"/>
+                <field name="lygross"/>
+                <field name="lydeposit"/>
+                <field name="lyvisit"/>
+                <field name="lygrooming"/>
+                <field name="lyncint"/>
+                <field name="total_actual_labor_weekly" invisible="0"/>
+                <field name="total_revenue_actual" invisible="0"/>
+
+           </tree>
+        </field>
+    </record>
+    <record id="weekly_report_pivot_view" model="ir.ui.view">
+        <field name="name">weekly.report.metrics.pivot</field>
+        <field name="model">weekly.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Weekly Report" display_quantity="true" disable_linking="True">
+
+                <field name="week" type="row"/>
+                <field name="apc" type="measure"/>
+                <field name="gross" type="measure"/>
+                <field name="gross_growth" type="measure"/>
+                <field name="deposit" type="measure"/>
+                <field name="depositgrowth" type="measure"/>
+                <field name="discount" type="measure"/>
+                <field name="labour_budgettemp" type="measure"/>               
+                <field name="labour_achievedtemp" type="measure"/>
+                <field name="ncint" type="measure"/>
+                <field name="ncgrthtempnew" type="measure"/>
+                <field name="ncvisittempnew" type="measure"/>
+                <field name="nptnts" type="measure"/>
+                <field name="visit" type="measure"/>
+                <field name="visitgrowth" type="measure"/>
+                <field name="trans" type="measure"/>
+                <field name="grooming" type="measure"/>
+                <field name="grooming_growth" type="measure"/>
+                <field name="brdngoccpncytemp" type="measure"/>
+                <field name="dntprophys" type="measure"/>
+                <field name="lygross" type="measure"/>
+                <field name="lydeposit" type="measure"/>
+                <field name="lyvisit" type="measure"/>
+                <field name="lygrooming" type="measure"/>
+                <field name="lyncint" type="measure"/>
+               
+            </pivot>
+        </field>
+    </record> 
+
+    <record id="weekly_report_search_view_search" model="ir.ui.view">
+            <field name="name">weekly.report.search</field>
+            <field name="model">weekly.report</field>
+            <field name="arch" type="xml">
+
+               <search string="Weekly Report">
+                 <field name="company_id" />
+				
+	<!-- 	      <field name="name" 
+				filter_domain="[('name','ilike',self),('year','ilike',self),('current_company','ilike',self)]" /> -->
+		          
+                <filter string="This F.Year" name="year"   domain="[('year','=',  time.strftime('%%Y'))]"/>
+                <filter string="Last F.Year" name="lastyear" 
+           			 domain="[('year','=',(context_today()-relativedelta(years=1)).strftime('%%Y'))]"/>
+           		<!-- <filter string="Compare" name="compare" domain="[( 'compare', '=', '1' )]"/> -->
+                <filter string="Current Company" name="current_company" domain="[( 'current_company', '=', '1' )]" />
+
+                    <group expand="1" string="Group By">
+                    	<filter string="Company" context="{'group_by':'company_id'}" />
+                        <filter string="Fiscal Week" name="week" context="{'group_by':'fin_week'}"/>
+                        <filter string="Fiscal Month" context="{'group_by':'fin_month'}" />
+                        <filter string="Fiscal Quarter" context="{'group_by':'quarter'}" />
+                        <filter string="Fiscal Year" context="{'group_by':'fin_year'}" />
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>   
+
+                <!--     Opportunity tree view  -->
+
+    
+    <record id="action_weekly_report" model="ir.actions.act_window">
+        <field name="name">Weekly Report</field>
+        <field name="res_model">weekly.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="view_id" ref="view_weekly_report_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_week': 1,'search_default_year': 1, 'search_default_current_company':1}</field>   
+    </record>
+
+    <menuitem id="menu_mypractice_action_weekly_parent" name="Practice"  parent="vitalpet_mypractice.menu_mypractice_reports" sequence="1" groups="vitalpet_mypractice.group_my_practice_user" />
+    <menuitem id="menu_mypractice_action_weekly_report" name="Weekly" action="action_weekly_report" parent="menu_mypractice_action_weekly_parent" sequence="1" groups="vitalpet_mypractice.group_my_practice_user" />
+    </data>
+</odoo>

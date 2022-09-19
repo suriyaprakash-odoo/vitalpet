@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	
+    <t t-name="widget_top_actual">
+    <table style="width:100%;display: inline-table;border: 1px solid #ccc;" border="1" class="overall">
+			<tr style="background: #c3c3c3;">
+				<th>Week</th>
+				<th>Budget Net Revenue</th>
+				<th>Actual Net Revenue</th>
+				<th>Budget Labor %</th>
+				<th>Actual Labor %</th>
+			</tr>
+			
+		
+			<tr  t-if="dates.line_color1 == 'red'" style="color:red">
+			    <t t-foreach="dates.week1" t-as="week1">
+			        <td>
+			            <t t-raw="week1"></t>
+			        </td>
+			    </t>  
+		    </tr>
+			<tr  t-if="dates.line_color1 == 'normal'">
+			    <t t-foreach="dates.week1" t-as="week1">
+			        <td>
+			            <t t-raw="week1"></t>
+			        </td>
+			    </t>  
+		    </tr>
+			<tr  t-if="dates.line_color2 == 'red'" style="color:red">
+			    <t t-foreach="dates.week2" t-as="week2">
+			        <td>
+			            <t t-raw="week2"></t>
+			        </td>
+			    </t> 
+		    </tr>
+			<tr  t-if="dates.line_color2 == 'normal'">
+			    <t t-foreach="dates.week2" t-as="week2">
+			        <td>
+			            <t t-raw="week2"></t>
+			        </td>
+			    </t> 
+		    </tr>
+			 
+		</table>
+		
+		<table style="width:100%;display: inline-table;margin-top:50px;">
+		    <tbody class="sub_widget_actuals">
+		    
+		<tr style="background: #eeeeee;">
+		    <th></th>
+		    <th>Percentage</th>		
+		    <t t-foreach="dates.dates" t-as="date">		    
+		        <th  t-if="date.holiday == 0"><t t-raw="date.d1"></t></th>
+		        <th  t-if="date.holiday == 1" style="background:#ff7070;color:#fff"><t t-raw="date.d1"></t></th>
+		    </t>		
+		    <th>OT</th>
+		    <th>Total</th>
+		    <th>Total Amount</th>
+		</tr>
+		
+		<tr style="background-color: #99ccff;color: #000;">
+		    <td style="text-align: left">Revenue Budget</td>
+		    <td>		    	
+		    </td>		
+		    	
+		    <t t-foreach="dates.rev_budget_act" t-as="rev_budget_act">
+		        <td>
+		            <t t-raw="rev_budget_act"></t>
+		        </td>
+		    </t>
+		    <td></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.rev_budget_act_tot"></t></td>	
+		</tr>
+		<tr style="background-color:#6699ff;  color:#fff;">
+		    <td style="text-align: left">Revenue Actual</td>		
+		    <td></td>		
+		    <t t-foreach="dates.net_rev_act" t-as="net_rev_act">
+		        <td>
+		            <t t-raw="net_rev_act"></t>
+		        </td>
+		    </t>
+		    <td></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.net_rev_act_tot"></t></td>	   
+		</tr>
+		<tr style="background-color: #99ccff;color: #000;">
+		    <td style="text-align: left">Labor Budget</td>
+		    <td>[<t t-raw="dates.percent"></t>%]</td>		
+		    <t t-foreach="dates.budget" t-as="budget">
+		        <td>
+		            <t t-raw="budget"></t>
+		        </td>
+		    </t>
+		    <td></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.budget_rev_tot"></t></td>
+		</tr>
+		<tr style="background-color: #99ccff;color: #000;">
+		    <td style="text-align: left">Labor Forecast</td>		
+		    <td></td>		
+		   	
+		    <t t-foreach="dates.bud_lab_forecast" t-as="bud_lab_forecast">
+		        <td>
+		            <t t-raw="bud_lab_forecast"></t>
+		        </td>
+		    </t>
+		    <td><t t-raw="dates.ot_amount"></t></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.bud_lab_forecast_tot"></t></td>  
+		</tr>
+		<tr style="background-color: #99ccff;color: #000;">
+		    <td style="text-align: left">Labor Actual</td>		
+		    <td></td>
+		    <t t-foreach="dates.act_costs" t-as="act_costs">
+		        <td>
+		            <t t-raw="act_costs"></t>
+		        </td>
+		    </t>  
+		    <td><t t-raw="dates.tot_ot_costs"></t></td>
+		    <td></td>	 	
+		    <td><t t-raw="dates.tot_act_costs"></t></td>	  
+		</tr>
+		<tr style="background-color:#6699ff;  color:#fff;">
+		    <td style="text-align: left">Labor Percentage Actual</td>		
+		    <td></td>		
+		    <t t-foreach="dates.rev_act_per" t-as="rev_act_per">
+		        <td>
+		            <t t-raw="rev_act_per"></t>
+		        </td>
+		    </t>  
+		    <td></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.labour_per_act"></t></td>		   
+		</tr>
+		<tr style="background-color: #99ccff;color: #000;">
+		    <td style="text-align: left">Revenue to Support Actual</td>		
+		    <td></td>		
+		    	
+		    <t t-foreach="dates.rev_support_act" t-as="rev_support_act">
+		        <td>
+		            <t t-raw="rev_support_act"></t>
+		        </td>
+		    </t>  
+		    <td></td>	 
+		    <td></td>	
+		    <td><t t-raw="dates.rev_support_act_tot"></t></td>	   
+		</tr>
+		
+		<t t-foreach="dates.hours_list" t-as="hours_list">
+			<tr style="background-color:#3366ff; border: 1px solid #0000ff; color:#fff;">
+			    <td style="text-align: left"><t t-raw="hours_list.job" ></t></td>		
+			    <td><t t-raw="hours_list.job_per" ></t></td>
+			    <td><t t-raw="hours_list.sun" ></t></td>					    		
+			    <td><t t-raw="hours_list.mon" ></t></td>		
+			    <td><t t-raw="hours_list.tues" ></t></td>		
+			    <td><t t-raw="hours_list.wed" ></t></td>		
+			    <td><t t-raw="hours_list.thurs" ></t></td>		
+			    <td><t t-raw="hours_list.fri" ></t></td>		
+			    <td><t t-raw="hours_list.sat" ></t></td>	
+			    <td></td>	 
+			    <td></td>	
+			    <td><t t-raw="hours_list.job_total_costs" ></t></td>		   
+			</tr>
+			<t t-foreach="hours_list.list" t-as="list">
+				
+				<tr>
+				    <td style="text-align: left"><t t-raw="list.name" ></t></td>		
+				    <td></td>		
+				    <t t-foreach="list.hours" t-as="hours">				    	
+				    	<td>
+				    		<t t-if="hours.pto=='Yes'"><span style="background:rgb(244, 100, 105);color:#fff;"><t t-raw="hours.hrs" ></t></span></t>
+				    		<t t-if="hours.pto!='Yes'"><t t-raw="hours.hrs" ></t></t>
+				    	</td>	
+				    </t>	
+			    <td><t t-raw="list.emp_ot_hrs" ></t></td>	 
+			    <td><t t-raw="list.emp_total_hrs" ></t></td>	
+			    <td><t t-raw="list.emp_total" ></t></td>			   
+				</tr>
+			</t>
+		</t>
+		<!-- 
+		<tr style="background-color: rgb(155, 194, 230); color: rgb(255, 255, 255);">
+		    <td style="text-align: left">Labor Forecast</td>
+		    <td></td>		
+		    <t t-foreach="dates.labour_forcast" t-as="value">
+		        <th><t t-raw="value"></t></th>
+		    </t>
+		    <th>0.0</th>
+		    <th>0.0</th>
+		</tr>
+		
+		<tr style="background-color: #0000ff;color: #FFFFFF;">
+		    <td style="text-align: left">Budget Revenue</td>
+		    <td></td>
+		    <t t-foreach="dates.budget_rev" t-as="budget_rev">
+		        <td>
+		            <t t-raw="budget_rev"></t>
+		        </td>
+		    </t>
+		    <td>0.0</td>
+		    <td>0.0</td>
+		</tr>
+		<tr style="background-color: #008900;color: #FFFFFF;">
+		    <td style="text-align: left">Revenue Needed to Support Labor Forecast
+		    </td>
+		    <td></td>		
+		    <t t-foreach="dates.revenue_labour_forcast" t-as="value">
+		        <th class=" daysheader " data-id="0">
+		            <t t-raw="value"></t>
+		        </th>
+		    </t>		
+		    <th>0.0</th>
+		    <th>0.0</th>
+		
+		</tr> -->
+		    
+    	
+		
+		    </tbody>
+		</table>
+		
+    <div style="text-align:center">
+	    <t t-if="dates.week_no==1">
+			<a class="next_btn" style="font-size: 22px;"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+		</t>
+		<t t-if="dates.week_no==2">
+			<a class="prev_btn" style="font-size: 22px;"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+		</t>
+	</div>
+	
+    </t>
+    <t t-name="ach_template">
+		
+    	<style style="display:none;">
+		    .sub_widget_actuals td,
+		    .sub_widget_actuals th,
+		    .overall td, .overall th {
+		        padding: 5px 6px;
+		    }
+		</style>
+				
+		<p>
+		    <div class="sub_widget"></div>
+		</p>
+		<div class="sub_widget_actuals">
+	
+		</div>
+    </t>
+</templates>

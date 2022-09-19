@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_weekly_report_user,access_weekly_report_user,model_weekly_report,vitalpet_mypractice.group_my_practice_user,1,0,0,0
+access_weekly_report_practice_manager,access_weekly_report_practice_manager,model_weekly_report,vitalpet_mypractice.group_my_practice_officer,1,0,0,0
+access_weekly_report_manager,access_weekly_report_manager,model_weekly_report,vitalpet_mypractice.group_my_practice_manager,1,0,0,1

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+    <record id="view_employee_form_update_timesgheet" model="ir.ui.view">
+        <field name="name">hr.employe.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <data>
+
+                  <button name="toggle_active" position="after">
+                     <button name="click_schedule" type="object" class="oe_stat_button" icon="fa-clock-o" >
+                        <field name="schedule_count" widget="statinfo" string="Schedule"/>
+                    </button>
+                </button>
+                
+            </data>
+        </field>
+    </record>
+    
+    <record id="staff_planning_display_week_tree" model="ir.ui.view">
+            <field name="name">staff.planning.display.week.tree</field>
+            <field name="model">staff.planning.display.week</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="from_date" />
+                    <field name="to_date" />
+                    <field name="day1"/>
+                    <field name="day2"/>
+                    <field name="day3"/>
+                    <field name="day4"/>
+                    <field name="day5"/>
+                    <field name="day6"/>
+                    <field name="day7"/>
+                    <field name="ot_total"/>
+                    <field name="hours_total"/>
+                </tree>
+            </field>
+        </record>
+        
+		<record id="action_staff_planning_display_week" model="ir.actions.act_window">
+            <field name="name">Staff planning display week</field>
+            <field name="res_model">staff.planning.display.week</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+</odoo>
+
+

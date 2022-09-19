@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="hr_contract_view_form_inherited" model="ir.ui.view">
+			<field name="name">hr.contract.view.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="payroll_contract_jobs.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				
+				<xpath expr="//field[@name='contract_job_ids']" position="attributes">
+					<attribute name="required">1</attribute>
+				</xpath>
+				
+				<xpath
+					expr="//field[@name='contract_job_ids']/tree/field[@name='is_main_job']"
+					position="after">
+					<field name="is_bonus" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="hr_contract_view_form_inherit_1" model="ir.ui.view">
+			<field name="name">hr.contract.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="payroll_employee_benefit.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//group[@name='benefits_group']" position="before">
+					<group name="staff_bonus" string="Production" colspan="2">
+						<div>
+							<button name="get_bonus_lines" class="oe_highlight"
+								style="float:right;box-shadow: 1px 4px 2px 0px #c0c0c0;margin-bottom:7px;"
+								string="Get Bonus" type="object" />
+						</div>
+
+						<field name="staff_bonus_ids" colspan="2" nolabel="1">
+							<tree editable="bottom">
+								<field name="job_id" readonly="1" />
+								<field name="production_tag_id" readonly="1" />
+								<field name="is_bonus" />
+								<field name="deduct_draw" />
+							</tree>
+						</field>
+					</group>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

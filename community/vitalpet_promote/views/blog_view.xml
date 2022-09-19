@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_blog_post_list_inherit">
+            <field name="name">promote.post.list</field>
+            <field name="model">promote.post</field>
+            <field name="inherit_id" ref="view_blog_post_list"/>
+            <field name="arch" type="xml">
+                    <field name="name" position="replace">
+                    	<field name="company_id" />
+                    	<field name="name" />
+                    </field>
+            </field>
+        </record>
+
+		<!-- record model="ir.ui.view" id="view_blog_post_form_inherit">
+            <field name="name">promote.post.form</field>
+            <field name="model">promote.post</field>
+            <field name="inherit_id" ref="view_blog_post_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//group[1]" position="replace">
+                </xpath>
+
+				<field name="blog_id" position="replace">
+					<field name="blog_id" string="Blog Category" />
+					<field name="tags_ids" string="Tags" required="1" widget="many2many_tags" />
+				</field>
+
+
+                <xpath expr="//form//sheet//group[2]" position="replace">
+
+                	<group style="margin:0 !important;">
+                		<field name="title"  attrs="{'invisible': [('blog_id', 'not in', (1))], 'required': [('blog_id', 'not in', (2,3,4,5,6,7))]}"/>
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="short_text"  attrs="{'invisible': [('blog_id', 'not in', (1))]}"/>
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="content"  attrs="{'invisible': [('blog_id', 'not in', (1,3,6))], 'required': [('blog_id', 'not in', (2,3,4,5,6,7))]}"/>
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="image" class="image_cls"  widget="image" attrs="{'invisible': [('blog_id', 'not in', (1,2,3,4,5,6))], 'required': [('blog_id', 'not in', (2,6,7))]}"/>
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="petname" attrs="{'invisible': [('blog_id', 'not in', (3))], 'required': [('blog_id', 'not in', (1,2,4,5,6,7))]}" />
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="city" attrs="{'invisible': [('blog_id', 'not in', (3))], 'required': [('blog_id', 'not in', (1,2,4,5,6,7))]}" />
+                	</group>
+                	<group style="margin:0 !important;">
+                		<field name="age" attrs="{'invisible': [('blog_id', 'not in', (3))]}" />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="breed" attrs="{'invisible': [('blog_id', 'not in', (3))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="sex" string="Sex" attrs="{'invisible': [('blog_id', 'not in', (3))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="weight" attrs="{'invisible': [('blog_id', 'not in', (3))]}"  />
+                	</group>
+
+
+                	<group  style="margin:0 !important;">
+                		<field name="caption" attrs="{'invisible': [('blog_id', 'not in', (4))]}"  />
+                	</group>
+
+
+                	<group  style="margin:0 !important;">
+                		<field name="promotion_title" attrs="{'invisible': [('blog_id', 'not in', (5))], 'required': [('blog_id', 'not in', (1,2,3,4,6,7))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="explanation" attrs="{'invisible': [('blog_id', 'not in', (5))]}"  />
+                	</group>
+
+
+                	<group  style="margin:0 !important;">
+                		<field name="service" attrs="{'invisible': [('blog_id', 'not in', (6))], 'required': [('blog_id', 'not in', (1,2,3,4,5,7))]}"  />
+                	</group>
+
+
+                	<group  style="margin:0 !important;">
+                		<field name="quote" attrs="{'invisible': [('blog_id', 'not in', (2))], 'required': [('blog_id', 'not in', (1,3,4,5,6,7))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="reviewer_name" attrs="{'invisible': [('blog_id', 'not in', (2))], 'required': [('blog_id', 'not in', (1,3,4,5,6,7))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="reviewer_hometown" attrs="{'invisible': [('blog_id', 'not in', (2))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="source_of_review" attrs="{'invisible': [('blog_id', 'not in', (2))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="state" attrs="{'invisible': [('blog_id', 'not in', (3))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="news_date" attrs="{'invisible': [('blog_id', 'not in', (1))]}"  />
+                	</group>
+                	<group  style="margin:0 !important;">
+                		<field name="expiration_date" attrs="{'invisible': [('blog_id', 'not in', (2,3,5))]}"  />
+                	</group>
+
+
+
+                	<group  style="margin:0 !important;">
+                		<field name="website_published"   />
+                	</group>
+
+
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <template id="latest_blogs" inherit_id="latest_blogs" name="Latest Blogs">
+        	<xpath expr="//*[@class='alert alert-warning alert-dismissable mt16']" position="replace">
+        	</xpath>
+        	<xpath expr="//h1" position="replace">
+        		<h1>Latest Blogs</h1>
+        	</xpath>
+        	<xpath expr="//section[3]" position="replace">
+	        	<section class="container">
+	                <div class="row">
+	                    <t t-set="count" t-value="0"/>
+	                    <t t-foreach="posts" t-as="post">
+	                      <div class="col-md-6 blogpost">
+		                      	<div style="border-bottom: 1px solid #d6d6d6;background: #f7f7f7;padding: 0.5% 1%;margin-bottom: 16px;">
+			                        <h4>
+			                            <a t-attf-href="#{blog_url('', ['blog', 'post'], blog=post.blog_id, post=post)}" t-field="post.blog_id"></a>
+			                            <span t-if="not post.website_published" class="text-warning">
+			                                &amp;nbsp;
+			                                <span class="label label-danger" style="font-size: 60%;">not published</span>
+			                            </span>
+			                        </h4>
+			                        	<span t-field="post.image"  t-field-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-rounded&quot;}" />
+
+
+			                        <div class="text-muted">
+			                            <span class="fa fa-calendar"> <span t-field="post.create_date"/> &amp;nbsp;</span>
+			                        </div>
+		                        </div>
+	                      	</div>
+	                      <t t-set="count" t-value="count+1"/>
+	                      <div class="clearfix" t-if="(count % 2) == 0"/>
+	                    </t>
+	                </div>
+	            </section>
+	            <style>
+	            	.blogpost span img{height:100px;}
+	            </style>
+            </xpath>
+        </template>
+        <template id="blog_post_complete_inherit" inherit_id="blog_post_complete" name="Blog Post">
+	        	<xpath expr="//*[@class='cover js_fullheight']" position="replace">
+
+		        	<div class="container" id="title"  t-ignore="True">
+
+				        <div class="blog_title">
+				            <h1 t-field="promote_post.blog_id" id="blog_post_name" t-att-data-blog-id="promote_post.id" class="text-center"/>
+
+				             <div t-if="promote_post.title" >
+				             	<h2 t-field="promote_post.title" class="text-center" />
+				             </div>
+				             <div t-if="promote_post.image" class="imgfield">
+				             	<span t-field="promote_post.image"  t-field-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-rounded&quot;}" />
+				             </div>
+				             <br /><br />
+				             <div t-if="promote_post.petname" class="confield">
+				             	<b>Pet Name</b> <span t-field="promote_post.petname" />
+				             </div>
+				             <div t-if="promote_post.city" class="confield">
+				             	<b>City</b> <span t-field="promote_post.city" />
+				             </div>
+				             <div t-if="promote_post.age" class="confield">
+				             	<b>Age</b> <span t-field="promote_post.age" />
+				             </div>
+				             <div t-if="promote_post.breed" class="confield">
+				             	<b>Breed</b> <span t-field="promote_post.breed" />
+				             </div>
+				             <div t-if="promote_post.sex" class="confield">
+				             	<b>Sex</b> <span t-field="promote_post.sex" />
+				             </div>
+				             <div t-if="promote_post.weight" class="confield">
+				             	<b>Weight</b> <span t-field="promote_post.weight" />
+				             </div>
+				             <div t-if="promote_post.caption" class="confield">
+				             	<b>Caption</b> <span t-field="promote_post.caption" />
+				             </div>
+				             <div t-if="promote_post.promotion_title" class="confield">
+				             	<b>Promotion Title</b> <span t-field="promote_post.promotion_title" />
+				             </div>
+				             <div t-if="promote_post.explanation" class="confield">
+				             	<b>Explanation</b> <span t-field="promote_post.explanation" />
+				             </div>
+				             <div t-if="promote_post.service" class="confield">
+				             	<b>Service</b> <span t-field="promote_post.service" />
+				             </div>
+				             <div t-if="promote_post.quote" class="confield">
+				             	<b>Quote</b> <span t-field="promote_post.quote" />
+				             </div>
+				             <div t-if="promote_post.reviewer_name" class="confield">
+				             	<b>Reviewer Name</b> <span t-field="promote_post.reviewer_name" />
+				             </div>
+				             <div t-if="promote_post.reviewer_hometown" class="confield">
+				             	<b>Reviewer Hometown</b> <span t-field="promote_post.reviewer_hometown" />
+				             </div>
+				             <div t-if="promote_post.source_of_review" class="confield">
+				             	<b>Source Of Review</b> <span t-field="promote_post.source_of_review" />
+				             </div>
+				             <div t-if="promote_post.content" >
+				             	<span t-field="promote_post.content" class="text-center" />
+				             </div>
+
+
+				             <p class="post-meta text-muted text-center" name="blog_post_data"/>
+				            <div class="text-center">
+				                <span t-field="promote_post.author_avatar" t-field-options='{"widget": "image", "class": "img-circle", "style":"width: 30px; margin-right: 10px; display:inline"}' />
+				                <span t-field="promote_post.author_id" style="display: inline-block;" t-field-options='{
+				                    "widget": "contact",
+				                    "fields": ["name"]
+				                }'/>
+				            </div>
+				        </div>
+				    </div>
+
+					<style>
+						.imgfield img{margin: 0 auto;}
+						.confield{clear:both;}
+						.confield b{width:30%;float:left;padding:10px;background: #f1f1f1;margin-top: 2px;margin-right: 2px;}
+						.confield span{width:68%;float:left;padding:10px;background: #f1f1f1;margin-top: 2px;}
+						.confield:nth-child(even) b{background: #f9f9f9;}
+						.confield:nth-child(even) span{background: #f9f9f9;}
+						#blog_content{display:none;}
+					</style>
+			    </xpath>
+        </template>
+        <template id="blog_post_short_inherit" inherit_id="blog_post_short" name="Blog Posts" >
+
+        		<t t-call="index" position="replace">
+        			<t t-call="index">
+			        <div class="oe_structure">
+			            <section class="mb0">
+			                <div class="container">
+			                    <div class="row">
+			                        <t t-call="website.pager" >
+			                            <t t-set="classname">pull-right</t>
+			                        </t>
+			                        <div class="col-md-12 mb32 mt16 text-center">
+			                            <h1 t-field="blog.name"/>
+			                            <h3 class="text-muted" t-field="blog.subtitle"/>
+			                        </div>
+			                    </div>
+			                </div>
+			            </section>
+			        </div>
+			        <div class="container">
+			            <div class="row">
+			              <div class="col-md-8 col-md-offset-2" t-ignore="True" id="main_column">
+
+			                <div t-if="not blog_posts" class="container mb64">
+			                  <p class="css_editable_hidden">
+			                    <h1>No blog post yet.</h1>
+			                  </p>
+			                  <p groups="base.group_document_user">
+			                    Click on "Content" on the top menu to write your first blog post.
+			                  </p>
+			                </div>
+
+			                <div t-foreach="blog_posts" t-as="promote_post" class="mb32">
+
+			                  <span t-field="promote_post.author_avatar" t-field-options='{"widget": "image", "class": "img-circle pull-right mt16 media-object"}' />
+			                  <a t-attf-href="/promote/#{ slug(promote_post.blog_id) }/post/#{ slug(promote_post) }">
+			                      <h2 t-field="promote_post.name" class="mb4"/>
+			                  </a>
+
+			                  <div class="text-muted">
+			                      <h4
+			                        t-field="promote_post.subtitle"
+			                        class="mb4 mt4"/>
+			                    <div name='blog_post_data' class='mb0'>
+			                         <span t-field="promote_post.author_id" style="display: inline-block;" t-field-options='{
+			                                "widget": "contact",
+			                                "fields": ["name"]
+			                            }'/>
+			                        &#5760; <span t-field="promote_post.create_date" t-field-options='{"format": "MMMM yyyy"}'/>
+			                        <span t-if="len(promote_post.message_ids) &gt; 0">
+			                            &#5760; <t t-esc="len(promote_post.message_ids)"/>
+			                            <t t-if="len(promote_post.message_ids) &lt;= 1" >comment</t>
+			                            <t t-if="len(promote_post.message_ids) > 1">comments</t>
+			                        </span>
+
+			                        <span t-if="not promote_post.website_published" class="label label-danger">not published</span>
+			                    </div>
+			                  </div>
+
+			                </div>
+			              </div>
+			            </div>
+			        </div>
+
+			        <div class="oe_structure"/>
+			        </t>
+			    </t>
+        </template-->
+
+	</data>
+</openerp>

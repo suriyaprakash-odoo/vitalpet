@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!--Balance Sheet -->
+
+		<record id="account_financial_report_bs_0" model="account.financial.html.report">
+			<field name="name">Balance Sheet </field>
+			<field name="debit_credit" eval="False" />
+			<field name="report_type">date_range_analytic</field>
+			<field name='parent_id'
+				ref='account_reports.account_reports_legal_statements_menu' />
+		</record>
+
+		<record id="account_financial_report_bs_tloe_0"
+			model="account.financial.html.report.line">
+			<field name="name">Total Liabilities and Owners Equity</field>
+			<field name="code">TLOEBS</field>
+			<field name="formulas">balance = TLBS.balance + TEBS.balance</field>
+			<field name="financial_report_id" ref='account_financial_report_bs_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="0" />
+		</record>
+		
+
+		<record id="account_financial_report_bs_tl_0"
+			model="account.financial.html.report.line">
+			<field name="name">Liabilities</field>
+			<field name="code">TLBS</field>
+			<field name="formulas">balance = TCLBS.balance + TLTLBS.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tloe_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="1" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record id="account_financial_report_bs_tclbs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Current Liabilities</field>
+			<field name="code">TCLBS</field>
+			<field name="formulas">balance = APBS.balance + OCLBS.balance + IPBS.balance </field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tl_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_ap_0"
+			model="account.financial.html.report.line">
+			<field name="name">Accounts Payable</field>
+			<field name="code">APBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tclbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Payable')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_ocl_0"
+			model="account.financial.html.report.line">
+			<field name="name">Other Current Liabilities</field>
+			<field name="code">OCLBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tclbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Current Liabilities'),('account_id.tag_ids', '!=','Intercompany')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_bs_ip_0"
+			model="account.financial.html.report.line">
+			<field name="name">Intercompany Payables</field>
+			<field name="code">IPBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tclbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Current Liabilities'),('account_id.tag_ids', '=','Intercompany')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record id="account_financial_report_bs_tltlbs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Long Term Liabilities</field>
+			<field name="code">TLTLBS</field>
+			<field name="formulas">balance = NPBS.balance + CDBS.balance + OLTLBS.balance + BLBS.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tl_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		
+		
+		
+		<record
+			id="account_financial_report_bs_np_0"
+			model="account.financial.html.report.line">
+			<field name="name">Notes Payable</field>
+			<field name="code">NPBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tltlbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Non-current Liabilities'),('account_id.tag_ids', '=','Notes Payable')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_bs_cd_0"
+			model="account.financial.html.report.line">
+			<field name="name">Convertible Debentures</field>
+			<field name="code">CDBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tltlbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Non-current Liabilities'),('account_id.tag_ids', '=','Convertible Debentures')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_bs_oltl_0"
+			model="account.financial.html.report.line">
+			<field name="name">Other Long Term Liabilities</field>
+			<field name="code">OLTLBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tltlbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Non-current Liabilities'),('account_id.tag_ids', '=','Other Long Term Liabilities')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		
+		<record
+			id="account_financial_report_bs_bl_0"
+			model="account.financial.html.report.line">
+			<field name="name">Bank Loans</field>
+			<field name="code">BLBS</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tltlbs_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Non-current Liabilities'),('account_id.tag_ids', '=','Bank Loans')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record id="account_financial_report_bs_te_0"
+			model="account.financial.html.report.line">
+			<field name="name">Equity</field>
+			<field name="code">TEBS</field>
+			<field name="formulas">balance = CARC.balance + ARE.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_tloe_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="1" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_carc_0"
+			model="account.financial.html.report.line">
+			<field name="name">Charter and Reserve Capital</field>
+			<field name="code">CARC</field>
+			<field name="formulas">balance = -sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_te_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Equity')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<!-- <record
+			id="account_financial_report_bs_cte_0"
+			model="account.financial.html.report.line">
+			<field name="name">CURRENT YEAR EARNINGS</field>
+			<field name="code">UNAFFECTED_EARNINGS</field>
+			<field name="formulas">balance = NTCMEWHQ.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_te_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=', 12)]" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record> -->
+		
+		<record
+			id="account_financial_report_bs_are_0"
+			model="account.financial.html.report.line">
+			<field name="name">Accumulated Retained Earnings (Deficit)</field>
+			<field name="code">ARE</field>
+			<field name="formulas">balance = - sum.balance + NTCME1.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_te_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Current Year Earnings')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		<record id="account_financial_report_bs_ta_0"
+			model="account.financial.html.report.line">
+			<field name="name">Assets</field>
+			<field name="code">TABS</field>
+			<field name="formulas">balance = CABS.balance + FABS.balance</field>
+			<field name="financial_report_id" ref='account_financial_report_bs_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="1" />
+		</record>
+		
+		<record id="account_financial_report_bs_ca_0"
+			model="account.financial.html.report.line">
+			<field name="name">Current Assets</field>
+			<field name="code">CABS</field>
+			<field name="formulas">balance = CAEBS.balance + PEOABS.balance + ARBS.balance + IBS.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ta_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_cae_0"
+			model="account.financial.html.report.line">
+			<field name="name">Cash and Equivalents</field>
+			<field name="code">CAEBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ca_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Bank and Cash')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_peoa_0"
+			model="account.financial.html.report.line">
+			<field name="name">Prepaid Expenses and Other Assets</field>
+			<field name="code">PEOABS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ca_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Prepayments')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		<record
+			id="account_financial_report_bs_arbs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Accounts Receivable</field>
+			<field name="code">ARBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ca_0' />
+			<field name="domain"
+				eval="[('account_id.tag_ids', '=','Receivable')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		<record
+			id="account_financial_report_bs_ibs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Inventory</field>
+			<field name="code">IBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ca_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Current Assets'),('account_id.tag_ids', '=','Inventory')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>		
+		
+		
+		<record id="account_financial_report_bs_fa_0"
+			model="account.financial.html.report.line">
+			<field name="name">Fixed Assets</field>
+			<field name="code">FABS</field>
+			<field name="formulas">balance = FFEBS.balance + LIBS.balance + GOIBS.balance + ADABS.balance + DTABS.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_ta_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="0" />
+		</record>
+		
+		<record
+			id="account_financial_report_bs_ffe_0"
+			model="account.financial.html.report.line">
+			<field name="name">Furniture, Fixtures and Equipment</field>
+			<field name="code">FFEBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_fa_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Fixed Assets'),'|','|','|',('account_id.tag_ids', '=','Furniture and Fixtures'),
+				('account_id.tag_ids', '=','Medical Equipment'),('account_id.tag_ids', '=','Computer Equipment'),
+				('account_id.tag_ids', '=','Software Development')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		<record
+			id="account_financial_report_bs_libs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Leasehold Improvements</field>
+			<field name="code">LIBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_fa_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Fixed Assets'),('account_id.tag_ids', '=','Leasehold Improvements')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		<record
+			id="account_financial_report_bs_goibs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Goodwill and Other Intangibles</field>
+			<field name="code">GOIBS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_fa_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Fixed Assets'),('account_id.tag_ids', '=','Intangibles')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		<record
+			id="account_financial_report_bs_ada_0"
+			model="account.financial.html.report.line">
+			<field name="name">Accumulated Depr and Amortization</field>
+			<field name="code">ADABS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_fa_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Fixed Assets'),('account_id.tag_ids', '=','Accumulated Depreciation')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		<record
+			id="account_financial_report_bs_dtabs_0"
+			model="account.financial.html.report.line">
+			<field name="name">Deferred Tax Asset</field>
+			<field name="code">DTABS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id"
+				ref='account_financial_report_bs_fa_0' />
+			<field name="domain"
+				eval="[('account_id.user_type_id', '=','Fixed Assets'),('account_id.tag_ids', '=','Deferred Tax Asset')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="0" />
+		</record>	
+		
+		
+		
+		
+		<record id="account_financial_report_bs_balance_0"
+			model="account.financial.html.report.line">
+			<field name="name">Balance Check</field>
+			<field name="code">BALANCE</field>
+			<field name="formulas">balance = balance = TABS.balance - TLOEBS.balance</field>
+			<field name="financial_report_id" ref='account_financial_report_bs_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="0" />
+		</record>
+		
+
+
+	</data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		 <record id="ir_cron_create_team_schedule_tasks" model="ir.cron">
+            <field name="name">Create Team Schedule Tasks</field>
+            <field eval="True" name="active" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">01</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall" />
+            <field eval="'hr.period'" name="model"/>
+            <field name="function">_create_team_schedule_tasks_cron</field>
+            <field name="args">()</field>
+        </record>
+	</data>
+</odoo>

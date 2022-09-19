@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+        <record id="mypractice_action_hr_onboarding_today_filter_inherit" model="ir.actions.act_window">
+            <field name="view_mode">tree,form</field>
+            <field name="name">Today</field>
+            <field name="res_model">hr.employee.onboarding</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('state_id', '!=', 'complete'),('start_date', '=', (context_today()).strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_onboarding_today':1}</field>
+            <field name="search_view_id" ref="vitalpet_onboarding.view_hr_onboarding_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create new application.
+              </p>
+            </field>
+        </record>
+
+        <record id="mypractice_action_hr_onboarding_to_onboard_filter_inherit" model="ir.actions.act_window">
+            <field name="view_mode">tree,form</field>
+            <field name="name">To Onboard</field>
+            <field name="res_model">hr.employee.onboarding</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('state_id' , '!=' , 'complete')]</field>
+            <field name="context">{'search_default_to_onboard':1}</field>
+            <field name="search_view_id" ref="vitalpet_onboarding.view_hr_onboarding_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create new application.
+              </p>
+            </field>
+        </record>
+        
+        <record id="mypractice_action_hr_onboarding_open_filter_inherit" model="ir.actions.act_window">
+            <field name="view_mode">tree,form</field>
+            <field name="name">Open Request</field>
+            <field name="res_model">hr.employee.onboarding</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('state_id', '!=', 'complete'),('start_date', '&lt;', (context_today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d')),('start_date', '&lt;', (context_today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_onboarding_open':1}</field>
+            <field name="search_view_id" ref="vitalpet_onboarding.view_hr_onboarding_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create new application.
+              </p>
+            </field>
+        </record>
+
+	</data>
+</odoo>

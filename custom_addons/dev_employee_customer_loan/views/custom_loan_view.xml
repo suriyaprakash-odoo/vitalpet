@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+		<record model="ir.cron" id="partner_loan_journal_cron">		
+             <field name="name">partner loan create journal</field>		
+             <field name="interval_number">1</field>		
+             <field name="interval_type">days</field>		
+             <field name="numbercall">-1</field>		
+             <field name='active'>false</field>		
+             <field name="doall" eval="True"/>		
+             <field name="model" eval="'loan.emi.month'"/>		
+             <field name="function" eval="'action_partner_loan_journal'"/>		
+             <field name="args" eval="'()'" />		
+         </record>
+    
+		<record id="view_custom_loan_form" model="ir.ui.view">
+		   	<field name="name">partner.loan.form</field>
+		    <field name="model">partner.loan</field>
+		    <field name="inherit_id" ref="dev_employee_customer_loan.partner_loan_form_view"/>
+		    <field name="arch" type="xml">
+		    	<xpath expr="//button[@name='generate_emi_lines']" position="before">
+                	<button string="Compute" type="object" name="compute_emi_lines" states="draft" class="oe_highlight"/>
+                </xpath>
+               	<xpath expr="//button[@name='generate_emi_lines']" position="replace">
+                        <button string="Confirm" type="object" name="generate_journal_lines" states="computed" class="oe_highlight"/>
+                </xpath>
+		    	<xpath expr="//field[@name='calc_quarterly_emi']" position="after">
+		    		<field name="due_every_month"/>
+		    		<field name="first_payment_month"/>
+                </xpath>
+		    	<xpath expr="//field[@name='loan_release_date']" position="after">
+		    		<field name="loan_maturity_date"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_date']" position="after">
+                    <field name="company_id"/>
+                </xpath>
+			    <xpath expr="//page[1]" position='after'>
+			    	<page string='Journal Lines' states="confirm,done">
+			    		<field name="emi_lines_month_ids" nolabel="1">
+	                        <tree>
+	                            <field name="transaction_date"/>
+	                            <field name="fund_type"/>
+	                            <field name="funding_amount"/>
+	                            <field name="outstanding_amount" />
+	                            <field name="principle_payment" invisible="1"/>
+	                            <field name="interest_payment" invisible="1"/>
+	                            <field name="is_journal" invisible="1" />	                            
+	                            <field name="emi_id" />
+	                            <field name="invoice_id" />
+	                            <field name="payment_id"/>
+	                            <button name="create_journal" type="object" string="Create journal" attrs="{'invisible':['|',('is_journal','=',True),('funding_amount','=',0)]}" />
+	                        </tree>
+	                    </field>
+			    	</page>
+			    </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_custom_loan_tree" model="ir.ui.view">
+		   	<field name="name">partner.loan.tree</field>
+		    <field name="model">partner.loan</field>
+		    <field name="inherit_id" ref="dev_employee_customer_loan.partner_loan_tree_view"/>
+		    <field name="arch" type="xml">
+		    	<xpath expr="//field[@name='name']" position="after">
+                   <field name="company_id"/>
+                </xpath>
+		    </field>
+		</record>
+		
+		<record id="daterange_view_move_form" model="ir.ui.view">
+			<field name="name">account.move.form</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_move_form" />
+			<field name="arch" type="xml">
+				<field name="date" position="after">
+					<field name="loan_journal_id" invisible="1"/>
+				</field>
+			</field>
+		</record>
+        
+    </data>
+</odoo>

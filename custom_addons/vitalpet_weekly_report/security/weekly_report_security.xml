@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+		<record id="weekly_report_record_rule" model="ir.rule">
+			<field name="name">weekly report</field>
+			<field name="model_id" ref="vitalpet_weekly_report.model_weekly_report" />
+			<field eval="True" name="global" />
+			<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+			<field eval="True" name="active" />
+		</record>
+
+	</data>
+</odoo>

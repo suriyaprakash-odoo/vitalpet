@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+		<record id="visit_review_expiration_cron" model="ir.cron">
+	        <field name="name">Visit Review Mail Send</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'experience.visit'" name="model" />
+	        <field eval="'visit_review_mail_send_cron'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+
+		<record id="visit_review_task_create" model="ir.cron">
+	        <field name="name">Create Visit Review Task</field>
+	        <field eval="True" name="active" />
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="numbercall">-1</field>
+	        <field eval="True" name="doall" />
+	        <field eval="'hr.period'" name="model" />
+	        <field eval="'_create_client_experience_tasks_cron'" name="function" />	
+            <field name="args" eval="'()'" />		
+      	</record>
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="popup_image_wizard_view_form" model="ir.ui.view">
+        <field name="name">popup.image.wizard.form</field>
+        <field name="model">popup.image.wizard</field>
+        <field name="arch" type="xml">
+        	  <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			   <script>
+			  $( function() {
+			    $( ".modal-content" ).draggable();
+			  } );
+			  </script> -->
+			 
+            <form string="Image" create="false" edit="false">
+                <field name="attachment" widget="image" readonly="1"   />
+                <footer>
+                    
+                    <button string="Close" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+    <record id="popup_image_wizard_action" model="ir.actions.act_window">
+        <field name="name">Popup Image</field>
+        <field name="res_model">popup.image.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="popup_image_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

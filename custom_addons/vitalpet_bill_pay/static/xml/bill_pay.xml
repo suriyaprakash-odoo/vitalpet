@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="vitalpet_bill_pay.HomePage">
+         <div class="o_dashboards">
+            <div class="o_website_dashboard">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="vitalpet_bill_pay.dashboard_visits">
+        <div class="row o_dashboard_visits">
+            <div class="o_view_manager_content">
+                <div class="o_control_panel">
+                   <div class="col-xs-3" style="margin-top: 14px;">
+                       <div style="font-size: 22px;">
+                            <a href="javascript:void(0)"> Received Bills</a>
+                       </div>
+                   </div>
+                   <div class="col-xs-1" style="margin-top: 14px;">
+                       <div style="font-size: 18px;">
+                            <a href="javascript:void(0)">Today</a>
+                       </div>
+                   </div>
+                     <div class="col-xs-1" style="margin-top: 14px;">
+                        <div style="font-size: 18px;">
+                            <a href="javascript:void(0)">This Week</a>
+                       </div>
+                   </div>
+                     <div class="col-xs-1" style="margin-top: 14px;">
+                        <div style="font-size: 18px;">
+                            <a href="javascript:void(0)">This Month</a>
+                       </div>
+                   </div>
+                   <div class="col-xs-6">
+                       <div id="drag-and-drop-zone" class="uploader">
+                          <input type="file" class="o_form_input_file" id="img_class" name="files[]" multiple="multiple" title='Click to add Files'></input>
+                       </div>
+                    </div>
+                </div>
+                <div class="container-fluid o_web_settings_dashboard">
+                    <div class="row display_file">
+                        <div class="col-sm-3 o_web_settings_dashboard_col initial_preview" style="display:none;">
+                            <div class="o_kanban_card_manage_section o_kanban_manage_view" style="height: 232px;">
+                                <div class="oe_kanban_color_0 o_kanban_record" style="margin-top: -20px;margin-left: -15px;">
+                                    <div class="container o_kanban_card_manage_pane o_visible">
+                                        <div class="row inbox_header">
+                                            <div class="preview_lable col-xs-10" style="padding-left: 6px;padding-top: 2px;font-size: 13px;">
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <i class="fa fa-trash-o oe_right panel-title" aria-hidden="true" style="color:#ffffff;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 o_kanban_card_manage_section o_kanban_manage_view" style="width: 340px;margin-left: 19px;min-height: 175px;border: 2px solid #B1B1B1 !important;margin-top: 5px;height: 188px;overflow-x: hidden;">
+                                                <canvas id="data_canvas" style="display: none;"></canvas>
+                                                <img id="image_initial_preview" src="" style="width: 272px;margin-left: -15px;margin-top: 0px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

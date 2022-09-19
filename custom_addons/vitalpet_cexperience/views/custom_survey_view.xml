@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+      	<record model="ir.ui.view" id="survey_user_input_form_inherit_exp">
+            <field name="name">survey_user_input_form_exp</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_form"/>
+            <field name="arch" type="xml">
+            	<field name="token" position="after">
+            		<field name = "exp_id" readonly='1'/>
+            	</field>
+            </field>
+        </record>
+        
+        <record id="inherit_search_view_survey" model="ir.ui.view">
+			<field name="name">survey.user_input</field>
+			<field name="model">survey.user_input</field>
+			<field name="inherit_id" ref="survey.survey_user_input_search" />
+			<field name="arch" type="xml">
+				<xpath expr="//search" position="inside">
+				    <filter name="completed_exp" string="completed" domain="[('state', '=', 'done'),('exp_id', '!=', None)]" invisible="1"/>
+                    <filter name="partially_completed" string="Partially completed" domain="[('state', '=', 'skip'),('exp_id', '!=', None)]" invisible="1"/>
+                    <filter name="new" string="New Experienced" domain="[('state', '=', 'new'),('exp_id', '!=', None)]" invisible="1"/>
+<!--                      <filter name="experience" string="Experience" domain="[('exp_id', '!=', None)]"/>
+ -->				</xpath>
+<!-- 				<xpath expr="//search/group" position="inside">
+                     <filter name="experience_group" string="Experience" domain="[('exp_id', '!=', None)]" context="{'group_by': 'exp_id'}"/>
+				</xpath> -->
+			</field>
+		</record> 
+        
+      </data>
+   </odoo>

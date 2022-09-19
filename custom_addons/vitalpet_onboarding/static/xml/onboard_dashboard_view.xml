@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<templates xml:space="preserve">
+	<t t-name="vitalpet_onboarding.HomePage">
+  		<div class="o_dashboards">
+ 			<div class="o_website_onboard_dashboard">
+ 			</div>
+		</div>
+	</t>
+  	<t t-name="vitalpet_onboarding.dashboard_visits">
+  		<div class="row o_dashboard_visits">
+     		<div class="o_view_manager_content">
+        		<div class="o_control_panel" style="display: block;">
+           			<div class="container-fluid" style="display:block;">
+              			<div class="row">
+                      <br></br>
+                      <div class="container">
+                        <div class="col-xs-6">     
+                          <table class="table table-hover">
+                            <thead>
+                              <tr style="background-color: #808080;color: white;" >
+                                <th colspan="2" >HIRING STATUS</th>
+                              </tr>
+                            </thead>
+                            <tbody style="color: blue;background-color: #dddddd;">
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_offer_accepted_view&amp;menu_id=1315" style="color: blue;">Offer Accepted</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_offer_accepted_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['offer']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_background_check_view&amp;menu_id=1315" style="color: blue;">Background Check</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_background_check_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['background']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_to_approve_view&amp;menu_id=1315" style="color: blue;">To Approve</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_to_approve_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['to_approve']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_hire_view&amp;menu_id=1315" style="color: blue;">Hire</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_hire_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['hire']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_benefits_view&amp;menu_id=1315" style="color: blue;">Benefits</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_benefits_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['benefits']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_contracts_view&amp;menu_id=1315" style="color: blue;">Contract</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_contracts_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['contract']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_complete_view&amp;menu_id=1315" style="color: blue;">Complete</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_complete_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['hiring']['complete']"/></a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-xs-6">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr style="background-color: #808080;color: white;" >
+                                <th colspan="2" >BENEFITS STATUS</th>
+                              </tr>
+                            </thead>
+                            <tbody style="color: blue;background-color: #dddddd;" >
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_not_eligible_view&amp;menu_id=1315" style="color: blue;">Not Eligible</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_not_eligible_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['benefits']['not_eligible']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_pending_election_view&amp;menu_id=1315" style="color: blue;">Pending Elections</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_pending_election_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['benefits']['pending_election']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_to_approve_view&amp;menu_id=1315" style="color: blue;">To Approve</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_to_approve_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['benefits']['to_approve']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_send_to_provider_view&amp;menu_id=1315" style="color: blue;">Send To Provider</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_send_to_provider_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['benefits']['send_to_provider']"/></a></td>
+                              </tr>
+                              <tr>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_enrolled_view&amp;menu_id=1315" style="color: blue;">Enrolled</a></td>
+                                <td><a href="web#view_type=list&amp;model=hr.employee.onboarding&amp;action=vitalpet_onboarding.action_onboarding_benefits_enrolled_view&amp;menu_id=1315" style="color: blue;"><t t-esc="values['benefits']['enrolled']"/></a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+		                </div>
+                    <br/><br/>
+                    <div class="container">
+                      <div class="col-xs-6">     
+                          <table class="table table-hover">
+                            <thead>
+                              <tr style="background-color: #a64d79;color: white;" >
+                                <th colspan="4" >RECRUITMENT</th>
+                              </tr>
+                              <tr style="background-color: #ead1dc;font-weight: bolder;" >
+                                <th>Job</th>
+                                <th>In Recruitment</th>
+                                <th>Applicants</th>
+                                <th>Save For Later</th>
+                              </tr>
+                            </thead>
+                            <tbody style="color: blue;background-color: #ead1dc;">
+                              <t t-foreach="values['recruitment']" t-as="job">
+                                <tr>
+                                  <td class="text-left" ><a class="applicant_link" t-attf-test="web#view_type=kanban&amp;model=hr.applicant&amp;action=hr_recruitment.action_hr_job_applications&amp;menu_id=421" style="color: blue;cursor:pointer;" t-att-test_id="job['active_id']"><span t-esc="job['name']"/></a></td>
+                                  <td class="text-left" ><a class="applicant_link" t-attf-test="web#view_type=kanban&amp;model=hr.applicant&amp;action=hr_recruitment.action_hr_job_applications&amp;menu_id=421" style="color: blue;cursor:pointer;" t-att-test_id="job['active_id']"><span t-esc="job['status']" /></a></td>
+                                  <td class="text-right" ><a class="applicant_link" t-attf-test="web#view_type=kanban&amp;model=hr.applicant&amp;action=hr_recruitment.action_hr_job_applications&amp;menu_id=421" style="color: blue;cursor:pointer;" t-att-test_id="job['active_id']"><span t-esc="job['applicant']" /></a></td>
+                                  <td class="text-right" ><a class="applicant_link" t-attf-test="web#view_type=kanban&amp;model=hr.applicant&amp;action=hr_recruitment.action_hr_job_applications&amp;menu_id=421" style="color: blue;cursor:pointer;" t-att-test_id="job['active_id']"><span t-esc="job['later']" /></a></td>
+                                </tr>
+                              </t>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-xs-6">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr style="background-color: #0a0affd9;color: white;" >
+                                <th colspan="5" >CONTRACTS</th>
+                              </tr>
+                              <tr style="background-color: #cfe7f5;font-weight: bolder;" >
+                                <th>Job</th>
+                                <th>Draft</th>
+                                <th>Active</th>
+                                <th>To Renew</th>
+                                <th>Expired</th>
+                              </tr>
+                            </thead>
+                            <tbody style="color: blue;background-color: #cfe7f5;">
+                              <t t-foreach="values['contract']" t-as="job_contract">
+                                <tr>
+                                  <td class="text-left" ><a class="contract_link" t-attf-test="web#view_type=list&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=184" style="color: blue;cursor:pointer;" t-att-test_id="job_contract['active_id']"><span class="job_name" t-esc="job_contract['name']" /></a></td>
+                                  <td class="text-right" ><a class="contract_link_draft" t-attf-test="web#view_type=list&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=184" style="color: blue;cursor:pointer;" t-att-test_id="job_contract['draft_contract_id']"><span t-esc="job_contract['draft']" /></a></td>
+                                  <td class="text-right" ><a class="contract_link_active" t-attf-test="web#view_type=list&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=184" style="color: blue;cursor:pointer;" t-att-test_id="job_contract['active_id']"><span t-esc="job_contract['open']" /></a></td>
+                                  <td class="text-right" ><a class="contract_link_torenew" t-attf-test="web#view_type=list&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=184" style="color: blue;cursor:pointer;" t-att-test_id="job_contract['active_id']"><span t-esc="job_contract['pending']" /></a></td>
+                                  <td class="text-right" ><a class="contract_link_expired" t-attf-test="web#view_type=list&amp;model=hr.contract&amp;action=hr_contract.action_hr_contract&amp;menu_id=184" style="color: blue;cursor:pointer;" t-att-test_id="job_contract['active_id']"><span t-esc="job_contract['close']" /></a></td>
+                                </tr>
+                              </t>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+	                </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

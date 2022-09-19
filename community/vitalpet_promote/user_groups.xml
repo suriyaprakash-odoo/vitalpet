@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+		<record model="ir.module.category" id="module_category_vitalpet_promote">
+            <field name="name">Vitalpet Promote</field>
+            <field name="description">Module for Inbound Call monitoring.
+The calls are automatically synced from the Call operator's Server, and Gives the access to create Posts in the website.</field>
+            <field name="sequence">101</field>
+        </record>
+
+        <record model="ir.module.category" id="module_category_vitalpet_promote2">
+                <field name="name">Call Rating</field>
+                <field name="description">Allows the rating of these calls accrording to Audit Parameters.</field>
+                <field name="sequence">102</field>
+            </record>
+
+		<record model="res.groups" id="vitalpet_promote.group_promote_user">
+			<field name="name">User</field>
+	        <field name="category_id" ref="vitalpet_promote.module_category_vitalpet_promote"/>
+	        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	    </record>
+
+      <record model="res.groups" id="vitalpet_promote.group_promote_call_supervisor">
+        <field name="name">Call Supervisor</field>
+            <field name="implied_ids" eval="[(4, ref('vitalpet_promote.group_promote_user'))]"/>
+            <field name="category_id" ref="vitalpet_promote.module_category_vitalpet_promote2"/>
+        </record>
+
+		<record model="res.groups" id="vitalpet_promote.group_promote_call_agent">
+			<field name="name">Call Agent</field>
+          <field name="implied_ids" eval="[(4, ref('vitalpet_promote.group_promote_call_supervisor'))]"/>
+          <field name="category_id" ref="vitalpet_promote.module_category_vitalpet_promote2"/>
+	    </record>
+
+      <record model="res.groups" id="vitalpet_promote.group_promote_blogger">
+  			<field name="name">Blogger</field>
+        <field name="category_id" ref="vitalpet_promote.module_category_vitalpet_promote"/>
+        <field name="implied_ids" eval="[(4, ref('vitalpet_promote.group_promote_user'))]"/>
+  	    </record>
+
+		<record model="res.groups" id="vitalpet_promote.group_promote_manager">
+			<field name="name">Manager</field>
+	        <field name="category_id" ref="vitalpet_promote.module_category_vitalpet_promote"/>
+	        <field name="implied_ids" eval="[(4, ref('vitalpet_promote.group_promote_call_agent')), (4, ref('vitalpet_promote.group_promote_blogger'))]"/>
+	    </record>
+
+
+    </data>
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_expenses_view_form" model="ir.ui.view">
+        <field name="name">add.expenses.form</field>
+        <field name="model">add.expenses</field>
+        <field name="arch" type="xml">
+            <form string="Add to Expenses">
+            	<group>
+	                <field name="employee_id"  placeholder="Select Employee"/>
+	                                
+	                <field name="from_date" />
+	                <field name="to_date" />
+	                <field name="receipt_id" invisible="1" />
+	            </group>
+	            <group>
+	                <div>
+		                <field name="line_ids">
+		                	<tree create="false" editable="bottom" >
+		                		<field name="select"/>
+		                		<field name="product_id"/>
+		                		<field name="description"/>
+	                			<field name="expense_id"  invisible="1" />
+	                			<field name="unit_amount"/>
+	                		</tree>
+		                </field>
+		          </div>
+	           </group>
+                <footer>
+                    <button string='Add to Expenses' name="add_to_expenses" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+
+</odoo>

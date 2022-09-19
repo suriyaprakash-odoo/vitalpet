@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+ 		<!-- Form view for ResCompany in settings  -->
+		<record id="view_company_form_inherited" model="ir.ui.view">
+			<field name="name">Website</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form" />
+			<field name="arch" type="xml">
+				
+				<field name="partner_id" position="before">
+						<field name="active"/>
+				</field>
+				<xpath expr="//form/sheet/notebook" position="before">
+						<field name="slack_channel"/>
+				</xpath>
+				
+				<xpath expr="//form/sheet/notebook" position="inside">
+					<page string="Website">
+ 						<group>
+							<group>
+								 <field name="yelp_account" />
+								<field name="facebook_account" /> 
+								 <field name="youtube_account" />
+								<!-- <field name="existing_website" /> -->
+							</group>
+							<group>
+								<field name="online_pharmacy" />
+								<field name="after_hours_contact" />
+								<field name="region" />
+								<field name="map_link" />
+							</group>
+						</group>
+						<group>
+							<field name="about_us" />
+							<field name="hours_of_operation" />
+							<field name="zipcode" />
+						</group>
+						<group>
+							<field name="birdeye_account" />
+						</group>
+					</page>
+				</xpath>
+				
+				
+				<xpath expr="//form" position="inside">
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                	</div>
+                </xpath>
+			</field>
+		</record>
+
+
+<!-- Kanban view for ResCompany in Website -->
+		<record model="ir.ui.view" id="website_company_kanban_view">
+			<field name="name">Webiste</field>
+			<field name="model">res.company</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<field name="name" />
+					<field name="email" />
+					<field name="country_id" />
+					<field name="logo" />
+
+					<templates>
+						<t t-name="kanban-box">
+							<div>
+								<div class="o_kanban_image">
+									<a type="open">
+										<t t-if="record.logo.raw_value">
+											<img t-att-src="kanban_image('res.company', 'logo', record.id.value)" />
+										</t>
+									</a>
+								</div>
+								<div class="oe_kanban_content">
+
+									<div class="oe_kanban_details">
+										<h4>
+											<a type="open">
+												<field name="name" />
+											</a>
+										</h4>
+										<ul>
+
+											<li>
+												<field name="country_id" />
+											</li>
+
+											<li>
+												<field name="email" />
+											</li>
+										</ul>
+
+									</div>
+
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		
+		<record id="confirm_publish_wizard" model="ir.ui.view">
+            <field name="name">confirm.publish.form.view</field>
+            <field name="model">confirm.publish</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Publish">
+                	<p>The location will be Published on the Website. Do you still want to continue</p>
+                    <footer>
+                        <button string="Yes" type="object" name="confirm_company_publish"  class="oe_highlight"/>
+                        or
+                        <button string="No" special="cancel" class="oe_cancel"/>
+                    </footer>
+                </form>
+        </field>
+    </record>
+		
+		<record id="confirm_unpublish_wizard" model="ir.ui.view">
+            <field name="name">confirm.publish.form.view</field>
+            <field name="model">confirm.publish</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Publish">
+                	<p>The location will be Unpublished on the Website. Do you still want to continue</p>
+                    <footer>
+                        <button string="Yes" type="object" name="confirm_company_publish"  class="oe_highlight"/>
+                        or
+                        <button string="No" special="cancel" class="oe_cancel"/>
+                    </footer>
+                </form>
+        </field>
+    </record>
+    
+    <record id="action_confirm_publish" model="ir.actions.act_window">
+        <field name="name">Confirm Publish</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">confirm.publish</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="confirm_publish_wizard"/>
+    </record>
+
+    <record id="action_confirm_unpublish" model="ir.actions.act_window">
+        <field name="name">Confirm Unpublish</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">confirm.publish</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="confirm_unpublish_wizard"/>
+    </record>
+
+<!-- Form view for ResCompany in Website -->
+		<record id="website_company_form_view" model="ir.ui.view">
+			<field name="name">Website</field>
+			<field name="model">res.company</field>
+			<field name="arch" type="xml">
+				<form create='false'>
+					<sheet>
+					 <div class="oe_button_box">
+					 	<button class="oe_stat_button" name="%(vitalpet_website.action_confirm_publish)d" field_name="website_publish" type="action" icon="fa-globe"  
+					 	attrs="{'invisible': [('website_publish', '=', True)]}" >
+					 	<field name="website_publish" widget="boolean_button"
+                    	options='{"terminology": {"string_true": "Published", "hover_true": "Unpublish", "string_false": "Unpublished", "hover_false": "Publish"}}'/>
+                    	</button>
+					 	<button class="oe_stat_button" name="%(vitalpet_website.action_confirm_unpublish)d" field_name="website_publish" type="action" icon="fa-globe" 
+					 		attrs="{'invisible': [('website_publish', '=', False)]}" >
+                    	<field name="website_publish" widget="boolean_button"
+                    	options='{"terminology": {"string_true": "Published", "hover_true": "Unpublish", "string_false": "Unpublished", "hover_false": "Publish"}}'/>
+                    	</button>
+					</div>
+						<field name="logo" widget="image"  class="oe_avatar"/>
+                    <div class="oe_title">
+                        <!-- <label for="name" class="oe_edit_only"/> -->
+                        <h1>
+                            <field name="name" class="oe_inline" readonly='1'/>
+                        </h1>
+                        <!-- <label for="rml_header1" class="oe_edit_only"/>
+                        <h3>
+                            <field name="rml_header1" placeholder="e.g. Global Business Solutions"/>
+                        </h3> -->
+                    </div>
+                  	<br/>
+                  	<br/>
+                    <div style="border-bottom: 1px solid black;" />
+                    <br/>
+
+						<group string = "Links"></group>
+						<group colspan="2">
+						<field name="aaha_certified" />
+						<field name="upload_logo" widget="image" class="oe_avatar oe_left" attrs="{'invisible':[('aaha_certified','=',False)]}" />
+						</group>
+							<group>
+							<field name="location_url"/>
+							 <field name="yelp_account" /> 
+							<field name="facebook_account" />
+							 <field name="youtube_account" /> 
+							<!-- <field name="existing_website" /> -->
+							<field name="online_pharmacy" />
+							 <field name="appointment_request_url" /> 
+							 <field name="download_app_url" /> 
+							 <field name="rewards_program" /> 
+							<field name="about_us" />
+							<field name="after_hours_contact" />
+							<field name="region" />
+							<field name="map_link" />
+							<field name="hours_of_operation" />
+							<field name="zipcode" />
+							<field name="chat_allowed"/>
+							<field name="online_booking"/>
+							<field name="widget_code" attrs="{'invisible': [('online_booking', '=', False)]}"/>
+						</group>
+                            <notebook>
+		                    	<page string="Forms">
+	                            <group>
+		                        	<field name="form_line_ids" nolabel="1">
+			                            <tree>
+			                                <field name="name"/>
+			                                <field name="sequence"/>
+			                                <field name="status"/>
+			                            </tree>
+			                            <form>
+				                            <group>
+				                            	<field name="name"/>
+				                                <field name="sequence"/>
+				                                <field name="status"/>
+			                            	</group>
+			                            	<group>
+					                        	<field name="camp_line_ids" nolabel="1">
+						                            <tree editable="bottom">
+						                                <field name="name"/>
+						                                <field name="link"/>
+						                                <field name="sequence"/>
+						                                <field name="status"/>
+						                            </tree>
+					                            </field>
+				                            </group>
+			                            </form>
+		                        </field>
+		                        </group>
+		                    	</page>
+		                    <page string="Cameras">
+		                    	<group>
+		                    		<field name="camera_name" />
+		                        	<field name="camera_active" />
+		                        </group>
+		                        <group>
+		                        	<field name="camera_line_ids" nolabel="1">
+		                            <tree editable="bottom">
+		                                <field name="name"/>
+		                                <field name="link"/>
+		                                <field name="access_code"/>
+		                                <field name="status"/>
+		                            </tree>
+		                        </field>
+		                        </group>
+		                    </page>
+		                    <page string="Business Hours">
+		                    	<group>
+                                        <field name="time_zone" widget="timezone_mismatch" options="{'tz_offset_field': 'tz_offset'}" />
+                                        <field name="tz_offset" invisible="1"/>
+		                        </group>
+		                        <group>
+		                        	<field name="business_hour_ids" nolabel="1">
+		                            <tree editable="bottom">
+		                                <field name="day_of_week"/>
+		                                <field name="from_time" widget="float_time"/>
+		                                <field name="to_time" widget="float_time"/>
+		                            </tree>
+		                        </field>
+		                        </group>
+		                    </page>
+		                    <page string="Title And Meta For SEO">
+		                        <group>
+		                        	<field name="title_meta_seo_ids" nolabel="1">
+		                            <tree editable="bottom">
+		                                <field name="category"/>
+		                                <field name="title_tag"/>
+		                                <field name="meta_description"/>
+		                            </tree>
+		                        </field>
+		                        </group>
+		                    </page>
+		                </notebook>
+                            
+                            
+                     
+					</sheet>
+				</form>
+
+			</field>
+		</record>	
+		
+		   <record id="view_vitalpet_website_search" model="ir.ui.view">
+            <field name="name">res.company.search</field>
+            <field name="model">res.company</field>
+            <field name="arch" type="xml">
+            
+                <search string="Search Website">
+               		<field name="name" string="Company" domain="[('name','ilike', self)]" />
+                 	<filter string="Published" name="published" domain="[('website_publish', '=', True)]" />
+                    <filter string="Not Published" name="not_published" domain="[('website_publish', '=', False)]" />
+                </search>
+            </field>
+        </record>
+		
+		<record id="action_mypractice_website" model="ir.actions.act_window">
+			<field name="name">Website</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.company</field>
+			<field name="view_id" ref="website_company_form_view" />
+			<field name="view_mode">kanban,form</field>			
+		</record>
+		<record id="kanban_website_action" model="ir.actions.act_window.view">
+			<field name="sequence">1</field>
+			<field name="view_mode">kanban</field>
+			<field name="view_id" ref="website_company_kanban_view" />
+			<field name="act_window_id" ref="action_mypractice_website" />
+		</record>
+
+		<menuitem id="menu_mypractice_adviser_website" parent="vitalpet_promote.menu_website_blog_root"
+			action="action_mypractice_website" sequence="1" name="Home Page" />
+		
+		<!-- Form view for Jobs in settings  -->
+		 <record id="job_template_form_view_inherited" model="ir.ui.view">
+			<field name="name">Job Template</field>
+			<field name="model">hr.job.template</field>
+			<field name="inherit_id" ref="vitalpet_custom_hr_recruitment.job_template_form_view" />
+			<field name="arch" type="xml">
+				<field name="job_seniority_id" position="after">
+                    <field name="slack_channel"/>
+                </field>
+			</field>
+		</record><record id="job_seniority_form_vie_inherited" model="ir.ui.view">
+			<field name="name">Job Seniority</field>
+			<field name="model">hr.job.seniority.title</field>
+			<field name="inherit_id" ref="vitalpet_custom_hr_recruitment.job_seniority_form_view" />
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="slack_channel"/>
+				</field>
+            
+			</field>
+		</record>  
+	</data>
+</odoo>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		
+		<record id="view_cenit_res_config_settings" model="ir.ui.view">
+			<field name="name">Cenit Sync Settings</field>
+			<field name="model">cenit.config.settings</field>
+			<field name="arch" type="xml">
+				<form string="Configure Cenit Sync" version="7.0"
+					class="oe_form_configuration">
+					<header>
+						<button string="Apply" type="object" name="execute" class="oe_highlight" />
+						or
+						<button string="Cancel" type="object" name="cancel" class="oe_link" />
+					</header>
+						
+					<separator string="General Sync Settings"/>
+					<group>
+						<label for="backend_id"/>
+						<div>
+							<div>
+								<field name="backend_id" widget="selection"
+									 attrs="{'required':[('backend_id','!=',False)]}"
+									class="oe_inline" />
+							</div>
+						</div>
+					</group>
+					<div  attrs="{'invisible': [('backend_id', '=', False)]}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th ></th>
+								<th>Sync?</th>
+								<th>Interval Number</th>
+								<th >Interval Unit</th>
+								<th>Next Execution</th>
+								<th>Months Nbr.</th>
+								<th>Run Now</th>
+							</tr>
+						</thead>
+						<tbody class="invoice_tbody">
+								<tr >
+									<td><label for="sync_providers"/></td>
+									<td><field name="sync_providers"/></td>
+									<td>
+										<field name="sync_provider_interval_number" attrs="{'invisible':[('sync_providers','=',False)],'required':[('sync_providers','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_provider_interval_type"  attrs="{'invisible':[('sync_providers','=',False)],'required':[('sync_providers','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_provider_next_execution"  attrs="{'invisible':[('sync_providers','=',False)],'required':[('sync_providers','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_provider_month_number"  attrs="{'invisible':[('sync_providers','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_providers" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_providers','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_guarantors"/></td>
+									<td><field name="sync_guarantors"/></td>
+									<td>
+										<field name="sync_guarantors_interval_number" attrs="{'invisible':[('sync_guarantors','=',False)],'required':[('sync_guarantors','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_guarantors_interval_type"  attrs="{'invisible':[('sync_guarantors','=',False)],'required':[('sync_guarantors','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_guarantors_next_execution"  attrs="{'invisible':[('sync_guarantors','=',False)],'required':[('sync_guarantors','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+								</td>
+									<td>
+										<field name="sync_guarantors_month_number"  attrs="{'invisible':[('sync_guarantors','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_guarantors" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_guarantors','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_patients"/></td>
+									<td><field name="sync_patients"/></td>
+									<td>
+										<field name="sync_patients_interval_number" attrs="{'invisible':[('sync_patients','=',False)],'required':[('sync_patients','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_patients_interval_type"  attrs="{'invisible':[('sync_patients','=',False)],'required':[('sync_patients','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_patients_next_execution"  attrs="{'invisible':[('sync_patients','=',False)],'required':[('sync_patients','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+									</td>
+									<td>
+										<field name="sync_patients_month_number"  attrs="{'invisible':[('sync_patients','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_patients" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_patients','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_reminders"/></td>
+									<td><field name="sync_reminders"/></td>
+									<td>
+										<field name="sync_reminders_interval_number" attrs="{'invisible':[('sync_reminders','=',False)],'required':[('sync_reminders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_reminders_interval_type"  attrs="{'invisible':[('sync_reminders','=',False)],'required':[('sync_reminders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_reminders_next_execution"  attrs="{'invisible':[('sync_reminders','=',False)],'required':[('sync_reminders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+									</td>
+									<td>
+										<field name="sync_reminders_month_number"  attrs="{'invisible':[('sync_reminders','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_reminders" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_reminders','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_products"/></td>
+									<td><field name="sync_products"/></td>
+									<td>
+										<field name="sync_products_interval_number" attrs="{'invisible':[('sync_products','=',False)],'required':[('sync_products','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_products_interval_type"  attrs="{'invisible':[('sync_products','=',False)],'required':[('sync_products','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_products_next_execution"  attrs="{'invisible':[('sync_products','=',False)],'required':[('sync_products','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+									</td>
+									<td>
+										<field name="sync_products_month_number"  attrs="{'invisible':[('sync_products','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_products" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_products','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_product_orders"/></td>
+									<td><field name="sync_product_orders"/></td>
+									<td>
+										<field name="sync_product_orders_interval_number" attrs="{'invisible':[('sync_product_orders','=',False)],'required':[('sync_product_orders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_product_orders_interval_type"  attrs="{'invisible':[('sync_product_orders','=',False)],'required':[('sync_product_orders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_product_orders_next_execution"  attrs="{'invisible':[('sync_product_orders','=',False)],'required':[('sync_product_orders','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+									</td>
+									<td>
+										<field name="sync_product_orders_month_number"  attrs="{'invisible':[('sync_product_orders','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_product_orders" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_product_orders','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_procedures"/></td>
+									<td><field name="sync_procedures"/></td>
+									<td>
+										<field name="sync_procedures_interval_number" attrs="{'invisible':[('sync_procedures','=',False)],'required':[('sync_procedures','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_procedures_interval_type"  attrs="{'invisible':[('sync_procedures','=',False)],'required':[('sync_procedures','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_procedures_next_execution"  attrs="{'invisible':[('sync_procedures','=',False)],'required':[('sync_procedures','=',True),('backend_id','!=',False)]}" class="oe_inline"/>			
+									</td>
+									<td>
+										<field name="sync_procedures_month_number"  attrs="{'invisible':[('sync_procedures','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_procedures" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_procedures','=',False)]}"/>
+									</td>
+								</tr>
+								<tr >
+									<td><label for="sync_transactions"/></td>
+									<td><field name="sync_transactions"/></td>
+									<td>
+										<field name="sync_transactions_interval_number" attrs="{'invisible':[('sync_transactions','=',False)],'required':[('sync_transactions','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_transactions_interval_type"  attrs="{'invisible':[('sync_transactions','=',False)],'required':[('sync_transactions','=',True),('backend_id','!=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<field name="sync_transactions_next_execution"  attrs="{'invisible':[('sync_transactions','=',False)],'required':[('sync_transactions','=',True),('backend_id','!=',False)]}" class="oe_inline"/>		
+									</td>
+									<td>
+										<field name="sync_transactions_month_number"  attrs="{'invisible':[('sync_transactions','=',False)]}" class="oe_inline"/>
+									</td>
+									<td>
+										<button string="Run" type="object" name="run_sync_transactions" class="oe_highlight oe_inline" attrs="{'invisible':[('sync_transactions','=',False)]}"/>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+					</div>
+				</form>
+			</field>
+		</record>
+
+		
+		<record id="action_cenit_config_settings" model="ir.actions.act_window">
+            <field name="name">Configure Cenit Sync</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cenit.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="vitalpet_mapping.configuration_settings" name="Settings" parent="vitalpet_mapping.configuration_mapping"
+            action="action_cenit_config_settings" groups="cenit_group.group_cenit_manager" sequence="1"/>
+		
+	<!-- Sync Trigger Action and menu -->
+       
+       <record id="flow_trigger_tree" model="ir.ui.view">
+            <field name="name">flow.trigger.tree</field>
+            <field name="model">flow.trigger</field>
+            <field name="arch" type="xml">
+                <tree string="Trigger Flow Log" create="false" edit="false" delete="false">
+                    <field name="name" readonly="0"/>
+                    <field name="practice_id" readonly="0"/>
+                    <field name="office_id" readonly="0"/>
+                    <field name="user_id" readonly="0"/>
+                    <field name="create_date" readonly="0"/>
+                </tree>
+            </field>
+        </record>
+       
+       <record model="ir.actions.act_window" id="flow_trigger_action">
+            <field name="name">Trigger Flow  Log</field>
+            <field name="res_model">flow.trigger</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="flow_trigger_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Sync Log is empty.
+                </p>
+            </field>
+    	</record>	
+
+           <menuitem id="flow_trigger_log_mapping" name="Trigger Flow Log" parent="vitalpet_mapping.reports_mapping" action='flow_trigger_action' sequence="99"/>
+</odoo>
+

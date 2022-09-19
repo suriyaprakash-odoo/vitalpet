@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_billpay_bills_form_with_image" model="ir.ui.view">
+        <field name="name">billpay.bills.form</field>
+        <field name="model">billpay.bills</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+
+
+            <form string="BILL" style="background-color:#fff;" create="false" attrs="{'edit': [('state','!=','posted')]}">
+                <header class="header_statusbar">
+
+                    <button name="action_bill_validate" states="open" type="object" string="VALIDATE" class="oe_highlight" />
+                    <button name="action_set_to_open" type="object" string="SET TO OPEN" attrs="{'invisible': [('state','not in', ['hold','refuse','cancel'])]}" class="oe_highlight" />
+                    <button name="submit_on_hold" type="object" attrs="{'invisible': ['|', ('state','not in', ('open', 'toapprove')),('bill_credit_source','!=', 'inbox')]}" string="PUT ON HOLD" class="oe_highlight" />
+                    <button name="submit_on_refuse" type="object" attrs="{'invisible': ['|', ('state','not in', ('toapprove'))]}" string="REFUSE" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+                    <button name="approve_bills" type="object" attrs="{'invisible':[('state', '!=', 'toapprove')]}" string="Approve" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+                    <button name="action_bill_split_amount" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="SPLIT AMOUNT" class="oe_highlight" />
+                    <button name="action_bill_apply_product" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="APPLY PRODUCT" class="oe_highlight" />
+                    <button name="action_all_company" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="ADD ALL COMPANIES" class="oe_highlight" />
+                    <button name="action_bill_post" states="approved" type="object" string="POST" class="oe_highlight" />
+                    <button name="action_bill_cancel" states="posted" type="object" string="Cancel" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_manager"/>
+                    <button name="%(action_view_billpay_reversal)d" states="posted" type="action" string="Reverse" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+                    <button name="%(action_reverse_apply_credit)d" states="paid" type="action" string="Reverse and Apply Credit" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+
+                    <field name="state" widget="statusbar" statusbar_visible="open,hold,toapprove,refuse,approved,posted,paid" />
+                </header>
+
+
+                <style>
+                        .img-responsive img {
+                        max-width:90% !important;
+                        }
+                        .oe_subtotal_footer_separator{
+                            padding-right: 0px !important;
+                            padding-left: 20px;
+                        }                        
+                        .header_statusbar{                      
+                            position: fixed !important;
+                            width: 100%;
+                            z-index: 9;
+                        }
+                        @media screen and (max-width: 768px) {                
+                            .header_statusbar{                      
+                                position: relative !important;
+                                width: 100%;
+                                z-index: 9;
+                            }
+                        }
+
+                    </style>
+
+                <div class="row" style="padding-top:46px;">
+                    <script>
+                          $( function() {
+                                            
+                                var myVar = setInterval(myTimer, 1000);
+                                function myTimer() {
+                                    if ($(".attachment_text").text().indexOf('odoo.models.NewId') == -1){
+                                        if($(".embed").attr("src") == '') {
+                                            $(".embed").attr("src",$(".attachment_text").text());
+                                        }
+                                    }
+                                    else {
+                                        if($(".embed").attr("src") == '') {
+                                            if($(".attachment_type").val() == 'image/jpeg' || $(".attachment_type").val() == 'image/png') {
+                                                $(".embed").attr("src","data:image/jpg;base64,"+$("input[name='attachment']").val());
+                                                clearInterval(myVar);
+                                            }
+                                            if($(".attachment_type").val() == 'application/pdf') {
+                                                $(".embed").attr("src","data:application/pdf;base64,"+$("input[name='attachment']").val());
+                                                clearInterval(myVar);
+                                            }
+                                        }
+                                                                                
+                                    }    
+                                }
+                                     
+                                $(".popup").click( function(){
+                                
+                                    
+                                        
+                                    if ($(".attachment_text").text().indexOf('odoo.models.NewId') == -1){
+                                        url=$(".attachment_text ").text();
+                                        var myWindow = window.open(url, "", "width=1000,height=500"); 
+                                    }
+                                    else {
+                                        if($(".attachment_type").val() == 'image/jpeg' || $(".attachment_type").val() == 'image/png') {
+                                            url="data:image/jpg;base64,"+$("input[name='attachment']").val();
+                                        }
+                             
+                                        if($(".attachment_type").val() == 'application/pdf') {
+                                            url="data:application/pdf;base64,"+$("input[name='attachment']").val();
+                                        }
+                                        var myWindow = window.open(url, "", "width=1000,height=500");   
+                                    }
+                                });
+                            
+                          } );
+                          </script>
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <a class="oe_highlight popup" style="padding: 8px 11px;display: block;width: 35px;">
+                                    <i class="fa fa-search">
+                                    </i>
+                                </a>
+                            </div>
+                            <div class="row attach">
+                                <field name="attachment" invisible="True" />
+                                <field name="attachment_type" class="attachment_type" invisible="True" />
+                                <iframe src="" class="embed" style="min-height: 460px;width: 100%;border: none;" id="embed">
+                                </iframe>
+                                <field name="attachment_text" class="attachment_text" invisible="True" />
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+
+                            <div class="oe_button_box" style="margin:0 !important;">
+                                <button name="action_get_accounting_entries" class="oe_stat_button" icon="fa-book" type="object" string="Accounting Entries" attrs="{'invisible': [('state', 'not in', ('posted','paid'))]}" />
+
+                                <button name="action_get_attachment_view" class="oe_stat_button" icon="fa-book" type="object">
+                                    <field name="attachment_number" widget="statinfo" string="Documents" />
+                                </button>
+                            </div>
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="bill_credit_id" readonly="1" />
+                                    <field name="inbox_id" invisible="1" />
+                                </h1>
+                            </div>
+                            <group>
+
+                                <field name="partner_id" domain="[('supplier', '=', True)]" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                <field name="payment_mode_id" domain="[('payment_type', '=', 'outbound')]" widget="selection"/>
+                                <field name="invoice_amount" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                <!-- <field name="vendor_ref" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" /> -->
+                                <field name="vendor_ref" readonly="0" />
+                                <field name="purchase_id" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                <field name="bill_credit_source" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                <field name="bill_date" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                <field name="due_date" attrs="{'readonly': ['|',('state', 'in', ('posted','approved','paid')),('over_write_duedate', '=', False)]}" />
+                                <field name="original_due_date" invisible="1"/>            
+                                <field name="invoice_number" attrs="{'readonly': [('state', 'not in', 'open')]}" />
+                                <field name="acc_number_id" attrs="{'readonly': [('state', 'not in', 'open')]}" />
+                                <field name="over_write_duedate"/>
+                                <field name="bill_credit_type" invisible="1" />
+                                <field name="company_id" invisible="1" />
+                                <field name="user_id" invisible="1" />
+                                <field name="submit_date" invisible="1" />
+                                <field name="process_date" invisible="1" />
+                                <field name="day_since" invisible="1" />
+                                
+                            </group>
+                            <group>
+                            <div><button name="action_set_vendor_account" states="approved" type="object" style="cursor: pointer;background: none;color: #21b799;font-size: 13px;padding: 0;" string="Configure Account"/></div>
+                            </group>
+                            <notebook>
+                                <page string="BILLS">
+                                    <field name="bill_line_ids" context="{'company_id': company_id}" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}">
+                                        <tree editable="bottom">
+                                            <field name="allowed_companies" invisible="1" />
+                                            <field name="bill_id" invisible="1" />
+                                            <field name="company_id" domain="[('id', 'in', allowed_companies[0][2])]" options="{'no_create' : True,'no_edit' : True}" widget="selection"/>
+                                            <field name="product_id" options="{'no_create' : True,'no_edit' : True}" />
+                                            <field name="name" />
+                                            <field name="account_id" domain="[('company_id', '=', company_id)]" options="{'create':false}" />
+                                            <field name="asset_category" domain="[('company_id', '=', company_id)]" />
+                                            <field name="account_analytic_id" />
+                                            <field name="analytic_tag_ids" widget="many2many_tags" />
+                                            <field name="quantity" />
+                                            <field name="price_unit" />
+                                            <field name="bill_line_tax_ids" widget="many2many_tags" />
+                                            <field name="price_subtotal" widget="monetary" />
+                                            <field name="currency_id" invisible="1" />
+                                            <field name="payable_receivable_move_line_id" invisible="1" />
+                                        </tree>
+                                    </field>
+                                    <group class="oe_subtotal_footer oe_right">
+                                        <field name="amount" class="oe_subtotal_footer_separator" widget="monetary" />
+                                        <field name="split_difference_amount" class="oe_subtotal_footer_separator" widget="monetary" />
+                                    </group>
+                                </page>
+                                <page string="OTHER INFO">
+                                    <group>
+                                        <label for="account_fiscal_periods_id" />
+                                        <div class="o_row">
+                                            <field name="account_fiscal_periods_id" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                            <field name="account_fiscal_periods_quarterly" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                            <field name="account_fiscal_period_week_id" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                        </div>
+                                        <!-- <field name="invoice_state"/> -->
+                                        <field name="bank_account_required" invisible="1"/>
+                                        <field name="partner_bank_id" domain="[('partner_id','=', partner_id)]" attrs="{'invisible': [('bank_account_required', '=', False)], 'required': [('bank_account_required', '=', True)]}"/>
+                                        <field name="vendor_payment_terms_id" readonly="True" />
+                                        <field name="journal_id" />
+                                        <field name="account_payable_id" readonly="True" />
+                                        <field name="note" attrs="{'readonly': [('state', 'in', ('posted','approved', 'paid'))]}" />
+                                        <field name="notes" placeholder="Additional bill info..." readonly="1" />
+                                        <field name="reversal_reason" placeholder="Reversal Reason..." readonly="1" />
+                                    </group>
+                                </page>
+                            </notebook>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_billpay_bills_tree" model="ir.ui.view">
+        <field name="name">billpay.bills.tree</field>
+        <field name="model">billpay.bills</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="BILLS"  colors="brown:state == 'refuse';gray:state == 'cancel';">
+                <field name="bill_credit_id" invisible="1" />
+                <field name="partner_id" />
+                <field name="bill_date" />
+                <field name="due_date" />
+                <field name="invoice_amount" />
+                <field name="purchase_id" />
+                <field name="process_date" />
+                <field name="bill_credit_source" />
+                <field name="day_since" />
+                <field name="state" />
+                <field name="account_fiscal_periods_id" string="Fiscal Month" />
+                    <field name="account_fiscal_periods_quarterly" string="Fiscal Quarter" />
+                    <field name="account_fiscal_period_week_id" string="Fiscal Week" />
+                    <field name="account_fiscal_periods_year" string="Fiscal Year" />
+            </tree>
+        </field>
+    </record>
+    <!--Bill and Credit filter and Search View -->
+    <record id="view_billpay_bills_filter" model="ir.ui.view">
+        <field name="name">billpay.bills.select</field>
+        <field name="model">billpay.bills</field>
+        <field name="arch" type="xml">
+            <search string="SEARCH BILLS">
+
+                <field name="invoice_amount" string="Amount" domain="[('invoice_amount','ilike', self)]" />
+                <field name="partner_id" string="Vendor" domain="[('partner_id','ilike', self)]" />
+                <field name="bill_credit_id" filter_domain="[('bill_credit_id','ilike',self)]" string="Bill ID" />
+                <separator />
+
+                <filter string="Open" name="open" domain="[('state', 'in', ['open'])]" />
+                <filter string="Hold" name="hold" domain="[('state', 'in', ['hold'])]" />
+                <filter string="To Approve" name="to_approve" domain="[('state', 'in', ['toapprove'])]" />
+                <filter string="Approved" name="approved" domain="[('state', 'in', ['approved'])]" />
+                <filter string="Posted" name="posted" domain="[('state', 'in', ['posted'])]" />
+                <filter string="Paid" name="paid" domain="[('state', 'in', ['paid'])]" />
+                <filter string="Refused" name="refuse" domain="[('state', 'in', ['refuse'])]" />
+                <filter string="Today" domain="[('bill_date', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" />
+                <filter string="Over due" name="overdue" domain="[('state', 'in', ['open']),('due_date', '&lt;', context_today().strftime('%Y-%m-%d'))]" />
+                <filter string="Over due - 30 Days" name="overdue_30days" domain="[('state', 'in', ['open']),('due_date', '&lt;', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d')),('due_date', '&gt;', (context_today() - datetime.timedelta(days=60)).strftime('%Y-%m-%d'))]" />
+                <filter string="Over due - 60 Days" name="overdue_60days" domain="[('state', 'in', ['open']),('due_date', '&lt;=',  (context_today() - datetime.timedelta(days=60)).strftime('%%Y-%%m-%%d')),('due_date', '&gt;', (context_today() - datetime.timedelta(days=90)).strftime('%Y-%m-%d'))]" />
+                <filter string="Over due - 90 Days" name="overdue_90days" domain="[('state', 'in', ['open']),('due_date', '&lt;=',  (context_today() - datetime.timedelta(days=90)).strftime('%%Y-%%m-%%d'))]" />
+                <group expand="0" string="Group By">
+                    <filter string="Due Date" icon="terp-personal" domain="[]" context="{'group_by' : 'due_date' }" name="due_date" />
+                    <filter string="Vendor" context="{'group_by': 'partner_id'}" name="partner" />
+                    <filter string="Bill Date" context="{'group_by': 'bill_date'}" />
+                    <!-- <filter string="Analytic Account" context="{'group_by': 'bill_line_ids. 
+                        account_analytic_id'}" /> -->
+                    <filter name="state" string="Bill Credit Status" context="{'group_by':'state'}" />
+                    <filter string="Fiscal Year" context="{'group_by':'account_fiscal_periods_year'}" />
+                    <filter string="Fiscal Quarter" context="{'group_by':'account_fiscal_periods_quarterly'}" />
+                    <filter string="Fiscal Month" context="{'group_by':'account_fiscal_periods_id'}" />
+                    <filter string="Fiscal Week" context="{'group_by':'account_fiscal_period_week_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="view_billpay_bills_form" model="ir.ui.view">
+        <field name="name">billpay.bills.form</field>
+        <field name="model">billpay.bills</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="BILL" create="false" style="background-color:#fff;">
+                <header>
+                    <!-- <style>
+                    .o_form_view .o_form_statusbar {
+                        background-color: #ffffff;
+                        position: fixed !important;
+                        border-bottom: 1px solid #8f8f8f;    
+                        width: 100%;
+                        z-index: 999;
+                    }
+                    .o_statusbar_status{z-index: 99;}
+                    </style> -->
+                    <button name="action_set_to_open" type="object" string="SET TO OPEN" attrs="{'invisible': [('state','not in', ['hold','refuse','cancel'])]}" class="oe_highlight" />
+                    <button name="action_bill_validate" states="open" type="object" string="VALIDATE" class="oe_highlight" />
+                    <button name="submit_on_hold" type="object" attrs="{'invisible': ['|', ('state','not in', ('open', 'toapprove')),('bill_credit_source','!=', 'inbox')]}" string="PUT ON HOLD" class="oe_highlight" />
+                    <button name="submit_on_refuse" type="object" attrs="{'invisible': ['|', ('state','not in', ('toapprove'))]}" string="REFUSE" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+                    <button name="approve_bills" type="object" attrs="{'invisible':[('state', '!=', 'toapprove')]}" string="Approve" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+                    <button name="action_bill_split_amount" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="SPLIT AMOUNT" class="oe_highlight" />
+                    <button name="action_bill_apply_product" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="APPLY PRODUCT" class="oe_highlight" />
+                    <button name="action_all_company" type="object" attrs="{'invisible': ['|',('state','!=', 'open'),('bill_credit_source','!=', 'inbox')]}" string="ADD ALL COMPANIES" class="oe_highlight" />
+                    <button name="action_bill_post" states="approved" type="object" string="POST" class="oe_highlight" edit="false" />
+                    <button name="action_bill_cancel" states="posted" type="object" string="Cancel" class="oe_highlight" />
+                    <button name="%(action_view_billpay_reversal)d" states="posted" type="action" string="Reverse" class="oe_highlight" />
+                    <button name="%(action_reverse_apply_credit)d" states="paid" type="action" string="Reverse and Apply Credit" class="oe_highlight" groups="vitalpet_bill_pay.group_billpay_approver" />
+
+                    <field name="state" widget="statusbar" statusbar_visible="open,hold,toapprove,refuse,approved,posted,paid" />
+                </header>
+                <sheet>
+
+                    <div class="oe_button_box">
+                        <button name="action_get_accounting_entries" class="oe_stat_button" icon="fa-bars" type="object" string="Accounting Entries" attrs="{'invisible': [('state', 'not in', ('posted','paid'))]}">
+                        </button>
+                        <button name="action_get_attachment_view" class="oe_stat_button" icon="fa-book" type="object">
+                            <field name="attachment_number" widget="statinfo" string="Documents" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="bill_credit_id" readonly="1" />
+                            <field name="inbox_id" invisible="1" />
+                            <!-- invisible="1" -->
+                        </h1>
+                    </div>
+                    <group>
+
+                        <field name="partner_id" domain="[('supplier', '=', True)]" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                        <field name="payment_mode_id" domain="[('payment_type', '=', 'outbound')]" widget="selection"/>
+                        <field name="invoice_amount" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                        <!-- <field name="vendor_ref" attrs="{'readonly': [('state', 'not in', 'open')]}" /> -->
+                        <field name="vendor_ref" readonly="0" />
+                        <field name="purchase_id" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                        <field name="bill_credit_source" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                        <field name="bill_date" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                        <field name="due_date" attrs="{'readonly': ['|',('state', 'in', ('posted','approved','paid')),('over_write_duedate', '=', False)]}" />
+                        <field name="original_due_date" invisible="1"/>            
+                        <field name="invoice_number" attrs="{'readonly': [('state', 'not in', 'open')]}" />
+                        <field name="acc_number_id" attrs="{'readonly': [('state', 'not in', 'open')]}" />
+                        <field name="over_write_duedate"/>
+                        <field name="company_id" invisible="1" />
+                        <field name="bill_credit_type" invisible="1" />
+
+                        <field name="user_id" invisible="1" />
+                        <field name="submit_date" invisible="1" />
+                        <field name="process_date" invisible="1" />
+                        <field name="day_since" invisible="1" />
+                        
+                    </group>
+                    
+                            <group>
+                            <div><button name="action_set_vendor_account" states="approved" type="object" style="cursor: pointer;background: none;color: #21b799;font-size: 13px;padding: 0;" string="Configure Account"/></div>
+                            </group>
+                            
+                    <notebook>
+                        <page string="BILLS">
+                            <field name="bill_line_ids" context="{'company_id': company_id}" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}">
+                                <tree editable="bottom">
+                                    <field name="allowed_companies" invisible="1" />
+                                    <field name="bill_id" invisible="1" />
+                                    <field name="company_id" domain="[('id', 'in', allowed_companies[0][2])]" options="{'no_create' : True,'no_edit' : True}" widget="selection"/>
+                                    <field name="product_id" options="{'create':false}" />
+                                    <field name="name" />
+                                    <field name="asset_category" domain="[('company_id', '=', company_id)]" />
+                                    <field name="account_id" domain="[('company_id', '=', company_id)]" options="{'create':false}" />
+                                    <field name="invoice_id" invisible="1" />
+
+                                    <field name="account_analytic_id" />
+                                    <field name="analytic_tag_ids" widget="many2many_tags" />
+                                    <field name="quantity" />
+                                    <field name="price_unit" />
+                                    <field name="bill_line_tax_ids" widget="many2many_tags" />
+                                    <field name="price_subtotal" widget="monetary" />
+                                    <field name="currency_id" invisible="1" />
+                                    <field name="payable_receivable_move_line_id" invisible="1" />
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount" class="oe_subtotal_footer_separator" widget="monetary" />
+                                <field name="split_difference_amount" class="oe_subtotal_footer_separator" widget="monetary" />
+                            </group>
+                        </page>
+                        <page string="OTHER INFO">
+                            <group>
+                                <label for="account_fiscal_periods_id" />
+                                <div class="o_row">
+                                    <field name="account_fiscal_periods_id" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                    <field name="account_fiscal_periods_quarterly" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+                                    <field name="account_fiscal_period_week_id" readonly="1" attrs="{'readonly': [('state', 'in', ('posted','approved','paid'))]}" />
+
+                                </div>
+                                <!-- <field name="invoice_state"/> -->
+                                <field name="vendor_payment_terms_id" readonly="True" />
+                                <field name="bank_account_required" invisible="1"/>
+                                <field name="partner_bank_id" domain="[('partner_id','=', partner_id)]" attrs="{'invisible': [('bank_account_required', '=', False)], 'required': [('bank_account_required', '=', True)]}"/>
+                                <field name="journal_id" />
+                                <field name="account_payable_id" readonly="True" />
+                                <field name="note" attrs="{'readonly': [('state', 'in', ('posted','approved', 'paid'))]}" />
+                                <field name="notes" placeholder="Additional bill info..." readonly="1" />
+                                <field name="reversal_reason" placeholder="Reversal Reason..." readonly="1" />
+
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+
+    <!--Bill Pay menu action -->
+    <record id="action_billpay_bills_open" model="ir.actions.act_window">
+        <field name="name">Open</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="context">{"search_default_open": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_bills_overdue" model="ir.actions.act_window">
+        <field name="name">Overdue</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+
+        <!-- <field name="context">{}</field> -->
+        <!-- <field name="domain">[('state', 'in', ['open'])]</field> -->
+    </record>
+
+    <record id="action_billpay_bills_posted" model="ir.actions.act_window">
+        <field name="name">Posted</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_posted": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+
+    </record>
+
+    <record id="action_billpay_bills_toapprove" model="ir.actions.act_window">
+        <field name="name">Awaiting Approval</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_to_approve": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_bills_hold" model="ir.actions.act_window">
+        <field name="name">Hold</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_hold": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+    
+    
+    <record id="action_billpay_bills_refused" model="ir.actions.act_window">
+        <field name="name">Refused</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_refuse": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_bills_approved" model="ir.actions.act_window">
+        <field name="name">Approved</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_approved": 1}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <!--Bill Pay Report action -->
+    <record id="action_billpay_all_bills" model="ir.actions.act_window">
+        <field name="name">All Bills</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="domain">[('bill_credit_type', '=', 'bill')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_all_credits" model="ir.actions.act_window">
+        <field name="name">All Credits</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="domain">[('bill_credit_type', '=', 'credit')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+
+    <!--Bill Pay approval action -->
+    <record id="action_billpay_approval" model="ir.actions.act_window">
+        <field name="name">Bills To Approve</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_to_approve": 1}</field>
+        <field name="domain">[('bill_credit_type',
+            '=', 'bill')]
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_credit_approval" model="ir.actions.act_window">
+        <field name="name">Credits To Approve</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_to_approve": 1}</field>
+        <field name="domain">[('bill_credit_type',
+            '=', 'credit')]
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    <record id="action_billpay_accountant_billpost" model="ir.actions.act_window">
+        <field name="name">Bills to Post</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="domain">[('state', 'in', ['approved']),('bill_credit_type',
+            '=', 'bill')]
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+    
+
+
+    <record id="action_billpay_accountant_credit_post" model="ir.actions.act_window">
+        <field name="name">Credits to Post</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field eval="False" name="view_id" />
+        <field name="view_id" eval="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="domain">[('state', 'in', ['approved']),('bill_credit_type',
+            '=', 'credit')]
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a record
+            </p>
+            <p style="font-size: 18px;">
+                No Records found
+
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_billpay_paid" model="ir.actions.act_window">
+        <field name="name">Paid</field>
+        <field name="res_model">billpay.bills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field eval="False" name="view_id" />
+        <field name="view_id" eval="view_billpay_bills_tree" />
+        <field name="search_view_id" ref="view_billpay_bills_filter" />
+        <field name="context">{"search_default_paid": 1}</field>
+        <field name="domain">[]
+            </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                    Click to create a record
+                </p>
+            <p style="font-size: 18px;">
+                    No Records found
+    
+                </p>
+        </field>
+    </record>
+
+    <!--Hold bill from tree view -->
+    <record id="billpay_put_on_hold" model="ir.actions.server">
+        <field name="name">Put On Hold</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_billpay_bills" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.submit_on_hold()
+        </field>
+
+    </record>
+
+    <record id="action_put_on_hold" model="ir.values">
+        <field name="name">Put On Hold</field>
+        <field name="model_id" ref="model_billpay_bills" />
+        <field name="model">billpay.bills</field>
+        <field name="key2">client_action_multi</field>
+        <field eval="'ir.actions.server,%d'%billpay_put_on_hold" name="value" />
+    </record>
+
+    <record id="billpay_approve" model="ir.actions.server">
+        <field name="name">Approve</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_billpay_bills" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.approve_bills()
+        </field>
+
+    </record>
+
+    <record id="action_billpay_approve" model="ir.values">
+        <field name="name">Approve</field>
+        <field name="model_id" ref="model_billpay_bills" />
+        <field name="model">billpay.bills</field>
+        <field name="key2">client_action_multi</field>
+        <field eval="'ir.actions.server,%d'%billpay_approve" name="value" />
+    </record>
+    
+
+    <record id="action_billpay_bills_tree_new1" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_billpay_bills_tree" />
+        <field name="act_window_id" ref="action_billpay_bills_open" />
+    </record>
+
+    <record id="action_billpay_bills_form_new1" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_billpay_bills_form_with_image" />
+        <field name="act_window_id" ref="action_billpay_bills_open" />
+    </record>
+
+</odoo>

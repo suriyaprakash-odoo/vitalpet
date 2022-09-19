@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="demographics_file_wizard_form" model="ir.ui.view">
+		<field name="name">Demographics File Form</field>
+		<field name="model">demographics.file.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Generate Pipeline Report">
+				<sheet>
+					<group>
+						<group>
+							<field name = "date_type" />
+						</group>
+						<group></group>
+						<group class="col-xs-6 o_group_col_6">
+							<field name="date_from" string="Date Range" attrs="{'required': [('date_type', '=', 'range')],'invisible': [('date_type', '!=', 'range')]}" />
+							<!-- <field name="date_from" attrs="{'required': [('select_all', '!=', True)],'invisible': [('select_all', '=', True)]}" /> -->
+						</group>
+						<group class="col-xs-6 o_group_col_6">
+							<field name="date_to" string="to" attrs="{'required': [('date_type', '=', 'range')],'invisible': [('date_type', '!=', 'range')]}"/>
+							<!-- <field name="date_to" attrs="{'required': [('select_all', '!=', True)],'invisible': [('select_all', '=', True)]}" /> -->
+						</group>
+						<!-- <field name="user_ids" widget="many2many_tags" options="{'no_create_edit':True}"
+							domain="[('is_salesperson', '=', True)]"
+							attrs="{'required': [('select_all', '!=', True)],'invisible': [('select_all', '=', True)]}" /> -->
+						<group>
+							<field name="specific_date" attrs="{'required': [('date_type', '=', 'specific')],'invisible': [('date_type', '!=', 'specific')]}" />
+						</group>
+						<group></group>
+						<group>
+							<field name="today_date" attrs="{'required': [('date_type', '=', 'today')],'invisible': [('date_type', '!=', 'today')]}" />
+						</group>
+					</group>
+					
+				</sheet>
+				<footer>
+					<div>
+						<label for='xl_file' attrs="{'invisible': [('xl_file', '=', False)]}" />
+						<field name="xl_file" readonly="1" filename="xl_name" style="margin-left:15px"/>
+						<field name="xl_name" invisible="1" />
+						<button name="cancel" string="Cancel" special="cancel"
+							class="oe_link" style="float:right" />
+						<button name="generate_xl_report" class="oe_highlight"
+							type="object" string="Generate Report" style="float:right;margin-right:5px" />
+					</div>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_demographics_file_wizard_report" model="ir.actions.act_window">
+		<field name="name">Demographics File</field>
+		<field name="res_model">demographics.file.wizard</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+		<field name="view_id" ref="demographics_file_wizard_form" />
+	</record>
+</odoo>

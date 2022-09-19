@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+            
+    	
+    	<!-- Dashboard Menu -->
+
+			<menuitem id='menu_mypractice_root' web_icon="vitalpet_mypractice,static/description/icon.png" name='My Practice' sequence='10' groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem id="menu_mypractice_dashboard" action="mypractice_dashboard" parent="menu_mypractice_root" sequence="1" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+		<!-- Financials Menu -->
+			<menuitem sequence="10" id="menu_mypractice_todo" parent="menu_mypractice_root" name="Inbox" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+		 	 <menuitem action="vitalpet_mypractice.open_view_mypractice_todo_task_all" id="menu_projects" name="TO DO" parent="menu_mypractice_todo" sequence="1" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+		<!-- Financials Menu -->
+			<menuitem sequence="20" id="menu_mypractice_financials" parent="menu_mypractice_root" name="Financials" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+			<menuitem action="account.action_invoice_tree2" id="menu_action_mypractice_vendor" parent="menu_mypractice_financials" sequence="2" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+
+		<!-- Team Menu -->
+			<menuitem sequence="30" id="menu_mypractice_team" parent="menu_mypractice_root" name="Team" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem id="menu_action_team" action="vitalpet_mypractice.open_view_employee_list_mypractice" parent="menu_mypractice_team" name='Team Members' sequence="3" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+		
+		<!-- Adviser Menu -->
+			<menuitem sequence="40" id="menu_mypractice_adviser" parent="menu_mypractice_root" name="Adviser" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem parent="menu_mypractice_adviser" id="menu_action_mypractice_account_asset" action="account_asset.action_account_asset_asset_form" sequence="101" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem action="account.action_move_journal_line" id="menu_action_mypractice_move_journal_line_form"
+            		parent="menu_mypractice_adviser" sequence="2" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+		
+		<!-- Reports Menu -->
+
+			<menuitem sequence="50" id="menu_mypractice_reports" parent="menu_mypractice_root" name="Reports" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+			
+			<menuitem id="mypractice_account_reports_legal_statements_menu" name="Legal Statements" parent="menu_mypractice_reports" sequence="2" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+			
+
+
+			<menuitem id="mypractice_account_reports_business_statements_menu" name="Business Statements" parent="menu_mypractice_reports" sequence="2" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<!-- <menuitem id="menu_mypractice_action_account_report_aged_payable" name="Aged Payable" action="account_reports.action_account_report_ap" parent="mypractice_account_reports_business_statements_menu" groups="group_my_practice_officer,group_my_practice_manager"/>
+ -->
+
+			<menuitem id="menu_mypractice_action_account_report_aged_receivable" name="Aged Receivable" action="account_reports.action_account_report_ar" parent="mypractice_account_reports_business_statements_menu" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+
+			<!-- <menuitem id="menu_mypractice_action_account_report_aged_receivable" name="Aged Receivable" action="account_reports.action_account_report_ar" parent="mypractice_account_reports_business_statements_menu" groups="vitalpet_mypractice.group_my_practice_officer,vitalpet_mypractice.group_my_practice_manager"/> -->
+        		
+        	<menuitem id="mypractice_account_management_menu" name="Management" parent="menu_mypractice_reports" sequence="3" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem id="menu_mypractice_action_account_assets" name="Assets" action="account_asset.action_asset_asset_report" parent="mypractice_account_management_menu" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem id="mypractice_account_business_intelligence_menu" name="Business Intelligence" parent="menu_mypractice_reports" sequence="4" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+			<menuitem id="menu_mypractice_action_invoice" name="Invoices" action="account.action_account_invoice_report_all" parent="mypractice_account_business_intelligence_menu" groups="group_my_practice_officer,group_my_practice_manager,group_my_practice_user"/>
+
+
+
+		<!-- Configuration Menu -->
+			<menuitem sequence="50" id="menu_mypractice_config" parent="menu_mypractice_root" name="Configuration" groups="group_my_practice_manager" />
+
+			<menuitem sequence="1" id="menu_mypractice_settings" parent="menu_mypractice_config" name="Settings" action='action_mypractice_config' groups="base.group_system"/>
+
+
+
+
+			<!-- Menu items for Practice leader -->
+
+			
+	    <record id="vitalpet_mypractice.menu_mypractice_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_officer')), (4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record>
+
+
+	   <!--  <record model="ir.ui.menu" id="stock.menu_action_picking_tree">
+			<field name="groups_id" eval="[(4, ref('group_stock_manager_moseltex'))]"/>
+		</record>
+ -->
+
+<!-- 
+	    <record id="account.menu_finance" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record>
+
+ -->	   	
+ 
+<!--  		<record id="project.menu_main_pm" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record>
+ -->
+	    <record id="hr_timesheet.timesheet_menu_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record>
+
+	    <!-- <record id="survey.group_survey_user" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('vitalpet_mypractice.group_my_practice_manager')])]"/>
+	    </record> -->
+
+	<!-- 	<record id="hr.menu_hr_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record> -->
+
+	    <record id="hr_holidays.menu_hr_holidays_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_manager')),(4,ref('vitalpet_mypractice.group_my_practice_officer'))]"/>
+	    </record>
+
+
+
+
+	    <!--<function name="write" model="ir.model.data">
+			<function name="search" model="ir.model.data">
+				<value eval="[('module', '=', 'survey'), ('name', '=', 'group_survey_user')]" />
+			</function>
+			<value eval="{'noupdate': False}" />
+		</function>
+
+		<record model="res.groups" id="survey.group_survey_user">
+            <field name="name">User</field>
+            <field name="category_id" ref="base.module_category_survey"/>
+            <field name="groups_id" eval="[(6,0,[ref('vitalpet_mypractice.group_my_practice_manager')])]"/>
+        </record>
+
+
+		<function name="write" model="ir.model.data">
+			<function name="search" model="ir.model.data">
+				<value eval="[('module', '=', 'survey'), ('name', '=', 'group_survey_user')]" />
+			</function>
+			<value eval="{'noupdate': True}" />
+		</function> -->
+
+
+
+
+
+	   <!--    <record id="hr.menu_hr_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('vitalpet_mypractice.group_my_practice_manager')])]"/>
+	    </record>
+ -->
+	    
+	   	<!-- <record id="hr_recruitment.menu_hr_recruitment_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_officer')), (4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record> -->
+
+
+	    <!-- <record id="hr_recruitment.menu_hr_recruitment_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_officer')), (4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record> -->
+
+
+	    <!-- 
+ -->
+
+	    <!-- <record id="vitalpet_mypractice.menu_mypractice_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(4,ref('vitalpet_mypractice.group_my_practice_officer')), (4,ref('vitalpet_mypractice.group_my_practice_manager'))]"/>
+	    </record> -->
+
+	    <menuitem
+            id="hr.menu_hr_root"
+            name="Employees"
+            groups="hr.group_hr_manager,hr.group_hr_user"
+            web_icon="hr,static/description/icon.png"
+            sequence="75"/>
+
+
+	    <record id="hr_expense.menu_hr_expense_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('vitalpet_mypractice.group_my_practice_manager'),ref('vitalpet_mypractice.group_my_practice_officer')])]"/>
+	    </record>
+	    
+	    <record id="hr_appraisal.menu_hr_appraisal_root" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('vitalpet_mypractice.group_my_practice_manager'),ref('vitalpet_mypractice.group_my_practice_officer')])]"/>
+	    </record>
+	    
+
+	    
+
+	    <record id="calendar.mail_menu_calendar" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('base.group_erp_manager')])]"/>
+	    </record>
+
+
+	    <record id="mail.mail_channel_menu_root_chat" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,0,[ref('base.group_erp_manager')])]"/>
+	    </record>
+
+
+	    <record id="mail.mail_channel_menu_root_chat" model="ir.ui.menu">
+	        <field name="groups_id" eval="[(6,False,[ref('base.group_erp_manager')])]"/>
+	    </record>
+
+
+	    
+
+
+	</data>
+</odoo>
+
+
+
+

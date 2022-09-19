@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="bonus_creation_notification" model="mail.template">
+			<field name="name">Bonus Creation Notification</field>
+			<field name="subject">Production Update</field>
+			<field name="email_to">${object.employee_id.work_email},financeHR@vitalpet.com, mAlbert@vitalpet.com, ${object.employee_id.work_email}</field>
+			<field name="model_id" ref="vitalpet_bonus_accrual.model_hr_bonus_accrual" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Dear ${object.employee_id.name},</p>
+                    <p>Please find below your production results in ${object.company_id.name} corresponding to ${object.payroll_period.name}:</p>
+                    <p>If there is any information you would like us to review in regards the above summary, please contact us not later than ${object.date_create} .</p>
+					<p>Thanks,</p>
+					% if object.contract_id.trial_date_start:
+						<p>Please note that our records indicate that the Trial Period in your contract expires on ${object.contract_id.trial_date_end} . Please inquiry with your supervisor if you have any questions.</p>
+					% else:
+						<p>Please note that our records indicate that the Contract Period in your contract expires on ${object.contract_id.date_end} . Please inquiry with your supervisor if you have any questions.</p>
+
+					% endif
+					<p>Best Regards,</p>
+					<p>Vitalpet</p>
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+	</data>
+</odoo>

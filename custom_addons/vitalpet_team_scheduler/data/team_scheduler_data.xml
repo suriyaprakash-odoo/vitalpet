@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="team_schedule_tag_data" model="project.tags">
+		<field name="name">Team Schedule</field>
+		<field name='color'>6</field>
+	</record>
+</odoo>

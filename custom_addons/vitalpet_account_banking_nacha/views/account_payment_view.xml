@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!--   <record id="view_payment_order_ach_extend" model="ir.ui.view">
+        <field name="name">view_payment_order_ach_extend</field>
+        <field name="model">account.payment.order</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_order_form"/>
+        <field name="arch" type="xml">
+            <field name="date_uploaded" position="after">
+                <field name="bank_ach" widget="selection"/>
+            </field>
+        </field>
+    </record> -->
+
+
+
+    <!-- <record id="view_payment_order_form_extend" model="ir.ui.view">
+        <field name="name">view_payment_order_form_extend</field>
+        <field name="model">account.payment.order</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='open2generated']" position='after'>
+                <button String="Generate NACHA File" name='gen_nacha' type='object'>
+                    </button>
+                    
+            </xpath>
+
+            <field name="date_uploaded" position="after">
+                <field name="bank_ach" widget="selection"/>
+            </field>
+            
+        </field>
+    </record>
+ -->
+</odoo>

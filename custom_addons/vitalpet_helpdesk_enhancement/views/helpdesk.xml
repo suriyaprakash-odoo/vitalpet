@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+    	<record id="inherit_helpdesk_tag" model="ir.ui.view">
+            <field name="name">helpdesk.tags.tree</field>
+            <field name="model">helpdesk.tag</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_tag_view_tree"/>
+            <field name="arch" type="xml">              
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="helpdesk_team"/>
+                    <field name="assinged_to"/>
+                    <field name="is_attachment_required"/>
+                </xpath>                          
+            </field>
+        </record>
+    	<!-- <record id="inherit_helpdesk_ticket_view_form" model="ir.ui.view">
+	        <field name="name">helpdesk.ticket.form</field>
+	        <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">              
+               <xpath expr="//field[@name='user_id']" position="attributes">
+                   <attribute name="domain">[('user_id','in', [team_id.member_ids])]</attribute>
+               </xpath>                     
+            </field>
+        </record> -->
+		
+		
+		<record model="ir.cron" id="reminder_email_user">		
+             <field name="name">Reminder email to helpdesk user</field>		
+             <field name="interval_number">1</field>		
+             <field name="interval_type">days</field>		
+             <field name="numbercall">-1</field>		
+             <field name='active'>true</field>		
+             <field name="doall" eval="True"/>		
+             <field name="model" eval="'helpdesk.ticket'"/>		
+             <field name="function" eval="'reminder_email_user'"/>		
+             <field name="args" eval="'()'" />	
+        </record>
+		
+		<record model="ir.cron" id="reminder_email_customer">		
+             <field name="name">Reminder email to helpdesk customer</field>		
+             <field name="interval_number">3</field>		
+             <field name="interval_type">days</field>		
+             <field name="numbercall">-1</field>		
+             <field name='active'>true</field>		
+             <field name="doall" eval="True"/>		
+             <field name="model" eval="'helpdesk.ticket'"/>		
+             <field name="function" eval="'reminder_email_customer'"/>		
+             <field name="args" eval="'()'" />	
+        </record>
+        
+        <template id="help_desk_inherit" inherit_id="website_helpdesk_form.ticket_submit">
+		<xpath expr="//div[@class='oe_structure oe_empt']//form//div[@class='form-group form-field']" position="after">
+			<div class="form-group form-field">
+	            <div class="col-md-3 col-sm-4 text-right">
+	                <label class="control-label" for="system">System</label>
+	            </div>
+	            <div class="col-md-7 col-sm-8">
+	                <select style="width: 775px;height: 35px;border-radius: 4px;" name="tag_form" class="sys_tags">
+	                	<t t-foreach="stage" t-as="stage1">
+					    	<option t-att-value="stage1.id"><t t-esc="stage1.name" /></option>
+					    </t>
+	                </select>
+	            </div>
+            </div>
+            <div class="form-group form-field">
+	            <div class="col-md-3 col-sm-4 text-right">
+	                <label class="control-label" for="priority">Priority</label>
+	            </div>
+	            <div class="col-md-7 col-sm-8">
+	                <select style="width: 775px;height: 35px;border-radius: 4px;" name="priority">
+						<option value="1">Low</option>
+						<option value="2">Medium</option>	
+						<option value="3">High</option>
+					</select>
+	            </div>
+	        </div>
+	        
+	        
+             <div class="form-group form-field o_website_form_custom">
+               <div class="col-md-3 col-sm-4 text-right">
+                 <label class="control-label" for="Attachment">Attachment</label>
+               </div>
+               <div class="col-md-7 col-sm-8">
+                 <input type="file" class="form-control o_website_form_input attachfile" name="Attachment" multiple="multiple"/>
+               </div>
+             </div>
+             
+             <script>
+				$(document).ready(function(){				
+				
+						$.ajax({url: "/helpdesk/tags/"+$(".sys_tags").val(), success: function(result){
+							    if(result=='Yes'){
+							    	$(".attachfile").attr("required","required")
+							    }else{
+							    	$(".attachfile").removeAttr("required");
+							    }
+						}});
+						
+					$("body").on('change', ".sys_tags", function() {
+						$.ajax({url: "/helpdesk/tags/"+$(".sys_tags").val().toString(), success: function(result){
+							    if(result=='Yes'){
+							    	$(".attachfile").attr("required","required")
+							    }else{
+							    	$(".attachfile").removeAttr("required");
+							    }
+						}});			
+					});
+				});
+			</script>
+							
+		</xpath>
+
+	</template>
+	
+	
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>helpdesk.ticket</value>
+        <value eval="[
+            'partner_name',
+            'partner_email',
+            'name',
+            'description',
+            'team_id',
+            'partner_id',
+            'priority',
+            'partner_id',
+            'tag_form',
+        ]"/>
+    </function>
+    
+      <menuitem id="helpdesk.helpdesk_tag_menu" action="helpdesk.helpdesk_tag_action"
+        sequence="1" parent="helpdesk.helpdesk_menu_config"
+        groups="base.group_no_one,helpdesk.group_helpdesk_manager"/>
+    
+     <menuitem id="helpdesk.helpdesk_ticket_type_menu" action="helpdesk.helpdesk_ticket_type_action"
+        sequence="1" parent="helpdesk.helpdesk_menu_config"
+        groups="base.group_no_one,helpdesk.group_helpdesk_manager"/>
+        
+    <menuitem id="helpdesk.helpdesk_stage_menu" action="helpdesk.helpdesk_stage_action"
+        sequence="3" parent="helpdesk.helpdesk_menu_config"
+        groups="base.group_no_one,helpdesk.group_helpdesk_manager"/>
+    
+	</data>
+</odoo>

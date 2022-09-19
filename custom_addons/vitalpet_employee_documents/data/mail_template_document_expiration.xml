@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Email template -->
+        <record id="document_expiration_mail_template" model="mail.template">
+            <field name="name">Document Expiration Email Template</field>
+            <field name="email_from">admin@vitalpet.com</field>
+            <field name="subject">Document will Expire soon</field>
+            <field name="email_to">${object.employee_ref.work_email},${object.employee_ref.company_id.hr_supervisor.login},${object.employee_ref.company_id.manager_user_id.login}</field>
+            <field name="model_id" ref="vitalpet_employee_documents.model_hr_employee_document"/>
+            <field name="auto_delete" eval="False"/> 
+            <field name="report_name">Documents Expiration Check</field>
+            <field name="body_html">
+                <![CDATA[
+                
+                <p>Hi Team,</p>
+                
+                <p>The Document : ${object.document_name.name} for ${object.employee_ref.name} will expire within ${ctx['diff_days']} days. Please renew soon.</p> 
+                
+                <p>Best Regards,</p>
+                
+                <p>VitalPet</p>
+                
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>
+ 

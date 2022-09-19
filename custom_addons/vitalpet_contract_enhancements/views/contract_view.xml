@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_draw_type_form" model="ir.ui.view">
+			<field name="name">hr.contract.draw.type.form</field>
+			<field name="model">hr.contract.draw.type</field>
+			<field name="arch" type="xml">
+				<form string="Draw Type">
+					<sheet>
+						<group>
+							<field name="code"  />
+							<field name="draw_type" required="1" />
+							<field name="description" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_draw_type_tree" model="ir.ui.view">
+			<field name="name">hr.contract.draw.type.tree</field>
+			<field name="model">hr.contract.draw.type</field>
+			<field name="priority">2</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="code" />
+					<field name="draw_type" />
+					<field name="description" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_view_draw_type" model="ir.actions.act_window">
+			<field name="name">Draw Type</field>
+			<field name="res_model">hr.contract.draw.type</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_draw_type_tree" />
+		</record>
+		<menuitem id="menu_draw_type" name="Draw Type"
+			parent="hr.menu_human_resources_configuration" sequence="3"
+			action="action_view_draw_type" />
+
+
+		<record id="view_leave_holiday_plan_form" model="ir.ui.view">
+			<field name="name">hr.contract.leave.holiday.plan.form</field>
+			<field name="model">hr.contract.leave.holiday.plan</field>
+			<field name="arch" type="xml">
+				<form string="Draw Type">
+					<sheet>
+						<group>
+							<div>
+								<label for="name" class="oe_edit_only" />
+								<h1>
+									<field name="name" required="1" />
+								</h1>
+							</div>
+						</group>
+						<group>
+							<field name="is_active" />
+							<field name="company_id" />
+						</group>
+						<notebook>
+							<page string="LEAVE">
+								<field name="contract_leave_ids">
+									<tree editable="bottom">
+										<field name="name" />
+										<field name="is_active" />
+										<field name="salary_rule_id" />
+										<field name="is_paid" />
+										<field name="date_start" />
+										<field name="date_end" />
+										<field name="salary_computation_id" />
+										<field name="employee_id" widget="many2many_tags" />
+										<field name="tenure_start" />
+										<field name="tenure_end" />
+										<field name="rate_per_hour" />
+										<field name="max_hour_year" />
+										<field name="carry_over_hour" />
+										<field name="paid_terminate" />
+									</tree>
+								</field>
+							</page>
+							<page string="HOLIDAY">
+								<field name="contract_holiday_ids">
+									<tree editable="bottom">
+										<field name="is_active" />
+										<field name="salary_rule_id" />
+										<field name="is_paid" />
+										<field name="date_start" />
+										<field name="date_end" />
+										<field name="salary_computation_id" />
+										<field name="holiday_id" />
+										<field name="date" />
+										<field name="hours_pay" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_leave_holiday_plan_form_filter" model="ir.ui.view">
+			<field name="name">hr.contract.leave.holiday.plan</field>
+			<field name="model">hr.contract.leave.holiday.plan</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name" string="Name" domain="[('name','ilike', self)]" />
+					<separator />
+
+
+					<filter string="Active" name="is_active" domain="[('is_active', '=', True)]" />
+					<filter string="In Active" name="is_active"
+						domain="[('is_active', '=', False)]" />
+
+					<group expand="0" string="Group By">
+						<filter string="Company" domain="[]"
+							context="{'group_by' : 'company_id' }" name="company_id" />
+						<filter string="Active" domain="[]"
+							context="{'group_by' : 'is_active' }" name="is_active" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="view_leave_holiday_plan_tree" model="ir.ui.view">
+			<field name="name">hr.contract.leave.holiday.plan.tree</field>
+			<field name="model">hr.contract.leave.holiday.plan</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="is_active" />
+					<field name="company_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_view_leave_holiday_plan" model="ir.actions.act_window">
+			<field name="name">Vitalpet Standard Leaves</field>
+			<field name="res_model">hr.contract.leave.holiday.plan</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_leave_holiday_plan_tree" />
+		</record>
+
+		<menuitem id="menu_view_leave_holiday_plan" name="Leave and Holiday Plan"
+			parent="hr.menu_human_resources_configuration" sequence="5"
+			action="action_view_leave_holiday_plan" />
+
+
+
+		<record id="view_leave_plan_form" model="ir.ui.view">
+			<field name="name">hr.contract.leave.plan.lines.form</field>
+			<field name="model">hr.contract.leave.plan.lines</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="contract_leave_id" string="Parent" />
+								<field name="company_id" string="Company" />
+								<field name="salary_rule_id" required="1" />
+								<field name="salary_computation_id" string="Pay Type"
+									required="1" />
+								<field name="is_paid" />
+								<field name="contract_type_id" required="1" />
+								<field name="max_hour_year" required="1" />
+								<field name="carry_over_hour" required="1" />
+								<field name="employee_id" widget="many2many_tags" />
+								<field name="description" />
+							</group>
+							<group>
+								<field name="date_start" required="1" />
+								<field name="date_end" required="1" />
+								<field name="tenure_start" required="1" />
+								<field name="tenure_end" required="1" />
+								<field name="rate_per_hour" required="1" />
+								<field name="paid_terminate" />
+								<field name="is_active" string="Status" />
+
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_leave_plan_tree" model="ir.ui.view">
+			<field name="name">hr.contract.leave.plan.lines.tree</field>
+			<field name="model">hr.contract.leave.plan.lines</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="contract_leave_id" string="Parent" />
+					<field name="name" />
+					<field name="company_id" />
+					<field name="is_active" string="Status" />
+					<field name="salary_rule_id" />
+					<field name="is_paid" />
+					<field name="date_start" />
+					<field name="date_end" />
+					<field name="salary_computation_id" string="Pay Type" />
+					<field name="contract_type_id" />
+					<field name="employee_id" widget="many2many_tags" />
+					<field name="tenure_start" />
+					<field name="tenure_end" />
+					<field name="rate_per_hour" />
+					<field name="max_hour_year" />
+					<field name="carry_over_hour" />
+					<field name="paid_terminate" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_leave_plan_form_filter" model="ir.ui.view">
+			<field name="name">hr.contract.leave.plan.lines</field>
+			<field name="model">hr.contract.leave.plan.lines</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name" string="Name" domain="[('name','ilike', self)]" />
+					<field name="employee_id" string="Restrict To Employee"
+						domain="[('employee_id','ilike', self)]" />
+					<separator />
+
+
+					<filter string="Active" name="is_active" domain="[('is_active', '=', True)]" />
+					<filter string="In Active" name="is_active"
+						domain="[('is_active', '=', False)]" />
+					<filter string="Is Paid" name="is_paid" domain="[('is_paid', '=', True)]" />
+					<filter string="Paid On Termination" name="paid_terminate"
+						domain="[('is_paid', '=', True)]" />
+
+
+					<group expand="0" string="Group By">
+						<filter string="Company" domain="[]"
+							context="{'group_by' : 'company_id' }" name="company_id" />
+						<filter string="Parent" domain="[]"
+							context="{'group_by' : 'contract_leave_id' }" name="contract_leave_id" />
+						<filter string="Date Start" domain="[]"
+							context="{'group_by' : 'date_start' }" name="date_start" />
+						<filter string="Date End" domain="[]"
+							context="{'group_by' : 'date_end' }" name="date_end" />
+						<filter string="Contract Type" domain="[]"
+							context="{'group_by' : 'contract_type_id' }" name="contract_type_id" />
+						<filter string="Salary Rule" domain="[]"
+							context="{'group_by' : 'salary_rule_id' }" name="salary_rule_id" />
+						<filter string="Status" domain="[]"
+							context="{'group_by' : 'is_active' }" name="is_active" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="action_view_leave_plan_lines" model="ir.actions.act_window">
+			<field name="name">Leave Plan</field>
+			<field name="res_model">hr.contract.leave.plan.lines</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_leave_plan_tree" />
+		</record>
+
+		<menuitem id="menu_view_leave_plan" name="Leave Plans"
+			parent="hr.menu_human_resources_configuration" sequence="6"
+			action="action_view_leave_plan_lines" />
+
+		<record id="view_holiday_plan_form" model="ir.ui.view">
+			<field name="name">hr.contract.holiday.plan.lines.form</field>
+			<field name="model">hr.contract.holiday.plan.lines</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="contract_holiday_id" string="Parent"
+									required="1" />
+								<field name="is_active" string="Staus" />
+								<field name="salary_rule_id" />
+								<field name="is_paid" />
+								<field name="date_start" />
+								<field name="date_end" />
+							</group>
+							<group>
+								<field name="salary_computation_id" string="Pay Type" />
+								<field name="holiday_id" />
+								<field name="date" />
+								<field name="hours_pay" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_holiday_plan_tree" model="ir.ui.view">
+			<field name="name">hr.contract.holiday.plan.lines.tree</field>
+			<field name="model">hr.contract.holiday.plan.lines</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="contract_holiday_id" string="Parent" />
+					<field name="is_active" string="Staus" />
+					<field name="salary_rule_id" />
+					<field name="is_paid" />
+					<field name="date_start" />
+					<field name="date_end" />
+					<field name="salary_computation_id" string="Pay Type" />
+					<field name="holiday_id" />
+					<field name="date" />
+					<field name="hours_pay" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_holiday_plan_form_filter" model="ir.ui.view">
+			<field name="name">hr.contract.holiday.plan.lines</field>
+			<field name="model">hr.contract.holiday.plan.lines</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="holiday_id" string="Holiday"
+						domain="[('holiday_id','ilike', self)]" />
+					<separator />
+
+					<filter string="Active" name="is_active" domain="[('is_active', '=', True)]" />
+					<filter string="In Active" name="is_active"
+						domain="[('is_active', '=', False)]" />
+					<filter string="Is Paid" name="is_paid" domain="[('is_paid', '=', True)]" />
+
+					<group expand="0" string="Group By">
+
+						<filter string="Parent" domain="[]"
+							context="{'group_by' : 'contract_holiday_id' }" name="contract_holiday_id" />
+						<filter string="Date Start" domain="[]"
+							context="{'group_by' : 'date_start' }" name="date_start" />
+						<filter string="Date End" domain="[]"
+							context="{'group_by' : 'date_end' }" name="date_end" />
+						<filter string="Status" domain="[]"
+							context="{'group_by' : 'is_active' }" name="is_active" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_view_holiday_plan_lines" model="ir.actions.act_window">
+			<field name="name">Holiday Plan</field>
+			<field name="res_model">hr.contract.holiday.plan.lines</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_holiday_plan_tree" />
+		</record>
+
+		<menuitem id="menu_view_holiday_plan" name="Holiday Plans"
+			parent="hr.menu_human_resources_configuration" sequence="6"
+			action="action_view_holiday_plan_lines" />
+
+
+		<record id="hr_contract_view_form_inherit" model="ir.ui.view">
+			<field name="name">hr.contract.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//header/field[@name='state']" position="replace">
+					<field name="state" widget="statusbar" />
+				</xpath>
+				<!--  <xpath expr="//form/sheet/group/group/field[@name='employee_id']" position="after">
+					<field name="is_approved_hr" invisible="1"/>
+				</xpath>  -->
+				<header>
+					<button string='Set to draft' name='set_draft' type='object'
+						class='oe_highlight' attrs="{'invisible':[('state','in','draft')]}" />
+				</header>
+				<!-- <field name="wage" position="after">
+						<button name="(action_logs_approval)d" class="oe_highlight"
+						string="Update" type="action" />
+				</field> -->
+				<xpath expr="//form/sheet/notebook/page[2]" position="after">
+					<page string="LOG">
+						<field name="contract_log_line_ids">
+							<tree editable="bottom">
+								<field name="user_id" />
+								<field name="date" />
+								<field name="field" />
+								<field name="original_value" />
+								<field name="change_value" />
+								<field name="approved_by" required="0"/>
+								<field name="reason" required="0"/>
+								<!-- <field name="is_approved" /> -->
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<!-- <xpath expr="//field[@name='contract_job_ids']/tree/field[@name='is_bonus']"
+					position="after">
+					<field name="user_approved_id" required="1" />
+					<field name="reason_approved" required="1" />
+				</xpath> -->
+				<xpath expr="//group[@name='duration_group']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='department_id']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+				<xpath expr="//field[@name='working_hours']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//label[@for='trial_date_start']" position="replace">
+				</xpath>
+				<xpath expr="//label[@for='date_start']" position="replace">
+				</xpath>
+
+				<xpath expr="//field[@name='trial_date_start']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='trial_date_end']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='date_start']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='date_end']" position="replace">
+				</xpath>
+
+				<xpath expr="//field[@name='type_id']" position="after">
+					<field name="trial_date_start" string="Trial Period Start Date" />
+					<field name="trial_date_end" string="Trial Period End Date" />
+					<field name="date_start" string="Duration Start" />
+					<field name="date_end" string="Duration End" required="0"/>
+					<field name="notice" required="1" />
+					<field name="notice_end" invisible="1" />
+
+				</xpath>
+
+				<xpath
+					expr="//form/sheet/notebook/page/group/group[@name='salary_and_advantages']"
+					position="before">
+					<group name="production_contract" string="Production Contract"
+						style="float:right;max-width: 41%;">
+						<field name='draw_type_id' required="1" />
+						<field name='production_basis' />
+						<field name='production_rate' />
+						<field name='discount_rate' />
+						<field name='annual_draw' />
+						<field name='payout_delay' required="1" />
+					</group>
+				</xpath>
+				<xpath
+					expr="//form/sheet/notebook/page/group/group[@name='production_contract']"
+					position="inside">
+					<div></div>
+					<div>
+						<button name='update_wage' colspan="2" class="oe_highlight"
+							style="float:left;box-shadow: 1px 4px 2px 0px #c0c0c0;margin-bottom:7px;"
+							string="Update Wage" type="object" />
+					</div>
+				</xpath>
+				
+			</field>
+		</record>
+
+		<record id="hr_contract_type_view_form_prefix" model="ir.ui.view">
+			<field name="name">hr.contract.type.form.inherit</field>
+			<field name="model">hr.contract.type</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_type_view_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='name']" position="before">
+					<field name="prefix" colspan="4" required="1" />
+				</xpath>
+			</field>
+		</record>
+		<record id="hr_contract_type_view_tree_prefix" model="ir.ui.view">
+			<field name="name">hr.contract.type.tree.inherit</field>
+			<field name="model">hr.contract.type</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_type_view_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//tree/field[@name='name']" position="after">
+					<field name="prefix" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="hr_contract_form_inherit" model="ir.ui.view">
+			<field name="name">hr.contract.view.form.inherit</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="payroll_base.hr_contract_form_inherit" />
+			<field name="arch" type="xml">
+				<data>
+					<!-- <field name="wage" position="after"> <field name="struct_id" required="1" 
+						/> </field> -->
+					<field name="schedule_pay" position='replace' />
+					<xpath expr="//field[@name='job_id']" position="after">
+						<field name="schedule_pay" required="1" />
+					</xpath>
+				</data>
+			</field>
+		</record>
+
+
+		<record id="hr_contract_view_form_inherited_3" model="ir.ui.view">
+			<field name="name">hr.contract.view.form.inherited_3</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="payroll_contract_jobs.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='job_id']" position="attributes">
+					<attribute name="string">Primary Job</attribute>
+				</xpath>
+				<xpath expr="//field[@name='job_id']" position="after">
+					<field name="job_seniority_title" readonly="1" />
+					<field name="leave_holiday_plan" required="1" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="hr_contract_view_form_hourly" model="ir.ui.view">
+			<field name="name">hr.contract.view.form.hourly</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="payroll_hourly_rate.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='salary_computation_method']"
+					position="attributes">
+					<attribute name="string">Pay Type</attribute>
+				</xpath>
+				<xpath expr="//field[@name='wage']" position="attributes">
+					<attribute name="groups">vitalpet_contract_enhancements.group_so_payment</attribute>
+				</xpath>				
+			</field>
+		</record>
+
+		<record id="hr_contract_view_form_inherit_bonus " model="ir.ui.view">
+			<field name="name">hr.contract.view.form.hourly.in</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id"
+				ref="vitalpet_bonus_accrual.hr_contract_view_form_inherit_1" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='staff_bonus_ids']/tree/field[@name='job_id']"
+					position="after">
+					<field name="code_id" readonly="1" />
+				</xpath>
+				<xpath
+					expr="//field[@name='staff_bonus_ids']/tree/field[@name='production_tag_id']"
+					position="after">
+					<field name="type_id" readonly="1" />
+				</xpath>
+				<xpath expr="//field[@name='name']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath
+					expr="//field[@name='staff_bonus_ids']/tree/field[@name='is_bonus']"
+					position="after">
+					<field name="rate_id" />
+					<field name="sub_amount" />
+					<field name="payout_period" />
+					<field name="salary_rule" />
+					<field name="validation" />
+
+				</xpath>
+			</field>
+		</record>
+
+
+		<record id="view_contract_log_form" model="ir.ui.view">
+			<field name="name">hr.contract.line.log.form</field>
+			<field name="model">hr.contract.line.log</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="employee_id" required="1" />
+								<field name="contract_log_line_id" string="Contract"
+									required="1" />
+								<field name="user_id" />
+								<field name="date" />
+								<field name="field" />
+							</group>
+							<group>
+								<field name="original_value" />
+								<field name="change_value" />
+								<field name="approved_by" />
+								<field name="reason" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_contract_log_tree" model="ir.ui.view">
+			<field name="name">hr.contract.line.log.tree</field>
+			<field name="model">hr.contract.line.log</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="employee_id" />
+					<field name="contract_log_line_id" string="Contract" />
+					<field name="user_id" />
+					<field name="date" />
+					<field name="field" />
+					<field name="original_value" />
+					<field name="change_value" />
+					<field name="approved_by" />
+					<field name="reason" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_contract_log_filter" model="ir.ui.view">
+			<field name="name">hr.contract.line.log</field>
+			<field name="model">hr.contract.line.log</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="user_id" string="User" domain="[('user_id','ilike', self)]" />
+					<field name="employee_id" string="Employee"
+						domain="[('employee_id','ilike', self)]" />
+					<field name="contract_log_line_id" string="Contract"
+						domain="[('contract_log_line_id','ilike', self)]" />
+					<field name="field" string="Field" domain="[('field','ilike', self)]" />
+					<field name="approved_by" string="Approved By"
+						domain="[('approved_by','ilike', self)]" />
+					<separator />
+
+					<group expand="0" string="Group By">
+
+						<filter string="User" domain="[]" context="{'group_by' : 'user_id' }"
+							name="user_id" />
+						<filter string="Date " domain="[]"
+							context="{'group_by' : 'date_start' }" name="date_start" />
+						<filter string="Field" domain="[]" context="{'group_by' : 'field' }"
+							name="field" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_view_contract_log" model="ir.actions.act_window">
+			<field name="name">Contract Change Log</field>
+			<field name="res_model">hr.contract.line.log</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_contract_log_tree" />
+		</record>
+
+		<menuitem id="menu_view_contract_log" name="Contract Change Log"
+			parent="hr.menu_human_resources_configuration" sequence="7"
+			action="action_view_contract_log" />
+
+
+		<record id="view_contract_employee_configuration_form" model="ir.ui.view">
+			<field name="name">hr.contract.employee.configuration</field>
+			<field name="model">hr.contract.employee.configuration</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Apply" type="object" name="execute" class="oe_highlight" />
+						<button string="Cancel" type="object" name="cancel" class="oe_link" />
+					</header>
+					<group string='Global Settings'>
+						<field name="contract_create" domain="[('model','in', ['hr.contract','hr.contract.line.log'])]" />
+						<field name="contract_change" domain="[('model','in', ['hr.contract','hr.contract.line.log'])]" />
+						<field name="notice_email_manager" domain="[('model','in', ['hr.contract','hr.contract.line.log'])]" />
+						<field name="notice_email_hr" domain="[('model','in', ['hr.contract','hr.contract.line.log'])]" />
+					</group>
+
+					<group string='Company Settings'>
+						<field name="company_id" />
+						<field name="payroll_company" />
+						<field name="manager_user_id"
+							attrs="{'invisible': [('payroll_company', '=', False)],'required':[('payroll_company','=',True)]}" />
+						<field name="designee_user_id"
+							attrs="{'invisible': [('payroll_company', '=', False)],'required':[('payroll_company','=',True)]}" />
+					</group>
+
+				</form>
+			</field>
+		</record>
+
+
+		<record id="action_view_contract_employee_configuration" model="ir.actions.act_window">
+			<field name="name">Configure Employee Contract</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract.employee.configuration</field>
+			<field name="view_mode">form</field>
+			<field name="target">inline</field>
+		</record>
+
+
+
+		<menuitem id="menu_view_contract_employee_configuration"
+			name="Settings" parent="hr.menu_human_resources_configuration"
+			sequence="0" action="action_view_contract_employee_configuration" groups="base.group_system,base.group_erp_manager"/>
+
+
+        <record id="hr_contract_view_form_approved_inherit_view" model="ir.ui.view">
+			<field name="name">hr.contract.view.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='contract_job_ids']/tree/field[@name='is_bonus']"
+					position="after">
+					<field name="user_approved_id" invisible="1" />
+					<field name="reason_approved" invisible="1" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

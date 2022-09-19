@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+
+      	<record model="ir.ui.view" id="survey_user_input_form_inherit">
+            <field name="name">survey_user_input_form</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_form"/>
+            <field name="arch" type="xml">
+            	<field name="token" position="after">
+            		<field name = "onboarding_id" invisible='1'/>
+            	</field>
+            </field>
+        </record>
+
+		<!-- Main Menu -->
+		<menuitem name="Onboarding" id="menu_onboarding" web_icon="vitalpet_onboarding,static/description/icon.png" sequence="1" groups="group_onboarding_user" />
+		
+				
+        <record id="view_hr_employee_onboarding_calendar" model="ir.ui.view">
+            <field name="name">hr.employee.onboarding.calendar</field>
+            <field name="model">hr.employee.onboarding</field>
+            <field name="arch" type="xml">
+                <calendar string="Onboarding"  color="name"  date_start="start_date" create="false">
+                    <field name="name"/>
+                    <field name="applied_job"/>
+                </calendar>
+            </field>
+        </record>
+        
+        
+		<record id="hr_onboarding_form_view" model="ir.ui.view">
+			<field name="name">HR Onboarding</field>
+			<field name="model">hr.employee.onboarding</field>
+			<field name="arch" type="xml">
+				<form string="HR Onboarding" create="false" edit="false">
+					<header>
+						<!-- <button name="remainder_email_cron" string="mail"
+							type="object"/> -->
+						<field name="state_id" widget="statusbar" statusbar_visible="offer,background,to_approve,hire,benefits,contract,complete"  />
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box" attrs="{'invisible': [('state_id', 'in', ('reject'))]}">
+							<a class="btn btn-sm oe_stat_button btn_completion_bar_new"
+								style="color: #666666;">
+								<div class="fa fa-fw fa-hourglass o_button_icon"></div>
+								<div class="o_form_field o_stat_info" data-original-title=""
+									title="">
+									<span class="o_stat_value"><field name="progress_percentage"/>%</span>
+									<span class="o_stat_text">Progress</span>
+									<field name="id" class="form_id" style="display:none;" />
+								</div>
+							</a>
+						</div>
+						<group>
+							<div class="col-xs-1 o_group_col_1">
+								<field name="image" widget='image' type="base64" class="oe_avatar"/>
+							</div>
+                            <h1 class="col-xs-12 o_group_col_12" style="margin-left:-10px;">
+                                <field name="name" placeholder="Applicant Name"/>
+                                <!-- <field name="first_name" placeholder="First Name" required='1' />
+								<field name="middle_name" placeholder="Middle Name" />
+								<field name="last_name" placeholder="Last Name" required='1' /> -->
+								<field name="new_employee_id" invisible="1"/>
+								<field name="new_contract_id" invisible="1"/>
+                            </h1>
+		                   	<group class="col-xs-6 o_group_col_6">
+								<field name="phone" />
+								<field name="applied_job" />
+								<field name="start_date" />
+								<field name="emp_status" />
+								<field name="expected_salary" />
+								<field name="contract_type" />
+								<field name="available" />
+							</group>
+							<group class="col-xs-6 o_group_col_6">
+								<field name="mail" required='1' />
+								<field name="applicant_id" />
+								<field name="company" />
+								<field name="responsible" />
+								<field name="proposed_salary" />
+								<field name="pay_type" />
+								<field name="substate_id" class="substate_value" readonly="1" invisible="1" />
+								<field name="benefits_states" readonly="1" invisible="1"/>
+								<field name="priority" class="priority_value" widget='priority' invisible="1" readonly="1"/>
+								<field name="benefits_survey_link" class="benefits_link_value" invisible="1" readonly="1"/>
+								<field name="partner_id" invisible="1" readonly="1"/>
+								<br />
+								<br />
+								<br />
+							</group>
+							<group class="col-xs-6 o_group_col_6" string="Alias(If Any)">
+								<field name="first_name_alias" placeholder="First Name" />
+								<field name="middle_name_alias" placeholder="Middle Name" />
+								<field name="last_name_alias" placeholder="Last Name" />
+							</group>
+							<group class="col-xs-6 o_group_col_6" string = "Emergency Contact Informations">
+								<field name = "emergency_contact_name" />
+								<field name = "emergency_contact_phone" />
+								<field name = "emergency_contact_relationship" />
+							</group>
+							<group string="Applicant Personal Details"
+								attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}" class="col-xs-12 o_group_col_12" style="margin-left:-10px;">
+								<group>
+									<field name="nationality" />
+									<field name="id_number" />
+									<label for="street" string="Address"/>
+                                    <div class="o_address_format">
+                                        <field name="street" placeholder="Street..." class="o_address_street"/>
+		                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+		                                <field name="city" placeholder="City" class="o_address_city"/>
+		                                <field name="state" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+		                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+		                                <field name="country" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                    </div>
+									<field name="passport_number" />
+									<field name="dl_number" />
+									<field name="birth_country" />
+									<field name="ethnic_id" />
+									<field name="age" />
+								</group>
+								<group>
+									<field name="gender" />
+									<field name="marital_status" />
+									<field name="filing_staus" />
+									<field name="no_of_children" />
+									<field name="dob" />
+									<field name="place_of_birth" />
+									<field name="smoker" />
+								</group>
+							</group>
+						</group>
+						<group>
+							<field name="notes" />
+						</group>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">Academic Experience</h2>
+							<field name="academic_experience_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}" string="">
+								<tree editable="bottom">
+									<field name="academic_experience" />
+									<field name="institute" />
+									<field name="diploma" />
+									<field name="field_of_study" />
+									<field name="start_date" />
+									<field name="end_date" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">Professional Experience</h2>
+							<field name="professional_experience_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="position" />
+									<field name="employer" />
+									<field name="start_date" />
+									<field name="end_date" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">Certifications</h2>
+							<field name="certification_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="certifications" />
+									<field name="certificate_code" />
+									<field name="issued_by" />
+									<field name="professional_license" />
+									<field name="state_issued_id" />
+									<field name="start_date" />
+									<field name="end_date" />
+								</tree>
+							</field>
+						<group>
+							<group string="Employement Informations"
+								attrs="{'invisible': [('state_id', 'not in', ('offer','to_approve','complete'))]}">
+								<group>
+									<field name="emp_start_date" />
+									<field name="benifits_seniority_date" />
+									<field name="job_seniority_title" />
+								</group>
+								<group>
+									<field name="scheduled_hours" />
+									<field name="pay_rate" />
+								</group>
+							</group>
+						</group>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Applicant</h2>
+							<field name="applicant_background_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="document" />
+									<field name="doc_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Employer</h2>
+							<field name="employer_background_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="document" />
+									<field name="doc_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" /> 
+								</tree>
+							</field>
+							<!-- <h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Everify Case Result</h2>
+							<field name="everify_case_result_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="case_number" />
+									<field name="status" />
+									<field name="message_code" />
+									<field name="eligiblity_statement" />
+									<field name="statement_details" /> 
+									<field name="date_sent" /> 
+									<field name="date_received" /> 
+									<field name="case_status" />
+									<field name="everify_download_url" invisible="1"/>
+								</tree>
+							</field> -->
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Background Check</h2>
+							<field name="background_check_ids" attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="item" />
+									<field name="status_id" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Background Check Download</h2>
+							<field name="background_check_download_ids" attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="item" />
+									<field name="attachment" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Background Check Package</h2>
+							<field name="background_check_package_ids" attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<field name="item" />
+								</tree>
+							</field>
+							<!-- <group col="6"
+								attrs="{'invisible': [('state_id', 'not in', ('background'))]}">
+								<button name="send_background_documents_link" type="object" class="oe_highlight"
+									string="Initiate" />
+							</group> -->
+						<group>
+							<group>
+								<field name="e_verify"
+									attrs="{'invisible': [('state_id', 'not in', ('to_approve','complete'))]}" />
+							</group>
+						</group>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Consent Form</h2>
+							<field name="consent_form_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<!-- <field name="form_id" /> -->
+									<field name="consent_form" />
+									<field name="form_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">Adverse Action</h2>
+							<field name="action_form_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('background','to_approve','complete'))]}">
+								<tree editable="bottom">
+									<!-- <field name="form_id" /> -->
+									<field name="action_form" />
+									<field name="form_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">Welcome Mail</h2>
+							<field name="welcome_mail_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">
+								<tree editable="bottom">
+									<field name="document" />
+									<field name="doc_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" />
+								</tree>
+							</field>
+							<h2 attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">Survey</h2>
+							<field name="welcome_benefit_survey_ids"
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">
+								<tree editable="bottom">
+									<field name="survey" />
+									<field name="survey_link" />
+									<field name="status_id" />
+									<field name="date_sent" />
+									<field name="expiration" />
+								</tree>
+							</field>
+						<group>
+							<group col="4"
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">
+								<field name="appraisal_by_short" />
+								<field name="appraisal_short_id" nolabel="1"
+									placeholder="Select Appraisal..." widget="many2many_tags"
+									attrs="{'invisible':[('appraisal_by_short','=',False)]}"
+									readonly="0" />
+								<field name="appraisal_short_survey_id" nolabel="1"
+									placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_short','=',False)]}" />
+							</group>
+							<group
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}"></group>
+							<group string="Send Appraisal Form To" col="4"
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">
+								<field name="appraisal_by_manager" />
+								<field name="appraisal_manager_ids" nolabel="1"
+									placeholder="Select Appraisal Reviewer..." widget="many2many_tags"
+									attrs="{'invisible':[('appraisal_by_manager','=',False)]}"
+									readonly="0" />
+								<field name="appraisal_manager_survey_id" nolabel="1"
+									placeholder="Appraisal Form..."
+									attrs="{'invisible':[('appraisal_by_manager','=',False)]}" />
+
+								<field name="appraisal_self" />
+								<field name="appraisal_employee" nolabel="1"
+									attrs="{'invisible':[('appraisal_self','=',False)]}" />
+								<field name="appraisal_self_survey_id" nolabel="1"
+									placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_self','=',False)]}" />
+
+								<div>
+									<b>Direct Reports</b>
+								</div>
+								<div>
+									<field name="appraisal_by_collaborators" />
+									<field name="direct_report_anonymous" />
+									Anonymous
+								</div>
+								<field name="appraisal_collaborators_ids" nolabel="1"
+									placeholder="Select Appraisal Reviewer..." widget="many2many_tags"
+									attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}" />
+								<field name="appraisal_collaborators_survey_id" nolabel="1"
+									placeholder="Appraisal Form..."
+									attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}" />
+								<div>
+									<b>Colleagues</b>
+								</div>
+								<div>
+									<field name="appraisal_by_colleagues" />
+									<field name="colleague_report_anonymous" />
+									Anonymous
+								</div>
+								<field name="appraisal_colleagues_ids" nolabel="1"
+									placeholder="Select Appraisal Reviewer..." widget="many2many_tags"
+									attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}"
+									readonly="0" />
+								<field name="appraisal_colleagues_survey_id" placeholder="Appraisal Form..."
+									nolabel="1" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}" />
+								<field name="appraisal_by_coach" />
+								<field name="appraisal_coach_id" nolabel="1"
+									placeholder="Select Appraisal Coach..." widget="many2many_tags"
+									attrs="{'invisible':[('appraisal_by_coach','=',False)]}"
+									readonly="0" />
+								<field name="appraisal_coach_survey_id" nolabel="1"
+									placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_coach','=',False)]}" />
+							</group>
+							<group
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}"></group>
+							<group string="Periodicity" col="4"
+								attrs="{'invisible': [('state_id', 'not in', ('hire','complete'))]}">
+								<field name="periodic_appraisal" />
+								<field name="appraisal_date"
+									attrs="{'invisible':[('periodic_appraisal','=',False)], 'required':[('periodic_appraisal','=',True)]}" />
+								<label for="appraisal_frequency" string="Repeat Every" />
+								<div class="o_row">
+									<field name="appraisal_frequency"
+										attrs="{'invisible':[('periodic_appraisal','=',False)], 'required':[('periodic_appraisal','=',True)]}"
+										class="oe_inline" />
+									<field name="appraisal_frequency_unit"
+										attrs="{'invisible':[('periodic_appraisal','=',False)], 'required':[('periodic_appraisal','=',True)]}"
+										class="oe_inline" />
+								</div>
+								<field name="auto_send_appraisals" />
+							</group>
+							<group string="Benefits Eligibility"
+								attrs="{'invisible': [('state_id', 'not in', ('benefits','complete'))]}">
+								<field name="benefits_enrollment_delay" readonly="1" />
+								<field name="eligible_for_benefits" readonly="1" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+	                </div>
+				</form>
+			</field>
+		</record>
+
+		<record id="hr_onboarding_tree_view" model="ir.ui.view">
+			<field name="name">HR Onboarding</field>
+			<field name="model">hr.employee.onboarding</field>
+			<field name="arch" type="xml">
+				<tree string="hr.employee.onboarding"  create="false" >
+					<field name="id" />
+					<field name="create_date" />
+					<field name="responsible" string="Assigned to" />
+					<field name="company" />
+					<field name="applied_job" />
+					<field name="job_seniority_title" />
+					<field name="applicant_id" />
+					<field name="employee_id" />
+					<field name="first_name" />
+					<field name="middle_name" />
+					<field name="last_name" />
+					<field name="available" />
+					<field name="state_id" />
+					<!-- <button name="action_form_button" type="object" string="Completion Bar"/> -->
+				</tree>
+			</field>
+		</record>
+		
+
+		<!-- Offer Accepted Action -->
+		<record id="action_offer_accepted_view" model="ir.actions.act_window">
+			<field name="name">Offer Accepted</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','offer')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Background Check Action -->
+		<record id="action_background_check_view" model="ir.actions.act_window">
+			<field name="name">Background Check</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','background')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- To Approve Action -->
+		<record id="action_to_approve_view" model="ir.actions.act_window">
+			<field name="name">To Approve</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','to_approve')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Reject Action -->
+		<record id="action_rejected_view" model="ir.actions.act_window">
+			<field name="name">Rejected</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','reject')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Hire Action -->
+		<record id="action_hire_view" model="ir.actions.act_window">
+			<field name="name">Hire</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','hire')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Benefits Action -->
+		<record id="action_benefits_view" model="ir.actions.act_window">
+			<field name="name">Benefits</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','benefits')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Contract Action -->
+		<record id="action_onboarding_contracts_view" model="ir.actions.act_window">
+			<field name="name">Contract</field>		
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','contract')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!-- Complete Action -->
+		<record id="action_complete_view" model="ir.actions.act_window">
+			<field name="name">Complete</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="domain">[('state_id','=','complete')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--New Contract Action -->
+		<record id="action_onboarding_contracts_new_view" model="ir.actions.act_window">
+			<field name="name">New</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('state','=','draft')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Active Contract Action -->
+		<record id="action_onboarding_contracts_active_view" model="ir.actions.act_window">
+			<field name="name">Active</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('state','=','open')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Expired Contract Action -->
+		<record id="action_onboarding_contracts_expired_view" model="ir.actions.act_window">
+			<field name="name">Expired</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('state','=','close')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--To Renew Contract Action -->
+		<record id="action_onboarding_contracts_to_renew_view" model="ir.actions.act_window">
+			<field name="name">To Renew</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('state','=','pending')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--direct Action -->
+		<record id="action_onboarding_direct_hire_view" model="ir.actions.act_window">
+			<field name="name">New</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.applicant</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="domain">[]</field>
+			<field name="context">{'direct_hire':'Onboarding'}</field>
+		</record>
+
+		<!--Benifits Not eligible Action -->
+		<record id="action_onboarding_benefits_not_eligible_view" model="ir.actions.act_window">
+			<field name="name">Not Eligible</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('benefits_states','=', 'not_eligible')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Benifits Pending Elections Action -->
+		<record id="action_onboarding_benefits_pending_election_view" model="ir.actions.act_window">
+			<field name="name">Pending Elections</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('benefits_states','=', 'pending')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Benifits To Approve Action -->
+		<record id="action_onboarding_benefits_to_approve_view" model="ir.actions.act_window">
+			<field name="name">To Approve</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('benefits_states','=', 'to_approve')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Benifits Send to Providor Action -->
+		<record id="action_onboarding_benefits_send_to_provider_view" model="ir.actions.act_window">
+			<field name="name">Send to Provider</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('benefits_states','=', 'send')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<!--Benifits Enrolled Action -->
+		<record id="action_onboarding_benefits_enrolled_view" model="ir.actions.act_window">
+			<field name="name">Enrolled</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.employee.onboarding</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('benefits_states','=', 'enrolled')]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<record id="view_hr_onboarding_filter" model="ir.ui.view">
+            <field name="name">hr.employee.onboarding.filter</field>
+            <field name="model">hr.employee.onboarding</field>
+            <field name="arch" type="xml">
+                <search string="Onboarding">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+		<record id="employee_settings_form_view" model="ir.ui.view">
+			<field name="name">Employee Rules</field>
+			<field name="model">employee.settings</field>
+			<field name="arch" type="xml">
+				<form string="Employee Rules">
+					<sheet>
+						<group>
+							<group>
+								<field name="calendar_year" />
+								<field name="country" />
+								<field name="emp_tax_doc" widget="many2many_tags"  />
+								<field name="non_emp_tax_doc" widget="many2many_tags" />
+								<field name="welcome_email" />
+								<field name="direct_deposit_template" />
+								<field name="emp_consent_form" widget="many2many_tags" />
+							</group>
+							<group>
+								<field name="personal_info_template" />
+								<field name="emp_contract_type" widget="many2many_tags" />
+								<field name="non_emp_contract_type" widget="many2many_tags"  />
+								<field name="applicant_i9_template_id" />
+								<field name="employer_i9_template_id" />
+							</group>
+							<field name="emp_config_ids">
+								<tree editable="bottom">
+									<field name="seq_id" />
+									<field name="state_name" domain="[('country_id' , '=' , parent.country)]"/>
+									<field name="min_wage" />
+									<field name="overtime_min_wage" />
+									<field name="overtime_wage_factor" />
+									<field name="week_overtime" />
+									<field name="daily_overtime" />
+									<field name="emp_tax_document" widget="many2many_tags" />
+									<field name="non_emp_tax_document" widget="many2many_tags" />
+									<field name="employee_consent_document" widget="many2many_tags" />
+									<field name="notes" />
+								</tree>
+								<form>
+									<group>
+										<group>
+											<field name="seq_id" readonly='1' />
+											<field name="state_name" />
+											<field name="min_wage" />
+											<field name="overtime_min_wage" />
+											<field name="overtime_wage_factor" />
+										</group>
+										<group>
+											<field name="week_overtime" />
+											<field name="daily_overtime" />
+											<field name="emp_tax_document" widget="many2many_tags" />
+											<field name="non_emp_tax_document" widget="many2many_tags" />
+											<field name="employee_consent_document" widget="many2many_tags" />
+											<field name="notes" />
+										</group>
+									</group>
+								</form>
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="employee_settings_tree_view" model="ir.ui.view">
+			<field name="name">Employee Rules</field>
+			<field name="model">employee.settings</field>
+			<field name="arch" type="xml">
+				<tree string="Employee Rules">
+					<field name="calendar_year" />
+					<field name="country" />
+					<field name="emp_tax_doc" />
+					<field name="non_emp_tax_doc" />
+					<field name="welcome_email" />
+					<field name="direct_deposit_template" />
+					<field name="emp_contract_type" />
+					<field name="non_emp_contract_type" />
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="action_employee_settings_view" model="ir.actions.act_window">
+			<field name="name">Employee Rules</field>
+			<field name="res_model">employee.settings</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record id="background_check_config_form_view" model="ir.ui.view">
+			<field name="name">Background Check</field>
+			<field name="model">background.check.settings</field>
+			<field name="arch" type="xml">
+				<form string="Background Check">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+								<field name="master_acc" />
+							</group>
+							<group></group>
+							<field name="background_config_ids">
+								<tree>
+									<field name="seq_id" />
+									<field name="sequence" />
+									<field name="code" />
+									<field name="name" />
+									<field name="description" />
+									<field name="default" />
+								</tree>
+								<form>
+									<group>
+										<group>
+											<field name="seq_id" readonly='1' />
+											<field name="sequence" />
+											<field name="code" />
+											<field name="basic_package" />
+											<field name="services" widget="many2many_tags" attrs="{'invisible':[('basic_package','!=',True)]}"/>
+										</group>
+										<group>
+											<field name="name" />
+											<field name="description" />
+											<field name="email" />
+											<field name="default" />
+										</group>
+									</group>
+								</form>
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="background_check_config_tree_view" model="ir.ui.view">
+			<field name="name">Background Check</field>
+			<field name="model">background.check.settings</field>
+			<field name="arch" type="xml">
+				<tree string="Background Check">
+					<field name="name" />
+					<field name="master_acc" />
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="action_background_check_config_view" model="ir.actions.act_window">
+			<field name="name">Background Check</field>
+			<field name="res_model">background.check.settings</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!--Onboarding Sub menu -->
+		<menuitem name="Dashboard" id="menu_dashboard_sub" parent="menu_onboarding"
+			sequence="1" groups="vitalpet_onboarding.group_onboarding_user"/>
+		<menuitem name="Hire" id="menu_hire_sub" parent="menu_onboarding"
+			sequence="2" groups="vitalpet_onboarding.group_onboarding_user"/>
+		<menuitem name="Benefits" id="menu_benifits_sub" parent="menu_onboarding"
+			sequence="3" groups="vitalpet_onboarding.group_onboarding_benefits_admin"/>
+		<menuitem name="Contracts" id="menu_contracts_sub" parent="menu_onboarding"
+			sequence="4" groups="vitalpet_onboarding.group_onboarding_officer"/>
+		<menuitem name="Adviser" id="menu_adviser_sub" parent="menu_onboarding"
+			sequence="5" groups="vitalpet_onboarding.group_onboarding_officer"/>
+		<menuitem name="Configuration" id="menu_configuration_sub" parent="menu_onboarding" 
+			sequence="6" groups="vitalpet_onboarding.group_onboarding_manager"/>
+
+		<!-- Hire menu's sub menus -->
+		<menuitem name="Direct Hire" id="menu_direct_hire_sub"
+			parent="menu_hire_sub" action="action_onboarding_direct_hire_view" sequence="1" />
+		<menuitem name="Offer Accepted" id="menu_offer_accepted_sub"
+			parent="menu_hire_sub" action="action_offer_accepted_view" sequence="2" />
+		<menuitem name="Background Informations" id="menu_background_information_sub"
+			parent="menu_hire_sub" action="action_background_check_view"
+			sequence="3" />
+		<menuitem name="To Approve" id="menu_to_approve_sub" parent="menu_hire_sub"
+			action="action_to_approve_view" sequence="4" />
+		<menuitem name="Rejected" id="menu_rejected_sub" parent="menu_hire_sub"
+			action="action_rejected_view" sequence="5" />
+		<menuitem name="Hire" id="menu_hire_sub1" parent="menu_hire_sub"
+			action="action_hire_view" sequence="6" />
+		<menuitem name="Benefits" id="menu_benefits_sub" parent="menu_hire_sub"
+			action="action_benefits_view" sequence="7" />
+		<menuitem name="Contracts" id="menu_contract_sub" parent="menu_hire_sub"
+			action="action_onboarding_contracts_view" sequence="8" />
+		<menuitem name="Complete" id="menu_complete_sub" parent="menu_hire_sub"
+			action="action_complete_view" sequence="9" />
+
+		<!-- Benifits menu's sub menus -->
+		<menuitem name="Not Eligible" id="menu_not_eligible_sub"
+			parent="menu_benifits_sub" action="action_onboarding_benefits_not_eligible_view" sequence="1" />
+		<menuitem name="Pending Elections" id="menu_pending_elections_sub"
+			parent="menu_benifits_sub" action="action_onboarding_benefits_pending_election_view" sequence="2" />
+		<menuitem name="To Approve" id="menu_ben_to_approve_sub"
+			parent="menu_benifits_sub" action="action_onboarding_benefits_to_approve_view" sequence="3" />
+		<menuitem name="Send to Provider" id="menu_send_to_provider_sub"
+			parent="menu_benifits_sub" action="action_onboarding_benefits_send_to_provider_view" sequence="4" />
+		<menuitem name="Enrolled" id="menu_enrolled_sub"
+			parent="menu_benifits_sub" action="action_onboarding_benefits_enrolled_view" sequence="5" />
+
+		<!-- Contracts menu's sub menus -->
+		<menuitem name="New" id="menu_contracts_new_sub" parent="menu_contracts_sub"
+			action="action_onboarding_contracts_new_view" sequence="1" />
+		<menuitem name="Active" id="menu_contracts_active_sub"
+			parent="menu_contracts_sub" action="action_onboarding_contracts_active_view"
+			sequence="2" />
+		<menuitem name="Expired" id="menu_contracts_expired_sub"
+			parent="menu_contracts_sub" action="action_onboarding_contracts_expired_view"
+			sequence="3" />
+		<menuitem name="To Renew" id="menu_contracts_to_renew_sub"
+			parent="menu_contracts_sub" action="action_onboarding_contracts_to_renew_view"
+			sequence="4" />
+
+		<!-- Adviser menu's sub menus -->
+		<menuitem name="Company Settings" id="menu_settings_sub"
+			parent="menu_adviser_sub" action="action_onboarding_settings"
+			sequence="1" />
+
+		<!-- Configuration menus's sub menus -->
+		<menuitem name="Employement Settings" id="menu_employee_settings_sub"
+			parent="menu_configuration_sub" action="action_employee_settings_view"
+			sequence="1" />
+		<menuitem name="Background Check" id="menu_background_check_sub"
+			parent="menu_configuration_sub" action="action_background_check_config_view"
+			sequence="2" />
+
+		<record id="job_seniority_form_view_inherit" model="ir.ui.view">
+			<field name="name">Job Seniority Titles</field>
+			<field name="model">hr.job.seniority.title</field>
+			<field name="inherit_id" ref="vitalpet_custom_hr_recruitment.job_seniority_form_view" />
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="documents_template_ids" widget="many2many_tags" />
+				</field>
+			</field>
+		</record>
+
+		<record id="job_seniority_tree_view_inherit" model="ir.ui.view">
+			<field name="name">Job Seniority Titles</field>
+        	<field name="model">hr.job.seniority.title</field>
+			<field name="inherit_id" ref="vitalpet_custom_hr_recruitment.job_seniority_tree_view" />
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="documents_template_ids" widget="many2many_tags" />
+				</field>
+			</field>
+		</record>
+
+		<record id="crm_case_form_view_job_inherit" model="ir.ui.view">
+	        <field name="name">Jobs - Recruitment Form</field>
+	        <field name="model">hr.applicant</field>
+			<field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='job_id']" position="attributes">
+	                <attribute name='required'>1</attribute>
+	            </xpath>
+				<xpath expr="//field[@name='partner_id']" position="attributes">
+	                <attribute name='invisible'>1</attribute>
+	            </xpath>
+				<xpath expr="//field[@name='email_from']" position="attributes">
+	                <attribute name='required'>1</attribute>
+	            </xpath>
+				<xpath expr="//field[@name='user_id']" position="attributes">
+	                <attribute name='required'>1</attribute>
+	            </xpath>
+
+		        <xpath expr="//button[@name='archive_applicant']"
+		            position="attributes">
+		            <attribute name="string">Reject</attribute>
+		        </xpath>
+
+				<xpath expr="//group/group[4]" position="after">
+					<group string = "Emergency Contact Informations">
+						<field name = "emergency_contact_name" />
+						<field name = "emergency_contact_phone" />
+						<field name = "emergency_contact_relationship" />
+					</group>
+	            </xpath>
+
+				<!-- <xpath expr="//group/group[5]" position="after">
+					<group>
+						<field name = "hire_date" readonly='1' />
+					</group>
+	            </xpath> -->
+			</field>
+		</record>
+
+	</data>
+</odoo>

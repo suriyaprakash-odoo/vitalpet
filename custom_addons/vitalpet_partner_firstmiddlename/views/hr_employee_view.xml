@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+
+   <record id="view_employee_form_firstname" model="ir.ui.view">
+        <field name="name">Add firstname and surnames</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <data>
+
+               <field name="name" position="after">
+                    <div class="oe_edit_only">
+                        <group >
+                            <field name="lastname"/>
+                            <field name="firstname" />
+                        	<field name="middlename"/>
+                        </group>
+                    </div>
+                </field>
+               
+            </data>
+        </field>
+    </record>
+</odoo>

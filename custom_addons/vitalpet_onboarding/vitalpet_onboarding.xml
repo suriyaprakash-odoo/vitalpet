@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="vitalpet_onboard assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/vitalpet_onboarding/static/src/js/onboard_dashboard.js"/>
+            </xpath>
+        </template>
+
+        <record id="onboarding_dashboard" model="ir.actions.client">
+            <field name="name">Dashboard</field>
+            <field name="tag">onboarding_dashboard</field>
+        </record>
+
+        <menuitem id="menu_onboarding_dashboard" action="onboarding_dashboard" parent="menu_onboarding" sequence="1" />
+        
+   </data>
+</odoo>

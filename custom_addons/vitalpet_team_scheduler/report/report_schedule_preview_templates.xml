@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+	<template id="report_vitalpet_team_scheduler_document_preview">
+	
+		<style>
+		.table_sch th,.table_sch td {
+		    padding: 8px !important;background: #1313130f;
+		    
+		}
+		</style>
+		<div class="page">
+		<t t-foreach="docs" t-as="rec">
+			<div>
+				<table style=" margin-top: 10px;" border="1px">
+					<tr>
+						<th width="120px"
+							style="border: 1px solid black;border-collapse: collapse;padding:8px;"
+							rowspan="2"><span t-esc="rec.company_id.code"></span>-Week <span t-esc="rec.name.number*2-1"></span></th>
+					</tr>
+				</table>
+			</div>
+			<div>
+
+				<table style="width: 100%; margin-top: 10px;" class="table_sch" border="1px">
+					<tr style="background: #6c9eeb;height: 46px;">
+						<th width="8%"
+							style="text-align:center;border: 1px solid black;border-collapse: collapse;"
+							rowspan="2">Team Members</th>
+						<th width="8%"
+							style="text-align:center;border: 1px solid black;border-collapse: collapse;"
+							rowspan="2">Job Title</th>        
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(0)"></span></th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(1)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(2)"></span></th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(3)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(4)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(5)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(6)"></span></th>
+					</tr>
+					<tr style="background: #2396a7;height: 35px;">
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+					</tr>
+
+					<tr t-foreach="rec.staff_planning_ids" t-as="doc">
+					<tr t-foreach="doc.week_hours" t-as="hours">
+						<t t-if="hours.week_type=='week1'">
+						<t t-if="doc.name">
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<span t-field="hours.employee_id" />
+							</td>
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<span t-field="doc.name" />
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time1" >
+									<span t-field="hours.scheduled_in_time1" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.out_time1">
+									<span t-field="hours.out_time1" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start1" >
+									<span t-field="hours.scheduled_break_start1" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end1" > 
+									<span t-field="hours.scheduled_break_end1" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time2" >									
+									<span t-field="hours.scheduled_in_time2" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time2">
+								<span t-field="hours.out_time2" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start2" >
+									<span t-field="hours.scheduled_break_start2" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end2" > 
+									<span t-field="hours.scheduled_break_end2" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time3" >									
+									<span t-field="hours.scheduled_in_time3" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time3">
+								<span t-field="hours.out_time3" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start3" >
+									<span t-field="hours.scheduled_break_start3" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end3" > 
+									<span t-field="hours.scheduled_break_end3" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time4" >									
+									<span t-field="hours.scheduled_in_time4" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time4">
+								<span t-field="hours.out_time4" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start4" >
+									<span t-field="hours.scheduled_break_start4" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end4" > 
+									<span t-field="hours.scheduled_break_end4" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time5" >									
+									<span t-field="hours.scheduled_in_time5" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time5">
+								<span t-field="hours.out_time5" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start5" >
+									<span t-field="hours.scheduled_break_start5" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end5" > 
+									<span t-field="hours.scheduled_break_end5" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time6" >									
+									<span t-field="hours.scheduled_in_time6" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time6">
+								<span t-field="hours.out_time6" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start6" >
+									<span t-field="hours.scheduled_break_start6" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end6" > 
+									<span t-field="hours.scheduled_break_end6" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time7" >									
+									<span t-field="hours.scheduled_in_time7" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time7">
+								<span t-field="hours.out_time7" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start7" >
+									<span t-field="hours.scheduled_break_start7" /><br/>
+									<span>-</span><br/>
+								</t>
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end7" > 
+									<span t-field="hours.scheduled_break_end7" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+						</t>
+					  </t>
+					</tr>
+				</tr>
+				</table>
+			
+			</div>
+			<div style="page-break-after:always">
+			</div>
+			<div>
+				<table style=" margin-top: 10px;" border="1px">
+					<tr>
+						<th width="120px"
+							style="border: 1px solid black;border-collapse: collapse;padding:8px;"
+							rowspan="2"><span t-esc="rec.company_id.code"></span>-Week <span t-esc="rec.name.number*2"></span></th>
+					</tr>
+				</table>
+			</div>
+			
+			<div>
+				<table style="width: 100%; margin-top: 10px;"  class="table_sch" border="1px">
+					<tr style="background: #6c9eeb;height: 46px;">
+						<th width="8%"
+							style="text-align:center;border: 1px solid black;border-collapse: collapse;"
+							rowspan="2">Team Members</th>
+						<th width="8%"
+							style="text-align:center;border: 1px solid black;border-collapse: collapse;"
+							rowspan="2">Job Title</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(0)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(1)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(2)"></span></th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(3)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(4)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(5)"></span> </th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;"
+							colspan="3"><span t-esc="rec.find_date(6)"></span></th>
+					</tr>
+					<tr style="background: #2396a7;height: 35px;">
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tin</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Tout</th>
+						<th
+							style="border: 1px solid black;border-collapse: collapse; text-align: center;">Break</th>
+					</tr>
+
+					<tr t-foreach="rec.staff_planning_ids" t-as="doc">
+					<tr t-foreach="doc.week_hours" t-as="hours">
+						<t t-if="hours.week_type=='week2'">
+						<t t-if="doc.name">
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<span t-field="hours.employee_id" />
+							</td>
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<span t-field="doc.name" />
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time1" >									
+									<span t-field="hours.scheduled_in_time1" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.out_time1">
+									<span t-field="hours.out_time1" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start1" >
+									<span t-field="hours.scheduled_break_start1" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end1" > 
+									<span t-field="hours.scheduled_break_end1" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time2" >									
+									<span t-field="hours.scheduled_in_time2" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time2">
+								<span t-field="hours.out_time2" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start2" >
+									<span t-field="hours.scheduled_break_start2" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end2" > 
+									<span t-field="hours.scheduled_break_end2" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time3" >									
+									<span t-field="hours.scheduled_in_time3" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time3">
+								<span t-field="hours.out_time3" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start3" >
+									<span t-field="hours.scheduled_break_start3" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end3" > 
+									<span t-field="hours.scheduled_break_end3" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time4" >									
+									<span t-field="hours.scheduled_in_time4" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time4">
+								<span t-field="hours.out_time4" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start4" >
+									<span t-field="hours.scheduled_break_start4" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end4" > 
+									<span t-field="hours.scheduled_break_end4" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time5" >									
+									<span t-field="hours.scheduled_in_time5" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time5">
+								<span t-field="hours.out_time5" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start5" >
+									<span t-field="hours.scheduled_break_start5" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end5" > 
+									<span t-field="hours.scheduled_break_end5" /> 
+								</t> 
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time6" >									
+									<span t-field="hours.scheduled_in_time6" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time6">
+								<span t-field="hours.out_time6" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start6" >
+									<span t-field="hours.scheduled_break_start6" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end6" > 
+									<span t-field="hours.scheduled_break_end6" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_in_time7" >									
+									<span t-field="hours.scheduled_in_time7" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+							<t t-if="hours.out_time7">
+								<span t-field="hours.out_time7" />
+								</t>
+								<t t-else=""></t>
+							</td>
+							
+							<td style="border: 1px solid black;border-collapse: collapse;padding:8px;">
+								<t t-if="hours.scheduled_break_start7" >
+									<span t-field="hours.scheduled_break_start7" /><br/>
+									<span>-</span><br/>
+								</t> 
+								<t t-else=""></t>
+								<t t-if="hours.scheduled_break_end7" > 
+									<span t-field="hours.scheduled_break_end7" /> 
+								</t>
+								<t t-else=""></t>
+							</td>
+						</t>
+						</t>
+					</tr>
+				</tr>
+				</table>
+			</div>
+			
+			<div style="page-break-after:always">
+			</div>
+		</t>
+		</div>
+	</template>
+
+	<template id="team_scheduler_report_preview">
+		<t t-call="report.html_container">
+			<t
+				t-call="vitalpet_team_scheduler.report_vitalpet_team_scheduler_document_preview" />
+		</t>
+	</template>
+</odoo>

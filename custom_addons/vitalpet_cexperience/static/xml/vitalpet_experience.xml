@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+   <t t-name="vitalpet_cexperience.HomePage">
+      <div class="o_dashboards">
+         <div class="o_website_dashboard">
+         </div>
+      </div>
+   </t>
+   <t t-name="vitalpet_cexperience.dashboard_visits">
+      <div class="row o_dashboard_visits">
+         <div class="o_view_manager_content">
+            <div class="o_control_panel" style="display: block;">
+               <div class="container-fluid" style="display:block;">
+                  <div class="row">
+                     <div class="heading" style="margin-top: 14px;">
+                        <div style="font-size: 12px;">
+                           <h1>Dashboard</h1>
+                        </div>
+                        <div class="row" style="width: 350px;border: 2px solid black;height:300px;margin: 25px;float: left;background-color: #eaeaea;">
+                        <div class="col-sm-6">
+                        <b><h2 style="padding-left: 10px;">Pre-Exam</h2>
+                        <p style="padding-left: 10px;">Email On File</p>
+                        <p style="padding-left: 10px;">Mobile On File</p>
+                        <p style="padding-left: 10px;">Nail Trim</p>
+                        <p style="padding-left: 10px;">Promotion</p>
+                        <p style="padding-left: 10px;">Dental Scheduled</p>
+                        <p style="padding-left: 10px;">Pre-Exam Overall Review</p></b>
+                        </div>
+                        <div class="col-sm-6">
+                        <p style="margin-top: 48px;margin-left: 44px;"><t t-esc="values['rec_tot']"/>% </p>
+                        <p style="margin-left: 44px;"><t t-esc="values['mob_tot']"/>%</p>
+                        <p style="margin-left: 44px;"><t t-esc="values['nail_tot']"/>%</p>
+                        <p style="margin-left: 44px;"><t t-esc="values['promo_tot']"/>%</p>
+                        <p style="margin-left: 44px;"><t t-esc="values['dent_tot']"/>%</p>
+                        <p style="margin-left: 44px;"><t t-esc="values['pre_ex_pt_tot']"/>%</p>
+                       
+                        </div>
+                        </div>
+                        <div class="row" style="width: 350px;border: 2px solid black;height:300px;margin: 25px;float:left;margin-top: 25px;background-color: #eaeaea;">
+                        <div class="col-sm-6">
+                        <b><h2 style="padding-left: 10px;">Exam</h2>
+                        <p style="padding-left: 10px;">Dental Grade Recorded</p>
+                        <p style="padding-left: 10px;">Blood Parasite Screen</p>
+                        <p style="padding-left: 10px;">Intestinal Parasite Screen</p>
+                        <p style="padding-left: 10px;">Estimate Given</p>
+                        <p style="padding-left: 10px;">Exam Overall Review</p>
+                        </b>
+                       </div>
+                        <div class="col-sm-6">
+                         <p style="margin-top: 56px;margin-left: 54px;"><t t-esc="values['dent_grade_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 20px;"><t t-esc="values['para_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 17px;"><t t-esc="values['int_para_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 21px;"><t t-esc="values['esti_tot']"/>%</p>
+                         <p style="margin-left: 54px;"><t t-esc="values['ex_pt_tot']"/>%</p>
+                        </div>
+                        </div>
+                        <div class="row" style="width: 350px;border: 2px solid black;height:300px;margin: 25px;float:left;margin-top: 25px;background-color: #eaeaea;">
+                        <div class="col-sm-6">
+                        <b><h2 style="padding-left: 10px;">Post Visit</h2>
+                        <p style="padding-left: 10px;">Follow up appt scheduled</p>
+                        <p style="padding-left: 10px;">Call backs performed</p>
+                        <p style="padding-left: 10px;">Post Review Overall Experience</p>
+                        <h2 style="padding-left: 10px;">Discounts</h2>		
+                        <p style="padding-left: 10px;">Discounts</p>
+                        <p style="padding-left: 10px;">Services Not Billed</p>
+                        <p style="padding-left: 10px;">Visit Score Average</p></b>
+                        </div>
+                        <div class="col-sm-6">
+                         <p style="margin-top: 56px;margin-left: 54px;"><t t-esc="values['sche_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 20px;"><t t-esc="values['callba_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 20px;"><t t-esc="values['po_ex_pt_tot']"/>%</p>
+                         <p style="margin-left: 54px;margin-top: 57px;">$<t t-esc="values['sell_pric']"/></p>
+                         <p style="margin-left: 54px;">$<t t-esc="values['stand_prc']"/></p>
+                         <p style="margin-left: 54px;"><t t-esc="values['vist_src_avg']"/></p>
+                        </div>
+                        </div>
+					    <!-- <script type="text/javascript">
+					      google.charts.load('current', {'packages':['corechart']});
+					      google.charts.setOnLoadCallback(drawChart);
+					
+					      function drawChart() {	
+					        var data = google.visualization.arrayToDataTable([
+					          [values['date_loop'][1], 'Sales', 'Expenses'],
+					          ['2013',  1000,      400],
+					          ['2014',  1170,      460],
+					          ['2015',  660,       1120],
+					          ['2016',  1030,      540]
+					        ]);
+					
+					        var options = {
+					          title: 'Company Performance',
+					          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+					          vAxis: {minValue: 0}
+					        };
+					
+					        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+					        chart.draw(data, options);
+					      }
+					    </script> -->
+					   <div class="row">
+					   </div>
+					   <div class="row">
+					    	<div class="col-xs-6 pull-right" style="text-align: right;">
+						    	<a class="pre_exam" data_target="score_graphs1" style="border-bottom: 2px solid black;border-bottom-color:#2618F0;margin-right: 40px;cursor:pointer">PRE-EXAM</a>
+						    	<a  class="exam" data_target="score_graphs2" style="border-bottom: 2px solid black;border-bottom-color:black;    margin-right: 40px;cursor:pointer">EXAM</a>
+						    	<a  class="post_exam" data_target="score_graphs3" style="border-bottom: 2px solid black;border-bottom-color:#8B0F0F;    margin-right: 40px;cursor:pointer">POST-EXAM</a>
+						    	<a class="discounts" data_target="score_graphs4" style="border-bottom: 2px solid black;border-bottom-color:#2618F0;    margin-right: 70px;cursor:pointer">DISCOUNTS</a>
+						    </div>
+					    </div>
+					    
+					    <div class="score score_graphs1" ><h4 >PRE-EXAM</h4><div id="chart_div" style="width: 100%; height: 350px;"></div></div>
+					    <div class="score score_graphs2" style="visibility:hidden;height:0;"><h4>EXAM</h4><div id="chart_div1"  style="width: 100%; height: 350px;"></div></div> 
+					    <div class="score score_graphs3" style="visibility:hidden;height:0;"><h4>POST-EXAM</h4><div id="chart_div2"  style="width: 100%; height: 350px;"></div></div> 
+					    <div class="score score_graphs4" style="visibility:hidden;height:0;"><h4>DISCOUNTS</h4><div id="chart_div3"  style="width: 100%; height: 350px;"></div></div> 
+					    <!-- 
+					  <ul class="nav nav-tabs">
+					    <li class="active"><a data-toggle="tab" href="#home">Pre Exam</a></li>
+					    <li class="active"><a data-toggle="tab" href="#menu1">Exam</a></li>
+					    
+					  </ul>
+
+					  <div class="tab-content">
+					    <div id="home" class="tab-pane fade in active">
+					      <h3>Pre Exam</h3>
+					      
+					    </div>
+					    <div id="menu1" class="tab-pane fade in active">
+					      <h3>Exam</h3>
+					      <div id="chart_div1" style="width: 100%; height: 350px;"></div>
+					    </div>
+					
+					  </div> -->
+<!--                        <div id="chart_div" style="width: 100%; height: 350px;margin-top:400px"></div>
+ -->					<div class="row" style="width: 450px;border: 2px solid black;height:200px;margin-left: 24px;;float: left;background-color: #ffffff;">
+					   <div class = "col-sm-12" style="padding:0px">
+					   <h2 style="border-bottom: 2px solid black;padding: 0px 26px 12px;">Visit Review Survey</h2>
+					   </div>
+                        <div class="col-sm-6">
+                        <b>
+                         <p style="padding-left: 10px;color:green;margin-top: 18px;"><a href="#" class="o_dashboard_action" name="survey.action_survey_user_input" id="new">New</a></p>
+                         <p style="padding-left: 10px;color:green;"><a href="#" class="o_dashboard_action" name="survey.action_survey_user_input" id="pending">Pending</a></p>
+                         <p style="padding-left: 10px;color:green;"><a href="#" class="o_dashboard_action" name="survey.action_survey_user_input" id="completed">Completed</a></p>
+<!--                     <p style="padding-left: 10px;">Delivered</p>
+ -->                        </b>
+                        </div>
+                        <div class="col-sm-6">
+                        <p style="margin-left: 44px;margin-top: 18px;"><t t-esc="values['no_of_click']"/>%</p>
+                        <p style="margin-left: 44px;"><t t-esc="values['no_of_open']"/>% </p>
+                        <p style="margin-left: 44px;"><t t-esc="values['no_of_reply']"/>%</p>
+                        <!-- <div class="progress">
+						  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+						  aria-valuemin="0" aria-valuemax="100" style="width:50%">
+						    50% Complete (info)
+						  </div>
+						</div> -->
+                       
+                        </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </div>
+  </div>
+    
+  
+   </t>
+</templates>

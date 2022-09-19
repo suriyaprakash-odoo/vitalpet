@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+	<record id="view_employee_form_inherited_experience" model="ir.ui.view">
+		<field name="name">hr.employee.form</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form" />
+		<field name="arch" type="xml">
+			<field name="job_id" position="after">
+				<field name="job_country_id" invisible='1'/>
+			</field>
+			<xpath expr="//notebook" position="inside">
+				<page string="Experience">
+					<group string="Academic Experience">
+					</group>
+						<field name="academic_experience_ids">
+							<tree editable="bottom">
+								<field name="academics" />
+								<field name="institute" />
+								<field name="diploma" />
+								<field name="field_of_study" />
+								<field name="start_date" />
+								<field name="end_date" />
+							</tree>
+						</field>
+					<group string="Professional Experience">
+					</group>
+						<field name="professional_experience_ids">
+							<tree editable="bottom">
+								<field name="position" />
+								<field name="employer" />
+								<field name="start_date" />
+								<field name="end_date" />
+							</tree>
+						</field>
+					<group string="Certifications">
+					</group>
+						<field name="certification_ids" context="{'default_country_id': job_country_id}">
+							<tree editable="bottom">
+								<field name="certifications" />
+								<field name="certification_number" />
+								<field name="issued_by" />
+								<field name="professional_license" />
+								<field name="country_id" invisible='1'/>
+								<field name="state_issued_id" domain="[('country_id', '=', country_id)]"/>
+								<field name="start_date" />
+								<field name="end_date" />
+							</tree>
+						</field>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="hr_experience_academic_form_view" model="ir.ui.view">
+		<field name="name">HR Experience Academic</field>
+		<field name="model">hr.experience.academics</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="employee" />
+							<field name="academics" />
+							<field name="institute" />
+							<field name="diploma" />
+						</group>
+						<group>
+							<field name="field_of_study" />
+							<field name="start_date" />
+							<field name="end_date" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="hr_experience_academic_tree_view" model="ir.ui.view">
+		<field name="name">HR Experience Academic</field>
+		<field name="model">hr.experience.academics</field>
+		<field name="arch" type="xml">
+			<tree string="HR Experience Academics">
+				<field name="employee" />
+				<field name="academics" />
+				<field name="institute" />
+				<field name="diploma" />
+				<field name="field_of_study" />
+				<field name="start_date" />
+				<field name="end_date" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_hr_experience_academic_view" model="ir.actions.act_window">
+		<field name="name">HR Experience Academic</field>
+		<field name="res_model">hr.experience.academics</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record id="hr_experience_professional_form_view" model="ir.ui.view">
+		<field name="name">HR Experience Professional</field>
+		<field name="model">hr.experience.professional</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="employee" />
+							<field name="position" />
+							<field name="employer" />
+						</group>
+						<group>
+							<field name="start_date" />
+							<field name="end_date" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="hr_experience_professional_tree_view" model="ir.ui.view">
+		<field name="name">HR Experience Professional</field>
+		<field name="model">hr.experience.professional</field>
+		<field name="arch" type="xml">
+			<tree string="HR Experience Professional">
+				<field name="employee" />
+				<field name="position" />
+				<field name="employer" />
+				<field name="start_date" />
+				<field name="end_date" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_hr_experience_professional_view" model="ir.actions.act_window">
+		<field name="name">HR Experience Professional</field>
+		<field name="res_model">hr.experience.professional</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record id="hr_experience_certification_form_view" model="ir.ui.view">
+		<field name="name">HR Experience Certification</field>
+		<field name="model">hr.experience.certification</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<group>
+							<field name="employee" />
+							<field name="certifications" />
+							<field name="certification_number" />
+						</group>
+						<group>
+							<field name="issued_by" />
+							<field name="professional_license" />
+							<field name="state_issued_id" />
+							<field name="start_date" />
+							<field name="end_date" />
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="hr_experience_certification_tree_view" model="ir.ui.view">
+		<field name="name">HR Experience Certification</field>
+		<field name="model">hr.experience.certification</field>
+		<field name="arch" type="xml">
+			<tree string="HR Experience Certification">
+				<field name="employee" />
+				<field name="certifications" />
+				<field name="certification_number" />
+				<field name="issued_by" />
+				<field name="professional_license" />
+				<field name="state_issued_id" />
+				<field name="start_date" />
+				<field name="end_date" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_hr_experience_certification_view" model="ir.actions.act_window">
+		<field name="name">HR Experience Certification</field>
+		<field name="res_model">hr.experience.certification</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem name="Experience" id="menu_hr_experience_sub"
+		parent="hr.menu_human_resources_configuration" sequence="1" />
+	<menuitem name="Academic Experience" id="menu_hr_experience_academic_sub"
+		parent="menu_hr_experience_sub" action="action_hr_experience_academic_view"
+		sequence="1" />
+	<menuitem name="Professional Experience" id="menu_hr_experience_professional_sub"
+		parent="menu_hr_experience_sub" action="action_hr_experience_professional_view"
+		sequence="2" />
+	<menuitem name="Certification" id="menu_hr_experience_certification_sub"
+		parent="menu_hr_experience_sub" action="action_hr_experience_certification_view"
+		sequence="3" />
+
+</odoo>

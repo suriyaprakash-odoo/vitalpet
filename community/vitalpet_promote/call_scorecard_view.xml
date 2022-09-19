@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+		<record id="call_scorecard_form" model="ir.ui.view">
+			<field name="name">call.scorecard</field>
+			<field name="model">call.scorecard</field>
+			<field name="arch" type="xml">
+				<form string="Call Scorecard">
+
+				<sheet>
+				<header>
+				  <field name="recording_link" widget='audio' readonly='1'/>
+				  <field name="phonecall_id" invisible='1'/>
+				</header>
+						<notebook>
+
+							<page string="Greetings">
+								<group col="2">
+								<separator string="Greetings ( 15%)" colspan="4"/>
+										<field name="greeting_1" widget="radio" colspan="2"/>
+										<field name="greeting_2" widget='radio' colspan="2"/>
+										<field name="greeting_3" widget='radio' colspan="2"/>
+									</group>
+							</page>
+
+							<page string="Contact Info">
+									<group col="2">
+									<separator string="Obtaining Contact Information ( 10%)" colspan="4" />
+										<field name="contact_info_1" widget='radio' colspan="2"/>
+										<field name="contact_info_2" widget='radio' colspan="2"/>
+										<field name="contact_info_3" widget='radio' colspan="2" invisible='1'/>
+										<field name="contact_info_4" widget='radio' colspan="2" invisible='1'/>
+									</group>
+							</page>
+
+							<!-- page string="Needs Analysis" invisible='1'>
+
+									<group col="4" class='oe_right'>
+										<field name="is_problem" type="checkbox" colspan="2"/>
+									</group>
+
+									<group col="2">
+								<separator string="Needs Analysis ( 15%)" colspan="4"/>
+										<field name="needs_1" widget='radio' colspan="2"/>
+										<field name="needs_2" widget='radio' colspan="2"/>
+									</group>
+
+
+									<group col="2" attrs="{'invisible': [('is_problem', '!=', True)]}" >
+									<separator string="Problem Solving Abilities" colspan="4"/>(Check Problem Encountred to fill this Section)
+
+										<field name="problem_solving_1" widget='radio' colspan="2"/>
+										<field name="problem_solving_2" widget='radio' colspan="2"/>
+										<field name="problem_solving_3" widget='radio' colspan="2"/>
+										<field name="problem_solving_4" widget='radio' colspan="2"/>
+									</group>
+
+							</page-->
+
+							<page string="Appointment">
+									<group col="2">
+									<separator string="Appointment ​( ​40%)" colspan="4"/>
+										<field name="protocol_1" widget='radio' colspan="2" invisible='1'/>
+										<field name="appointment_2" widget='radio' colspan="2"/>
+                    <field name="appointment_1" widget='radio' colspan="2"/>
+										<field name="protocol_2" widget='radio' colspan="2" invisible='1'/>
+										<field name="protocol_3" widget='radio' colspan="2" invisible='1'/>
+									</group>
+							</page>
+
+							<page string="Call Etiquette">
+									<group col="2">
+								<separator string="Call Etiquette ​( ​20%)" colspan="4"/>
+										<field name="etiquette_1" widget='radio' colspan="2"/>
+										<field name="etiquette_2" widget='radio' colspan="2"/>
+										<field name="etiquette_3" widget='radio' colspan="2"/>
+										<field name="etiquette_4" widget='radio' colspan="2"/>
+										<field name="etiquette_5" widget='radio' colspan="2"/>
+										<field name="etiquette_6" widget='radio' colspan="2"/>
+										<field name="etiquette_7" widget='radio' colspan="2"/>
+									</group>
+							</page>
+
+							<page string="Closure">
+									<group col="2">
+								<separator string="Closure ​( ​15%)" colspan="4"/>
+										<field name="closure_1" widget='radio' colspan="2"/>
+										<field name="closure_2" widget='radio' colspan="2"/>
+									</group>
+							</page>
+
+						</notebook>
+					</sheet>
+					<button name="compute_totals" string='Refresh Total Score Calculation' invisible='1' type='object' class='oe_highlight oe_right'/>
+
+					<separator string="_ Calculated Total Scores" />
+
+				<field name="total_score">
+						<tree string="Total Score">
+                        	<field name="create_date"/>
+                        	<field name="total_greeting"/>
+                        	<field name="total_contact_info"/>
+                        	<!-- field name="total_needs"/>
+                        	<field name="total_problem"/> -->
+                        	<field name="total_protocol"/>
+                        	<field name="total_etiquette"/>
+                        	<field name="total_closure"/>
+                            <field name="total_score"/>
+                        </tree>
+					</field>
+				</form>
+			</field>
+		</record>
+
+    </data>
+</openerp>

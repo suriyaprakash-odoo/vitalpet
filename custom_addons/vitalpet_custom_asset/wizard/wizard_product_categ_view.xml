@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="product_category_wizard_form" model="ir.ui.view">
+			<field name="name">Product Category Wizard</field>
+			<field name="model">product.category.wizard</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Product Category">
+					<group>	
+						<field name='product_category_id'  />
+					</group>
+					<footer>
+						<button string='Apply' name='confirm' type='object' class="oe_highlight"
+							groups="account.group_account_invoice,account.group_account_manager" />
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="assign_product_category_warnig_form" model="ir.ui.view">
+			<field name="name">assign.product.category.warning.wizard</field>
+			<field name="model">assign.product.category.warning</field>
+			<field name="arch" type="xml">
+				<form string="Set Accounts">
+
+					<div>Already assets has been mapped for product category and the products, entering new asset will
+						replaces/updates the exisitng settings</div>
+					<div>Do you want to continue? </div>
+
+					<footer>
+						<button name="continue_to_assign" string="Yes"
+							type="object" class="btn btn-sm btn-primary" />
+						<button string="Cancel" class="btn btn-sm btn-default"
+							special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+
+
+
+		<act_window id="action_product_category_company" multi="True"
+			key2="client_action_multi" name="Assign to Product Category"
+			res_model="product.category.wizard" src_model="account.asset.category"
+			view_mode="form" target="new" view_type="form" />
+
+	</data>
+</odoo>

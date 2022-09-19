@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <template id="request_frontend" name="vitalpet_recuritment assets backend" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/vitalpet_custom_hr_recruitment/static/js/vitalpet_recuritment_reapply.js" />
+            </xpath>
+        </template>
+   </data>
+</odoo>

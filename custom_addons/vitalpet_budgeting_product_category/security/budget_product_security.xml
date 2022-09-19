@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Record Rules for budget.product.category -->
+		<record id="budget_product_category_record_rule" model="ir.rule">
+			<field name="name">Budget Product Category</field>
+			<field name="model_id" ref="model_budget_product_category" />
+			<field eval="True" name="global" />
+			<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+		</record>
+		
+		<!-- Record Rules for budget.category.lines -->
+		<record id="budget_category_lines_record_rule" model="ir.rule">
+			<field name="name">Budget Product Category</field>
+			<field name="model_id" ref="model_budget_category_lines" />
+			<field eval="True" name="global" />
+			<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+		</record>
+
+		<record id="budget_category_quarterly_record_rule" model="ir.rule">
+			<field name="name">Budget Product Category Quarterly</field>
+			<field name="model_id" ref="model_budget_category_quarterly" />
+			<field eval="True" name="global" />
+			<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+		</record>
+
+		<record id="budget_category_yearly_record_rule" model="ir.rule">
+			<field name="name">Budget Product Category Yearly</field>
+			<field name="model_id" ref="model_budget_category_yearly" />
+			<field eval="True" name="global" />
+			<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+		</record>
+	</data>
+</odoo>
+ 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!-- wizard view -->
+        
+         <record id="custom_wizard_view" model="ir.ui.view">
+            <field name="name">Portal Access Management Custom</field>
+            <field name="model">portal.wizard</field>
+            <field name="inherit_id" ref="portal.wizard_view"/>
+            <field name="arch" type="xml">
+
+            <xpath expr="//form/field[@name='user_ids']/tree/field[@name='partner_id']" position="replace"/>
+
+
+            <xpath expr="//form/field[@name='user_ids']/tree/field[@name='email']" position="before">
+                <field name='model_name' invisible='True'/>
+                <field name='partner_id' attrs="{'invisible':[('model_name', '!=', 'res.partner')]}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+    <!-- wizard view -->
+        <record id="wizard_employee_view" model="ir.ui.view">
+            <field name="name">Portal Access Management</field>
+            <field name="model">portal.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Portal Access Management">
+                    <group>
+                        <field name="portal_id" widget="selection"/>
+                    </group>
+                    <div>
+                        Select which contacts should belong to the portal in the list below.
+                        The email address of each selected contact must be valid and unique.
+                        If necessary, you can fix any contact's email address directly in the list.
+                    </div>
+                    <field name="user_ids">
+                        <tree string="Contacts" editable="bottom" create="false" delete="false">
+                            <field name='model_name' invisible='True'/>
+                            <field name="employee_id"/>
+                            <field name="email"/>
+                            <field name="in_portal"/>
+                        </tree>
+                    </field>
+                    <field name="welcome_message"
+                        placeholder="This text is included in the email sent to new portal users."/>
+                    <footer>
+                        <button string="Apply" name="action_apply" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window id="employee_wizard_action" name="Portal Access Management"
+            src_model="hr.employee"
+            res_model="portal.wizard"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"/>
+
+
+        <record id="action_wizard_employee_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_employee_view"/>
+            <field name="act_window_id" ref="employee_wizard_action"/>
+        </record>
+
+
+
+
+
+</odoo>

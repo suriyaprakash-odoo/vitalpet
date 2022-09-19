@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vitalpet_promote_vitalpet_promote,vitalpet_promote.vitalpet_promote,model_vitalpet_promote_vitalpet_promote,,1,0,0,0

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+
+		<!--Profit and Loss (HQ) -->
+
+		<record id="account_financial_report_csf_0" model="account.financial.html.report">
+			<field name="name">Cash Flow Statement  </field>
+			<field name="debit_credit" eval="False" />
+			<field name="report_type">date_range_analytic</field>
+			<field name='parent_id' ref='account_reports.account_reports_legal_statements_menu' />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs" model="account.financial.html.report.line">
+			<field name="name">	Increase (decrease) in Cash</field>
+			<field name="code">INDECS</field>
+			<field name="formulas">balance = NCSHOA.balance + NCSHIA.balance + NCSHFA.balance </field>
+			<field name="financial_report_id" ref='account_financial_report_csf_0' />
+			<field name="parent_id" eval="False" />
+			<field name="sequence" eval="0" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="0" />
+		</record>
+
+
+		<record id="account_financial_report_csf_inbecs_0" model="account.financial.html.report.line">
+			<field name="name">CASH FLOWS FROM OPERATING ACTIVITIES</field>
+			<field name="code">CFLW0A</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_1" model="account.financial.html.report.line">
+			<field name="name">	…...Net Income (Loss)</field>
+			<field name="code">NILOSS</field>
+			<field name="formulas">balance = NTCMEWHQ.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		
+
+		<record id="account_financial_report_csf_inbecs_2" model="account.financial.html.report.line">
+			<field name="name">	…...Adjustments to reconcile Net Income to Net Cash Provided by Operations</field>
+			<field name="code">ADJNSO</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_3" model="account.financial.html.report.line">
+			<field name="name">	…...…...Non-cash Items Included in Net Income (Loss)</field>
+			<field name="code">NCIINI</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_2' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_4" model="account.financial.html.report.line">
+			<field name="name">	…...…...…...Depreciation &amp; Amortization</field>
+			<field name="code">DEPAMR</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_3' />
+			<field name="domain" eval="[('account_id.user_type_id', '=','Depreciation')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_5" model="account.financial.html.report.line">
+			<field name="name">	…...…...…...Deferred Income Taxes</field>
+			<field name="code">DEFFIT</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_3' />
+			<field name="domain" eval="[('account_id.user_type_id', '=','Fixed Assets'), ('account_id.tag_ids', '=', 'Deferred Tax Asset')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_6" model="account.financial.html.report.line">
+			<field name="name">…...Changes in Working Capital Assets &amp; Liabilities</field>
+			<field name="code">CWCALB</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_2' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_7" model="account.financial.html.report.line">
+			<field name="name">…...…...Accounts Receivable &amp; Prepaid Expenses - Net increase</field>
+			<field name="code">ARPRNI</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_6' />	
+			<field name="domain" eval="[('account_id.user_type_id', 'in', ['Receivable','Prepayments'])]" />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_8" model="account.financial.html.report.line">
+			<field name="name">	…...…...(Increase) Decrease in Inventories (including acquired)</field>
+			<field name="code">DIINVS</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_6' />
+			<field name="domain" eval="	[('account_id.user_type_id', '=', 'Current Assets'),('account_id.tag_ids', '=', 'Inventory')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_9" model="account.financial.html.report.line">
+			<field name="name">	…...…...Accounts Payable &amp; Other Current Liabilities - Net Increase</field>
+			<field name="code">APOCLI</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_6' />
+			<field name="domain" eval="[('account_id.user_type_id', 'in', ['Current Liabilities', 'Payable']),('account_id.tag_ids', '!=', 'Non Cash Movement')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="3" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_10" model="account.financial.html.report.line">
+			<field name="name">	…...…...…...Net cash provided from (used in) operating activities</field>
+			<field name="code">NCSHOA</field>
+			<field name="formulas">	balance = NILOSS.balance + DEPAMR.balance + DEFFIT.balance + ARPRNI.balance + DIINVS.balance + APOCLI.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_0' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="5" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_11" model="account.financial.html.report.line">
+			<field name="name">CASH FLOWS FROM INVESTING ACTIVITIES</field>
+			<field name="code">CFLWIA</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="3" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_12" model="account.financial.html.report.line">
+			<field name="name">	…...Purchase of Property and Equipment (including acquired)</field>
+			<field name="code">PUPREQ</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_11' />
+			<field name="domain" eval="[('account_id.user_type_id', '=', 'Fixed Assets'),('account_id.tag_ids.name', 'in', ['Furniture and Fixtures','Software Development','Computer Equipment', 'Medical Equipment'])]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_13" model="account.financial.html.report.line">
+			<field name="name">…...Leasehold Improvements, Construction-in-progress</field>
+			<field name="code">LHICIP</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_11' />
+			<field name="domain" eval="	[('account_id.user_type_id', '=', 'Fixed Assets'),('account_id.tag_ids', '=', 'Leasehold Improvements')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_14" model="account.financial.html.report.line">
+			<field name="name">	…...Cash Paid for Acquisition of Veterinary Practice</field>
+			<field name="code">CSPAVP</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_11' />
+			<field name="domain" eval="['|',('account_id.user_type_id', '=', 'Non Current Liabilities'), (('account_id.user_type_id', '=', 'Fixed Assets'),('account_id.tag_ids', '=', 'Intangibles'))]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="3" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_15" model="account.financial.html.report.line">
+			<field name="name">…...…...…...Net cash provided from (used in) investing activities</field>
+			<field name="code">NCSHIA</field>
+			<field name="formulas">balance = PUPREQ.balance + LHICIP.balance + CSPAVP.balance </field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_11' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="4" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_16" model="account.financial.html.report.line">
+			<field name="name">	CASH FLOWS FROM FINANCING ACTIVITIES</field>
+			<field name="code">CFLWFA</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="5" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_17" model="account.financial.html.report.line">
+			<field name="name">	…...Payments on Bank Loan</field>
+			<field name="code">PYMTBL</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_16' />
+			<field name="domain" eval="[('account_id.user_type_id', 'in', ['Non-current Liabilities', 'Current Liabilities']),('account_id.tag_ids', '=', 'Bank Loans')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="1" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_18" model="account.financial.html.report.line">
+			<field name="name">…...Convertible Debentures &amp; Notes Payable</field>
+			<field name="code">CVDBNP</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_16' />
+			<field name="domain" eval="[('account_id.user_type_id', 'in', ['Non-current Liabilities', 'Current Liabilities']),('account_id.tag_ids.name', 'in', ['Convertible Debentures', 'Notes Payable'])]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="2" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_19" model="account.financial.html.report.line">
+			<field name="name">	…...Proceeds from Financing</field>
+			<field name="code">PROFIN</field>
+			<field name="formulas">balance = sum.balance</field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs_16' />
+			<field name="domain" eval="[('account_id.user_type_id', '=', 'Equity'),('account_id.tag_ids.name', '=', 'Charter and Reserve Capital')]" />
+			<field name="groupby">account_id</field>
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="2" />
+			<field name="sequence" eval="3" />
+		</record>
+
+		<record id="account_financial_report_csf_inbecs_20" model="account.financial.html.report.line">
+			<field name="name">	…...…...…...Net cash provided from (used in) financing activities</field>
+			<field name="code">NCSHFA</field>
+			<field name="formulas">balance = PYMTBL.balance + CVDBNP.balance + PROFIN.balance </field>
+			<field name="parent_id" ref='account_financial_report_csf_inbecs' />
+			<field name="green_on_positive" eval="True" />
+			<field name="level" eval="3" />
+			<field name="sequence" eval="6" />
+		</record>
+	</data>
+</odoo>

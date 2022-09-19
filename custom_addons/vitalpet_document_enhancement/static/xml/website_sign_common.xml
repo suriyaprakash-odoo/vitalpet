@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-extend="website_sign.signature_item">
+    	<t t-jquery="t[t-if='readonly']" t-operation='append'>
+    	 	<div t-if="type == 'integer' || type == 'float'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+    	 	<div t-if="type == 'boolean'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+    	 	<div t-if="type == 'selection'" class="o_sign_signature_item"><t t-esc="value"/><t t-if="editMode" t-call="website_sign.signature_item_configuration"/></div>
+    		
+    	</t>
+		<t t-jquery="t[t-if='!readonly']" t-operation='append'>
+			<t t-if="!readonly">
+	    		<input t-if="type == 'selection'" type="text" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+	    		<input t-if="type == 'integer'" type="number" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+	    		<input t-if="type == 'float'" type="number" step="0.01" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+	    		<input t-if="type == 'boolean'" type="checkbox" class="o_sign_signature_item" t-att-placeholder="placeholder"/>
+	    	</t>
+    		
+		</t>
+    		
+    </t>
+	
+
+ </templates>

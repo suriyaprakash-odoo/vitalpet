@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		
+        <menuitem parent="vitalpet_mypractice.menu_mypractice_reports"
+            id="menu_act_crossovered_budget_lines_view_mypractice"
+            action="account_budget.act_crossovered_budget_lines_view" sequence="90"
+            name="Team Budgets"
+            />
+            
+
+
+	</data>
+</odoo>

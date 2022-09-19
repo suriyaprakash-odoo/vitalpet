@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		
+		<template  id="thankyou_inherit" inherit_id='website_hr_recruitment.thankyou'>
+			<xpath expr='//div[contains(@class, "oe_structure")]' position='replace'>
+					<div class="oe_structure">
+		                <div class="container">
+		                    <h1>Thank you!</h1>
+		                    <p>
+		                        Your job application has been successfully registered,
+		                        we will get back to you soon.
+		                    </p>
+		                </div>
+		                <section class="oe_dark">
+		                    <div class="container">
+		                        <div class="row">
+		                            <div class="col-md-12 text-center mt16 mb16">
+		                            	
+			                        <a class="btn btn-primary btn-lg" href="'survey/start/user-feedback-form-1">
+			                            Start Survey
+			                        </a>
+                        
+		                             <!--<a href="/" class="btn btn-primary btn-lg">Survey test</a> -->
+		                            </div>
+		                        </div>
+		                    </div>
+		                </section>
+		            </div>
+        	</xpath>
+        
+		</template>
+
+</odoo>

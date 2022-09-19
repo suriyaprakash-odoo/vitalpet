@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_expense_user,hr.expense,hr_expense.model_hr_expense,group_expense_user,1,1,1,0
+access_hr_expense_bank_statement_import,expense.bank.statement.import,model_expense_bank_statement_import,group_expense_user,1,1,0,0
+access_hrexpense_myreceipt,hrexpense.myreceipt,model_hrexpense_myreceipt,base.group_user,1,1,1,0
+access_hr_expensemail_attachment_user,hr.expense.mail.attachment,model_hr_expense_mail_attachment,group_expense_user,1,1,1,1
+access_product_product_hr_expense_user_1,product.product.hr.expense.user,product.model_product_product,group_expense_user,1,1,0,0
+access_product_template_hr_expense_user_1,product.template.hr.expense.user,product.model_product_template,group_expense_user,1,1,0,0
+access_timesheet_emp_list,timesheet.emp.list,vitalpet_team_scheduler.model_timesheet_emp_list,group_expense_user,1,1,1,1
+,,,,,,,
+access_hr_employee,hr_employee,hr.model_hr_employee,vitalpet_expense.group_expense_user,1,0,0,0
+access_stock_move_user,access_stock_move,stock.model_stock_move,base.group_user,1,1,1,0
+access_stock_move_user,access_stock_move,stock.model_stock_move,vitalpet_expense.group_expense_user,1,1,1,0
+access_stock_warehouse_orderpoint,access_stock_warehouse_orderpoint,stock.model_stock_warehouse_orderpoint,base.group_user,1,1,1,0
+access_stock_warehouse_orderpoint,access_stock_warehouse_orderpoint,stock.model_stock_warehouse_orderpoint,vitalpet_expense.group_expense_user,1,1,1,0
+access_model_mail_tracking_value,access_model_mail_tracking_value,mail.model_mail_tracking_value,group_expense_user,1,1,1,1
+access_account_asset_asset_manager,account.asset.asset,account_asset.model_account_asset_asset,vitalpet_expense.group_expense_user,1,1,1,0

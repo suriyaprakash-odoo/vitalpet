@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="action_account_chart_template_menu"
+            name="Accounting Chart Template"
+            parent="account.account_account_menu"
+            action="account.action_account_chart_template_form"
+            groups="base.group_no_one"/>
+        <menuitem
+            id="action_account_template_form_menu"
+            name="Accounting Template"
+            parent="account.account_account_menu"
+            action="account.action_account_template_form"
+            groups="base.group_no_one"/>
+	</data>
+</odoo>

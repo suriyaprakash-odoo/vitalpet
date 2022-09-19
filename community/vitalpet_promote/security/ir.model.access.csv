@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+ir_model_access_1633,Call Scorecard User,model_call_scorecard,group_promote_user,True,False,False,False
+ir_model_access_1634,Logged Calls User,crm_voip.model_crm_phonecall,group_promote_user,True,False,False,False
+ir_model_access_1635,Logged Calls Call Agent,crm_voip.model_crm_phonecall,group_promote_call_agent,True,True,False,False
+ir_model_access_1636,Company gauges Call Agent,account.model_res_company,group_promote_call_agent,True,True,False,False
+ir_model_access_1637,Score Category Call Agent,model_score_category,group_promote_call_agent,True,True,True,False
+ir_model_access_1638,Total Score Call Agent,model_total_score,group_promote_call_agent,True,True,True,False
+ir_model_access_1639,Call Scorecard Call Agent,model_call_scorecard,group_promote_call_agent,True,True,True,False
+ir_model_access_1641,Promote Post Blogger,model_promote_post,group_promote_blogger,True,True,True,False
+ir_model_access_1642,Promote Tag Manager,model_promote_tag,group_promote_manager,True,True,True,True
+ir_model_access_1643,Call Summary User,model_call_summary,group_promote_user,True,False,False,False
+ir_model_access_1644,Call SOurce Manager,model_promote_settings_source,group_promote_manager,True,True,True,True
+ir_model_access_583,Promote Blog Blogger,model_promote_blog,group_promote_blogger,True,False,False,False
+ir_model_access_584,Promote Tag Blogger,model_promote_tag,group_promote_blogger,True,False,False,False
+ir_model_access_1699,Score Category User,model_score_category,group_promote_user,True,False,False,False
+ir_model_access_1645,Call Campaign Manager,model_call_campaign,group_promote_manager,True,True,True,True
+ir_model_access_1646,Promote Blog Manager,model_promote_blog,group_promote_manager,True,True,True,True
+ir_model_access_16351,Logged Calls Call Supervisor,crm_voip.model_crm_phonecall,group_promote_call_supervisor,True,False,False,False
+ir_model_access_16361,Company gauges Call Supervisor,account.model_res_company,group_promote_call_supervisor,True,True,False,False
+ir_model_access_16371,Score Category Call Supervisor,model_score_category,group_promote_call_supervisor,True,False,False,False
+ir_model_access_16381,Total Score Call Supervisor,model_total_score,group_promote_call_supervisor,True,False,False,False

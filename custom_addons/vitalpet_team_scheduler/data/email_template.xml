@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>		
+
+		<record id="team_scheduler_approval_notification" model="mail.template">
+			<field name="name">Team Scheduler Approval</field>
+			<field name="subject">Team Scheduler Approval</field>
+			<field name="email_to">${object.employee_id.work_email}</field>
+			<field name="model_id" ref="vitalpet_team_scheduler.model_staff_planning" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                     <p>Hi,</p>
+						<p>Team Scheduler is created and send for Approval - ${ object.name.name}.</p>				
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+
+		<record id="team_scheduler_approved_notification" model="mail.template">
+			<field name="name">Team Scheduler Approved</field>
+			<field name="subject">Team Scheduler Approval</field>
+			<field name="email_to">${object.employee_id.work_email}</field>
+			<field name="model_id" ref="vitalpet_team_scheduler.model_staff_planning" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                     <p>Hi,</p>
+						<p>Team Scheduler is Approved - ${ object.name.name}.</p>			
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="team_scheduler_resubmit_notification" model="mail.template">
+			<field name="name">Team Scheduler Resubmit</field>
+			<field name="subject">Contract has been created</field>
+			<field name="email_to">${object.employee_id.work_email}</field>
+			<field name="model_id" ref="vitalpet_team_scheduler.model_staff_planning" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                     <p>Hi,</p>
+						<p>Team Scheduler is Rejected, you have to Resubmit - ${ object.name.name}.</p>
+					<p>Thanks,</p>
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="team_scheduler_validation_notification" model="mail.template">
+			<field name="name">Team Scheduler Validation</field>
+			<field name="subject">Schedule for  ${object.display_id.company_id.name}</field>
+			<field name="email_to">${object.employee_id.work_email}</field>
+			<field name="model_id" ref="vitalpet_team_scheduler.model_staff_planning_display_week" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                     <p>Hi ${object.employee_id.name},</p>
+						<p>Please find below Timesheet in ${object.display_id.company_id.name} to pay ${object.display_id.planning_id.name.name}, ${object.from_date} to ${object.display_id.to_date}. </p>
+
+                    </div>
+                        <table style="width: 100%; margin-top: 10px; font-size: 0.8em;" border="1px">
+						    <tr style="background: #6c9eeb;" >
+						        <th width="15%" style="text-align:center;" rowspan="2">Week1</th>
+						        <th style="text-align:left;" colspan="3">Sunday ${object.date_calc(object.from_date, 0)}</th>
+						        <th style="text-align:left;" colspan="3">Monday ${object.date_calc(object.from_date, 1)}</th>
+						        <th style="text-align:left;" colspan="3">Tuesday ${object.date_calc(object.from_date, 2)}</th>
+						        <th style="text-align:left;" colspan="3">Wednesday ${object.date_calc(object.from_date, 3)}</th>
+						        <th style="text-align:left;" colspan="3">Thursday ${object.date_calc(object.from_date, 4)}</th>
+						        <th style="text-align:left;" colspan="3">Friday ${object.date_calc(object.from_date, 5)}</th>
+						        <th style="text-align:left;" colspan="3">Saturday ${object.date_calc(object.from_date, 6)}</th>
+						    </tr>
+						    <tr style="background: #6c9eeb;">
+						        <th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>						        
+						    </tr>
+						    <tr>
+						    	<th width="15%" style="text-align:left;" >${object.job_id.name} (${object.employee_id.name})</th>
+						    	<th>${object.scheduled_in_time1 or ''}</th>
+						        <th>${object.out_time1 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 0) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 0)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time2 or ''}</th>
+						        <th>${object.out_time2 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 1) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 1)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time3 or ''}</th>
+						        <th>${object.out_time3 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 2) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 2)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time4 or ''}</th>
+						        <th>${object.out_time4 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 3) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 3)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time5 or ''}</th>
+						        <th>${object.out_time5 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 4) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 4)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time6 or ''}</th>
+						        <th>${object.out_time6 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 5) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 5)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.scheduled_in_time7 or ''}</th>
+						        <th>${object.out_time7 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 6) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 6)}</span>
+						        	% endif
+						        </th>	
+						    </tr>
+						    <tr>
+						    	<th width="15%" style="text-align:left;">Break Hours</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start1:
+						    			<span>${object.scheduled_break_start1} to ${object.scheduled_break_end1} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start2:
+						    			<span>${object.scheduled_break_start2} to ${object.scheduled_break_end2} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start3:
+						    			<span>${object.scheduled_break_start3} to ${object.scheduled_break_end3} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start4:
+						    			<span>${object.scheduled_break_start5} to ${object.scheduled_break_end4} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start5:
+						    			<span>${object.scheduled_break_start5} to ${object.scheduled_break_end5} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start6:
+						    			<span>${object.scheduled_break_start6} to ${object.scheduled_break_end6} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.scheduled_break_start7:
+						    			<span>${object.scheduled_break_start7} to ${object.scheduled_break_end7} </span>
+						    		% endif
+						    	</th>
+						    </tr>
+						</table>
+
+						<table style="width: 100%; margin-top: 10px; font-size: 0.8em;" border="1px">
+						    <tr style="background: #6c9eeb;" >
+						        <th width="15%" style="text-align:center;" rowspan="2">Week2</th>
+						        <th style="text-align:left;" colspan="3">Sunday ${object.date_calc(object.from_date, 7)}</th>
+						        <th style="text-align:left;" colspan="3">Monday ${object.date_calc(object.from_date, 8)}</th>
+						        <th style="text-align:left;" colspan="3">Tuesday ${object.date_calc(object.from_date, 9)}</th>
+						        <th style="text-align:left;" colspan="3">Wednesday ${object.date_calc(object.from_date, 10)}</th>
+						        <th style="text-align:left;" colspan="3">Thursday ${object.date_calc(object.from_date, 11)}</th>
+						        <th style="text-align:left;" colspan="3">Friday ${object.date_calc(object.from_date, 12)}</th>
+						        <th style="text-align:left;" colspan="3">Saturday ${object.date_calc(object.from_date, 13)}</th>
+						    </tr>
+						    <tr style="background: #6c9eeb;">
+						        <th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>
+						    	<th>Tin</th>
+						        <th>Tout</th>
+						        <th>PTO</th>						        
+						    </tr>
+						    <tr>
+						    	<th width="15%" style="text-align:left;" >${object.job_id.name} (${object.employee_id.name})</th>
+						    	<th>${object.week2_id.scheduled_in_time1 or ''}</th>
+						        <th>${object.week2_id.out_time1 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 7) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 7)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time2 or ''}</th>
+						        <th>${object.week2_id.out_time2 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 8) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 8)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time3 or ''}</th>
+						        <th>${object.week2_id.out_time3 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 9) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 9)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time4 or ''}</th>
+						        <th>${object.week2_id.out_time4 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 10) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 10)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time5 or ''}</th>
+						        <th>${object.week2_id.out_time5 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 11) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 11)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time6 or ''}</th>
+						        <th>${object.week2_id.out_time6 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 12) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 12)}</span>
+						        	% endif
+						        </th>
+						    	<th>${object.week2_id.scheduled_in_time7 or ''}</th>
+						        <th>${object.week2_id.out_time7 or ''}</th>
+						        <th>
+						        	% if object.paid_hrs_calc(object.employee_id.id, object.from_date, 13) != '00:00':
+						        		<span>${object.paid_hrs_calc(object.employee_id.id, object.from_date, 13)}</span>
+						        	% endif
+						        </th>
+						    </tr>
+						    <tr>
+						    	<th width="15%" style="text-align:left;">Break Hours</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start1:
+						    			<span>${object.week2_id.scheduled_break_start1} to ${object.week2_id.scheduled_break_end1} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start2:
+						    			<span>${object.week2_id.scheduled_break_start2} to ${object.week2_id.scheduled_break_end2} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start3:
+						    			<span>${object.week2_id.scheduled_break_start3} to ${object.week2_id.scheduled_break_end3} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start4:
+						    			<span>${object.week2_id.scheduled_break_start5} to ${object.week2_id.scheduled_break_end4} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start5:
+						    			<span>${object.week2_id.scheduled_break_start5} to ${object.week2_id.scheduled_break_end5} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start6:
+						    			<span>${object.week2_id.scheduled_break_start6} to ${object.week2_id.scheduled_break_end6} </span>
+						    		% endif
+						    	</th>
+						    	<th style="text-align:left;" colspan="3">
+						    		% if object.week2_id.scheduled_break_start7reak_end7:
+						    			<span>${object.week2_id.scheduled_break_start7} to ${object.week2_id.scheduled_break_end7} </span>
+						    		% endif
+						    	</th>
+						    </tr>
+						</table>
+                
+                	<div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>The schedules are subject to change based upon business needs.</p>
+					<p>Best Regards,</p>
+					<p>VitalPet</p>
+                    </div>
+				]]>
+			</field>
+		</record>
+
+
+
+	</data>
+</odoo>

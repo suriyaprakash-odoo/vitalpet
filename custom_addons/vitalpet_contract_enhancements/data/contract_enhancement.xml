@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record forcecreate="True" id="decimal_analytic" model="decimal.precision">
+		<field name="name">Contract Enhancement</field>
+		<field name="digits">6</field>
+	</record>
+</odoo>

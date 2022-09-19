@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!--Email template -->
+
+		<record id="contract_creation_notification" model="mail.template">
+			<field name="name">Create Contract</field>
+			<field name="subject">Contract has been created Vetzip10.0</field>
+			<field name="email_to">financeHR@vitalpet.com</field>
+			<field name="model_id" ref="vitalpet_contract_enhancements.model_hr_contract" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Dear Home office,</p>
+                    <p>Below are the list of new employees whose contract has been created on ${object.create_date}</p>
+                    ${object.employee_id.name},${object.employee_id.company_id.name},${object.name},${object.job_id.name},${object.date_start}
+					<p>Best Regards,</p>
+					<p>VitalPet</p>
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="contract_updation_notification" model="mail.template">
+			<field name="name">Update Contract</field>
+			<field name="subject">Contract has been updated in Vetzip10.0 for ${object.contract_log_line_id.employee_id.name}</field>
+			<field name="email_to">financeHR@vitalpet.com</field>
+			<field name="model_id" ref="vitalpet_contract_enhancements.model_hr_contract_line_log" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Dear Home Office,</p>
+
+                    <p>
+                    </p>
+                    <p>Below are the list of employees whose contract has been changed on ${object.date_create or ''}</p>
+
+                    %if ctx['job']:
+	                    <p> At ${object.contract_log_line_id.employee_id.company_id.name or ''} for ${object.contract_log_line_id.employee_id.name or ''} with contract name:  ${object.contract_log_line_id.name or ''} added a secondary job position as ${ctx['job']} with seniority title ${ctx['seniority']}</p>
+                    %else:
+		                <p> At ${object.contract_log_line_id.employee_id.company_id.name or ''} for ${object.contract_log_line_id.employee_id.name or ''} with contract name:  ${object.contract_log_line_id.name or ''} changed from ${object.original_value or ''} to  ${object.change_value or ''}</p> 	
+                    %endif
+
+					<p>Best Regards,</p>
+					<p>Vitalpet</p>
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="gurantee_to_production" model="mail.template">
+			<field name="name">To DVM’s with guarantee salary only contracts are Expiring</field>
+			<field name="subject">Your Contract will be Changing to Production Soon</field>
+			<field name="email_to">${object.employee_id.work_email}, financeHR@vitalpet.com</field>
+			<field name="model_id" ref="vitalpet_contract_enhancements.model_hr_contract" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                     <p>Dear ${object.employee_id.name},</p>
+                     % if object.trial_date_end:
+                     	Your current contract will be ending within ${ctx['notice_days']} days on <b>${object.trial_date_end}</b> at which time you will be moving from a guaranteed salary contract to a production based contract. Your home office HR Manager or Finance Analyst will be reaching out to you soon to discuss more details. Please inquire with your supervisor if you have any questions.
+                    % endif 
+                    % if not object.trial_date_end and object.date_start:
+                    	Please note that our records indicate that the Contract Period in your contract expires on <b>${object.date_end}</b> . Please inquire with your supervisor if you have any questions.
+                    % endif
+                    <p>Best Regards,</p>
+					<p>VitalPet Team</p>
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="contract_notice_email_notification_hr_manager"
+			model="mail.template">
+			<field name="name">Contracts are Expiring - HR Manager</field>
+			<field name="subject">The following DVM contracts are Expiring soon</field>
+			<field name="email_to">${object.employee_id.company_id.hr_supervisor.login}</field>
+			<field name="model_id" ref="vitalpet_contract_enhancements.model_hr_contract" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Dear Home office,</p>
+
+                    <p>The following contracts will be ending within ${object.date_end}, ${object.notice_end} days:</p>
+
+                    ${object.notice_end},${object.employee_id.name},${object.name},${object.date_end} 
+
+					<p>Best Regards,</p>
+					<p>Vitalpet Team</p>
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+		<record id="contract_notice_email_notification_manager"
+			model="mail.template">
+			<field name="name">Contracts are Expiring - Manager</field>
+			<field name="subject">The following DVM contracts are Expiring soon</field>
+			<field name="email_to">${object.employee_id.company_id.manager_user_id.login}</field>
+			<field name="model_id" ref="vitalpet_contract_enhancements.model_hr_contract" />
+			<field name="auto_delete" eval="False" />
+			<field name="body_html">
+				<![CDATA[
+                    <div style="line-height: 20px;font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Dear Home office,</p>
+
+                    <p>The following contracts will be ending within ${object.date_end}, ${object.notice_end} days:</p>
+
+                    ${object.notice_end},${object.employee_id.name},${object.name},${object.date_end} 
+
+					<p>Best Regards,</p>
+					<p>Vitalpet Team</p>
+
+                    </div>
+                ]]>
+			</field>
+		</record>
+
+	</data>
+</odoo>
